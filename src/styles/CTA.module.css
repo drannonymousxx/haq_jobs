@@ -1,0 +1,32 @@
+.section {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--dark);
+  color: var(--white);
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-sm);
+  color: var(--white);
+}
+
+.subtitle {
+  color: #94A3B8;
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.6;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
