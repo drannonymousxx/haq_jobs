@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from '@/styles/Navbar.module.css';
 import { Menu } from 'lucide-react';
 
@@ -7,7 +8,14 @@ export default function Navbar() {
     <header className={styles.header}>
       <div className={`container ${styles.navContainer}`}>
         <Link href="/" className={styles.logo}>
-          HAQJobs
+          <Image 
+            src="/logofull.png" 
+            alt="HAQJobs Logo" 
+            width={150} 
+            height={40} 
+            style={{ width: '150px', height: 'auto' }}
+            priority 
+          />
         </Link>
         
         <nav className={styles.navLinks}>
