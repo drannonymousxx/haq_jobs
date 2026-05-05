@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import localFont from 'next/font/local';
 import styles from '@/styles/Hero.module.css';
 import Button from '@/components/common/Button';
@@ -19,7 +20,9 @@ export default function HeroSection() {
           <span className={styles.tagline}>DISCOVER. APPLY. GROW.</span>
           <h1 className={styles.title}>
             Build Your Legal Career with{' '}
-            <span className={styles.highlight}>HAQJobs</span>
+            <span className={styles.highlightBox}>
+              <span className={styles.highlightText}>HAQJobs</span>
+            </span>
           </h1>
           <p className={styles.subtitle}>
             Connect with leading law firms, discover internships, and unlock career opportunities — all in one place built for aspiring legal professionals.
@@ -28,7 +31,16 @@ export default function HeroSection() {
             <Button variant="primary" className={styles.ctaButton}>Start Your Journey &rarr;</Button>
           </div>
           <div className={styles.socialProof}>
-            <strong>1,000+</strong> Students & Lawyers building their careers with HAQJobs
+            <div className={styles.heroAvatars}>
+              <img src="/profile/profile1.avif" className={styles.heroAvatar} alt="User 1" />
+              <img src="/profile/profile2.avif" className={styles.heroAvatar} alt="User 2" />
+              <img src="/profile/profile3.avif" className={styles.heroAvatar} alt="User 3" />
+              <img src="/profile/profile4.avif" className={styles.heroAvatar} alt="User 4" />
+              <img src="/profile/profile5.avif" className={styles.heroAvatar} alt="User 5" />
+            </div>
+            <p className={styles.socialText}>
+              <strong>1,000+</strong> Students & Lawyers building their careers with HAQJobs
+            </p>
           </div>
         </div>
       </div>

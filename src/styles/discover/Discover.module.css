@@ -1,0 +1,285 @@
+.pageContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-md) var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.sectionHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--dark);
+}
+
+/* Discover Title */
+.discoverTitle {
+  font-size: 48px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 24px;
+  text-align: center;
+  color: var(--dark);
+}
+
+/* Tabs */
+.tabsContainer {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.tab {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  transition: all 0.2s ease;
+  background-color: transparent;
+}
+
+.tab:hover {
+  background-color: var(--light-bg);
+  color: var(--dark);
+}
+
+.tabActive {
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.tabActive:hover {
+  background-color: var(--primary-hover);
+  color: var(--white);
+}
+
+/* Newsletter Banner */
+.newsletterBanner {
+  background: linear-gradient(135deg, rgba(16, 90, 234, 0.1), rgba(16, 90, 234, 0.05));
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-sm);
+}
+
+.newsletterTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.newsletterSubtitle {
+  color: var(--text-muted);
+}
+
+.joinBtn {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+
+/* Article Card */
+.articleGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .articleGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.articleCard {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.articleCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.articlePlaceholderImg {
+  background-color: #e2e8f0;
+  height: 180px;
+  width: 100%;
+}
+
+.articleContent {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.articleTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.articleDesc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Company Card */
+.companyList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.companyCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.companyLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logoPlaceholder {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-md);
+  background-color: #e2e8f0;
+}
+
+.companyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.companyName {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.companyDomain {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.rolesContainer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.roleChip {
+  background-color: var(--light-bg);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.applyBtn {
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  background-color: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Domain Grid */
+.domainGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.domainPill {
+  padding: 12px 24px;
+  background-color: var(--light-bg);
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.domainPill:hover {
+  background-color: rgba(16, 90, 234, 0.1);
+  color: var(--primary);
+}
+
+/* Founder Section & Final CTA */
+.centeredSection {
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.centeredSection h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.centeredSection p {
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.ctaButtons {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.btnSecondary {
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+}
+
+/* Article Detail Page */
+.articleDetailPage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-sm);
+}
+
+.articleBanner {
+  width: 100%;
+  height: 300px;
+  background-color: #e2e8f0;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.articleBody {
+  margin-top: var(--spacing-md);
+  line-height: 1.8;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}

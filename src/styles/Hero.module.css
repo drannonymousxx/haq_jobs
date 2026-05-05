@@ -42,26 +42,71 @@
   font-size: 2.5rem;
   font-weight: 800;
   line-height: 1.15;
+  margin-bottom: 12px;
   color: var(--dark);
   letter-spacing: -0.02em;
 }
 
-.highlight {
+.title .highlightBox {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, rgba(14, 165, 233, 0.04) 100%);
-  color: var(--primary-dark, #0369a1);
-  padding: 8px 20px;
-  border-radius: 14px;
-  font-weight: 600;
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.08), inset 0 2px 6px rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 6px;
 }
 
-.highlight:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05);
-  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.12), inset 0 2px 6px rgba(255, 255, 255, 0.8);
+.highlightBox {
+  position: relative;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 0;
+  border: 1.5px solid var(--primary, #105AEA);
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 90, 234, 0.08),
+    rgba(16, 90, 234, 0.02)
+  );
+  font-size: 0.95em;
+  line-height: 1.1;
+}
+
+/* Corner Dots */
+.highlightBox::before,
+.highlightBox::after,
+.highlightText::before,
+.highlightText::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--primary, #105AEA);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* Top-Left */
+.highlightBox::before {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* Bottom-Right */
+.highlightBox::after {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+/* Top-Right */
+.highlightText::before {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Bottom-Left */
+.highlightText::after {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
 }
 
 .subtitle {
@@ -86,9 +131,45 @@
   font-size: 0.875rem;
   color: var(--text-muted);
   font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-.socialProof strong {
+.heroAvatars {
+  display: flex;
+  flex-direction: row;        /* THIS IS THE MAIN FIX */
+  align-items: center;
+  pointer-events: auto;       /* So hovers still work */
+}
+
+.heroAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  display: block;
+  position: relative;
+  transition: transform 0.2s ease, z-index 0.2s ease;
+  z-index: 1;
+}
+
+.heroAvatar:not(:first-child) {
+  margin-left: -12px;
+}
+
+.heroAvatar:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.socialText {
+  margin: 0;
+}
+
+.socialText strong {
   font-weight: 500;
 }
 

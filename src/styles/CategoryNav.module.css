@@ -14,28 +14,26 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-md) var(--spacing-sm);
-  background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  transition: all 0.2s ease;
+  background: linear-gradient(135deg, #eaf2ff, #dbeafe);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
   text-align: center;
-  gap: var(--spacing-sm);
+  gap: 12px;
+  text-decoration: none;
+  border: none;
 }
 
 .card:hover {
-  border-color: var(--primary);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 12px 30px rgba(37, 99, 235, 0.15);
 }
 
-.iconWrapper {
-  color: var(--primary);
-  background-color: rgba(16, 90, 234, 0.05);
-  padding: 1rem;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.categoryImage {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
 }
 
 .name {

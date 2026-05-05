@@ -19,7 +19,7 @@ export default function Navbar() {
         </Link>
         
         <nav className={styles.navLinks}>
-          <Link href="/jobs" className={styles.link}>Discover</Link>
+          <Link href="/discover" className={styles.link}>Discover</Link>
           <Link href="/jobs" className={styles.link}>For Job Seekers</Link>
           <Link href="/jobs" className={styles.link}>For Companies</Link>
         </nav>
