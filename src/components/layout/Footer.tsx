@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
         <div className={styles.brand}>
-          <h2 className={styles.logo}>HAQJobs</h2>
+          <img src="/logo-full.png" alt="HAQJobs" className={styles.logoImage} />
           <p className={styles.description}>
             The premier legal career platform connecting top talent with top opportunities.
           </p>

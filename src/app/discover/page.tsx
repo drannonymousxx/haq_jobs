@@ -9,7 +9,7 @@ import CompanyCard from '@/components/discover/CompanyCard';
 import DomainGrid from '@/components/discover/DomainGrid';
 import FounderSection from '@/components/discover/FounderSection';
 import FinalCtaSection from '@/components/discover/FinalCtaSection';
-import { discoverArticles, discoverCompanies, discoverDomains } from '@/data/discoverData';
+import { articles as discoverArticles, discoverCompanies, discoverDomains } from '@/data/discoverData';
 
 export default function DiscoverPage() {
   const [activeTab, setActiveTab] = useState("All");
@@ -22,9 +22,11 @@ export default function DiscoverPage() {
   // Filter articles based on active tab
   let filteredArticles = discoverArticles;
   if (activeTab === "Blogs") {
-    filteredArticles = discoverArticles.filter(article => article.category === "Blogs");
+    filteredArticles = discoverArticles.filter(article => article.category === "blog");
   } else if (activeTab === "Featured") {
-    filteredArticles = discoverArticles.filter(article => article.category === "Featured");
+    filteredArticles = discoverArticles.filter(article => article.category === "featured");
+  } else if (activeTab === "All") {
+    filteredArticles = discoverArticles.filter(article => article.title !== "Alternative Careers for Law Graduates");
   }
 
   return (
@@ -67,8 +69,8 @@ export default function DiscoverPage() {
         {/* 5. Domain Grid (Only show on 'All' to match requested behavior) */}
         {showDomainsAndCTA && (
           <>
-            <section>
-              <h2 className={styles.sectionHeader}>Discover Domains</h2>
+            <section className={styles.domainSection}>
+              <h2 className={styles.centerHeader}>Discover Domains</h2>
               <DomainGrid domains={discoverDomains} />
             </section>
 
