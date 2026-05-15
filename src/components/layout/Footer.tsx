@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from '@/styles/Footer.module.css';
 
 export default function Footer() {
@@ -6,12 +7,18 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
         <div className={styles.brand}>
-          <img src="/logo-full.png" alt="HAQJobs" className={styles.logoImage} />
+          <Image
+            src="/logofull.png"
+            alt="HAQJobs"
+            width={180}
+            height={48}
+            className={`${styles.logoImage} object-contain`}
+          />
           <p className={styles.description}>
             The premier legal career platform connecting top talent with top opportunities.
           </p>
         </div>
-        
+
         <div className={styles.links}>
           <div className={styles.linkColumn}>
             <h3>Opportunities</h3>
