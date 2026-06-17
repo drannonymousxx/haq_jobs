@@ -1,13 +1,33 @@
 "use client";
 
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { Menu, ChevronDown, User, Briefcase } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const pathname = usePathname() || '';
+  if (pathname === '/login' || pathname.startsWith('/signup')) {
+    return null;
+  }
+  
+  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowSignupDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const isJobSeekers = pathname.startsWith('/job-seekers');
   const isCompanies = pathname.startsWith('/for-companies') || pathname.startsWith('/customers') || pathname.startsWith('/pricing');
 
@@ -26,7 +46,7 @@ export default function Navbar() {
 
   const companiesNav = [
     { name: 'Overview', href: '/for-companies' },
-    { name: 'Post a Job', href: '/for-companies/post-job' },
+    { name: 'Post a Job', href: '/post-job' },
     { name: 'Customers', href: '/customers' },
     { name: 'Pricing', href: '/pricing' },
   ];
@@ -91,12 +111,63 @@ export default function Navbar() {
           >
             Log In
           </Link>
-          <Link 
-            href="/signup" 
-            className="text-[15px] font-medium bg-[#013CF1] text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300 whitespace-nowrap flex items-center justify-center min-w-[100px]"
-          >
-            Sign Up
-          </Link>
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setShowSignupDropdown(!showSignupDropdown)}
+              className="text-[15px] font-medium bg-[#013CF1] text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300 whitespace-nowrap flex items-center justify-center gap-1.5 cursor-pointer min-w-[100px]"
+            >
+              Sign Up
+              <ChevronDown size={14} className={`transition-transform duration-200 ${showSignupDropdown ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <AnimatePresence>
+              {showSignupDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-3 w-80 bg-white rounded-2xl border border-slate-100 shadow-xl py-3 z-50 overflow-hidden"
+                >
+                  <Link 
+                    href="/signup/candidate"
+                    onClick={() => setShowSignupDropdown(false)}
+                    className="flex items-start gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors group"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#013CF1]/10 transition-colors">
+                      <User size={18} className="text-[#013CF1]" />
+                    </div>
+                    <div>
+                      <span className="block text-sm font-bold text-slate-800 group-hover:text-[#013CF1] transition-colors leading-tight">
+                        I'm looking for opportunities
+                      </span>
+                      <span className="block text-xs text-slate-400 mt-1">
+                        Find jobs, internships, & clerkships
+                      </span>
+                    </div>
+                  </Link>
+                  <div className="border-t border-slate-100 my-1"></div>
+                  <Link 
+                    href="/signup/recruiter"
+                    onClick={() => setShowSignupDropdown(false)}
+                    className="flex items-start gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors group"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
+                      <Briefcase size={18} className="text-amber-600" />
+                    </div>
+                    <div>
+                      <span className="block text-sm font-bold text-slate-800 group-hover:text-[#013CF1] transition-colors leading-tight">
+                        I'm hiring legal talent
+                      </span>
+                      <span className="block text-xs text-slate-400 mt-1">
+                        Post opportunities & recruit professionals
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Mobile Menu Toggle */}

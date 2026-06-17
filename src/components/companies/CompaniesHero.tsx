@@ -46,7 +46,7 @@ export default function CompaniesHero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
         >
           <Link
-            href="/for-companies/post-job"
+            href="/post-job"
             className="w-full sm:w-auto px-8 py-4 bg-[#191D20] text-white rounded-xl font-semibold text-[15px] hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(25,29,32,0.4)] transition-all duration-300 flex items-center justify-center"
           >
             Post a job

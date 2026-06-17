@@ -1,8 +1,15 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '@/styles/Footer.module.css';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === '/login' || pathname.startsWith('/signup')) {
+    return null;
+  }
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
