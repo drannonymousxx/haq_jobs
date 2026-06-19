@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const pathname = usePathname() || '';
-  if (pathname === '/login' || pathname.startsWith('/signup')) {
+  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard')) {
     return null;
   }
   

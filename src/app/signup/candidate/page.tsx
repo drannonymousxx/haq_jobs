@@ -104,7 +104,7 @@ export default function CandidateSignupPage() {
 
         setSuccess("Account created successfully! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard/candidate");
+          router.push("/dashboard");
           router.refresh();
         }, 1500);
       } else {

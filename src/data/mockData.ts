@@ -92,3 +92,61 @@ export const contestsData = [
     status: "Upcoming",
   }
 ];
+
+export const recommendedJobsData = [
+  {
+    id: 1,
+    title: "Corporate Law Intern",
+    company: "Shardul Amarchand Mangaldas",
+    location: "Mumbai, India",
+    type: "Internship",
+    workplace: "Hybrid",
+    postedAt: "1 day ago",
+    logoText: "SAM",
+    logoBg: "bg-blue-100 text-blue-700"
+  },
+  {
+    id: 2,
+    title: "Legal Research Associate",
+    company: "Center for Policy Research",
+    location: "New Delhi, India",
+    type: "Full Time",
+    workplace: "Remote",
+    postedAt: "3 days ago",
+    logoText: "CPR",
+    logoBg: "bg-amber-100 text-amber-700"
+  },
+  {
+    id: 3,
+    title: "Compliance Analyst Intern",
+    company: "L&T Finance",
+    location: "Bangalore, India",
+    type: "Internship",
+    workplace: "Onsite",
+    postedAt: "2 hours ago",
+    logoText: "LT",
+    logoBg: "bg-emerald-100 text-emerald-700"
+  },
+  {
+    id: 4,
+    title: "Contract Management Intern",
+    company: "Infosys Legal",
+    location: "Pune, India",
+    type: "Internship",
+    workplace: "Remote",
+    postedAt: "5 days ago",
+    logoText: "INF",
+    logoBg: "bg-purple-100 text-purple-700"
+  },
+  {
+    id: 5,
+    title: "Litigation Support Associate",
+    company: "Karanjawala & Co.",
+    location: "New Delhi, India",
+    type: "Full Time",
+    workplace: "Onsite",
+    postedAt: "1 week ago",
+    logoText: "KCO",
+    logoBg: "bg-rose-100 text-rose-700"
+  }
+];

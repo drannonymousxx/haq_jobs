@@ -87,20 +87,23 @@ function AuthCallbackComponent() {
               created_at: new Date().toISOString()
             });
 
+          const getRedirectPath = (role: string) => role === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
+
           if (insertError) {
             // Note: If profile creation fails because migration wasn't run yet, 
             // log the error but still redirect so UI is fully functional.
             console.error("Profile insertion error:", insertError);
             setStatus("Redirecting to dashboard...");
-            router.push(`/dashboard/${targetRole}`);
+            router.push(getRedirectPath(targetRole));
           } else {
             setStatus("Profile created! Redirecting...");
-            router.push(`/dashboard/${targetRole}`);
+            router.push(getRedirectPath(targetRole));
           }
         } else {
           // Profile exists: Redirect to the existing role dashboard (ignores URL role param to prevent hijacking)
           setStatus("Welcome back! Redirecting to dashboard...");
-          router.push(`/dashboard/${profile.role}`);
+          const getRedirectPath = (role: string) => role === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
+          router.push(getRedirectPath(profile.role));
         }
 
         router.refresh();

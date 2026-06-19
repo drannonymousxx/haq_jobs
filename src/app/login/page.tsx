@@ -56,7 +56,7 @@ export default function LoginPage() {
       } else {
         setSuccess("Success! Welcome back to HAQJobs.");
         setTimeout(() => {
-          router.push("/");
+          router.push("/dashboard");
           router.refresh();
         }, 1500);
       }

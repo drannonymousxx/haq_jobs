@@ -52,7 +52,7 @@ export default function RecruiterDashboard() {
         if (userProfile) {
           // If the role is candidate, redirect to candidate dashboard
           if (userProfile.role !== "recruiter") {
-            router.push("/dashboard/candidate");
+            router.push("/dashboard");
             return;
           }
           setProfile(userProfile);
@@ -60,7 +60,7 @@ export default function RecruiterDashboard() {
           // Fallback to metadata
           const metaRole = session.user.user_metadata?.role;
           if (metaRole && metaRole !== "recruiter") {
-            router.push("/dashboard/candidate");
+            router.push("/dashboard");
             return;
           }
           // Fallback profile state from metadata

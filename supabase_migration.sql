@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     role TEXT NOT NULL CHECK (role IN ('candidate', 'recruiter')),
     company_name TEXT,
     designation TEXT,
+    job_search_status TEXT DEFAULT 'Open to Opportunities' CHECK (job_search_status IN ('Ready to Interview', 'Open to Opportunities', 'Not Looking')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
