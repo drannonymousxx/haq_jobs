@@ -8,8 +8,18 @@ import { Menu, ChevronDown, User, Briefcase } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname() || '';
-  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard')) {
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard') || pathname.startsWith('/candidate')) {
     return null;
   }
   

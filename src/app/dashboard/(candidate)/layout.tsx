@@ -151,6 +151,7 @@ export default function CandidateDashboardLayout({
         <TopNav 
           userName={profile?.full_name || "User"}
           userEmail={profile?.email || ""}
+          userAvatarUrl={profile?.profile_photo_url || ""}
           searchStatus={profile?.job_search_status || "Open to Opportunities"}
           onSearchStatusChange={handleSearchStatusChange}
           onMenuToggle={() => setIsSidebarOpen(true)}

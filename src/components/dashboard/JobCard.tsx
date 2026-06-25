@@ -15,6 +15,8 @@ interface JobCardProps {
   logoBg?: string;
   onSave?: (id: number | string, isSaved: boolean) => void;
   initialSaved?: boolean;
+  onApply?: (id: number | string) => void;
+  initialApplied?: boolean;
 }
 
 export default function JobCard({
@@ -28,9 +30,21 @@ export default function JobCard({
   logoText = "SAM",
   logoBg = "bg-blue-100 text-[#013CF1]",
   onSave,
-  initialSaved = false
+  initialSaved = false,
+  onApply,
+  initialApplied = false
 }: JobCardProps) {
   const [saved, setSaved] = useState(initialSaved);
+  const [applied, setApplied] = useState(initialApplied);
+
+  // Sync props with state
+  React.useEffect(() => {
+    setSaved(initialSaved);
+  }, [initialSaved]);
+
+  React.useEffect(() => {
+    setApplied(initialApplied);
+  }, [initialApplied]);
 
   const handleSaveToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,6 +53,16 @@ export default function JobCard({
     setSaved(newSavedState);
     if (onSave) {
       onSave(id, newSavedState);
+    }
+  };
+
+  const handleApplyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (applied) return;
+    setApplied(true);
+    if (onApply) {
+      onApply(id);
     }
   };
 
@@ -76,7 +100,7 @@ export default function JobCard({
               {location}
             </span>
           </div>
-
+ 
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-2 pt-1.5">
             <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${badgeColorClass}`}>
@@ -106,12 +130,18 @@ export default function JobCard({
           <Bookmark size={16} fill={saved ? "currentColor" : "none"} />
         </button>
         
-        <button
-          onClick={() => alert(`Applying functionality is configured for ${title}. Redirecting...`)}
-          className="text-xs font-bold text-slate-700 hover:text-white bg-slate-50 hover:bg-black px-4 py-2 border border-slate-200 hover:border-black rounded-xl transition-all cursor-pointer whitespace-nowrap"
-        >
-          Quick Apply
-        </button>
+        {applied ? (
+          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-4 py-2 border border-emerald-200 rounded-xl select-none whitespace-nowrap flex items-center gap-1">
+            ✓ Applied
+          </span>
+        ) : (
+          <button
+            onClick={handleApplyClick}
+            className="text-xs font-bold text-slate-700 hover:text-white bg-slate-50 hover:bg-black px-4 py-2 border border-slate-200 hover:border-black rounded-xl transition-all cursor-pointer whitespace-nowrap"
+          >
+            Quick Apply
+          </button>
+        )}
       </div>
 
     </div>

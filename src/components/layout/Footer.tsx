@@ -1,13 +1,24 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '@/styles/Footer.module.css';
 import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  if (pathname === '/login' || pathname.startsWith('/signup') || pathname?.startsWith('/dashboard')) {
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  if (pathname === '/login' || pathname.startsWith('/signup') || pathname?.startsWith('/dashboard') || pathname?.startsWith('/candidate')) {
     return null;
   }
   return (
