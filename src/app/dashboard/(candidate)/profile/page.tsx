@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { calculateProfileStrength } from "@/lib/profileUtils";
+import { mapSupabaseError } from "@/lib/errorUtils";
 import {
   User,
   Mail,
@@ -315,7 +316,7 @@ function CandidateProfileContent() {
       flashMessage("Personal information updated successfully!");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to save personal details.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to save personal details."), "error");
     } finally {
       setSaving(null);
     }
@@ -338,7 +339,7 @@ function CandidateProfileContent() {
       flashMessage("Career preferences & specializations saved successfully!");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to save preferences.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to save preferences."), "error");
     } finally {
       setSaving(null);
     }
@@ -400,7 +401,7 @@ function CandidateProfileContent() {
 
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to save experience details.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to save experience details."), "error");
     } finally {
       setSaving(null);
     }
@@ -428,7 +429,7 @@ function CandidateProfileContent() {
       flashMessage("Experience deleted.");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to delete experience.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to delete experience."), "error");
     }
   };
 
@@ -495,7 +496,7 @@ function CandidateProfileContent() {
 
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to save education details.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to save education details."), "error");
     } finally {
       setSaving(null);
     }
@@ -532,7 +533,7 @@ function CandidateProfileContent() {
       flashMessage("Education record deleted.");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to delete education record.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to delete education record."), "error");
     }
   };
 
@@ -560,7 +561,7 @@ function CandidateProfileContent() {
       setNewSkillText("");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to add skill.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to add skill."), "error");
     }
   };
 
@@ -573,7 +574,7 @@ function CandidateProfileContent() {
       if (error) throw error;
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to delete skill.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to delete skill."), "error");
     }
   };
 
@@ -625,7 +626,7 @@ function CandidateProfileContent() {
       flashMessage("Resume uploaded and updated successfully!");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to upload resume.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to upload resume."), "error");
     } finally {
       setSaving(null);
     }
@@ -652,7 +653,7 @@ function CandidateProfileContent() {
       flashMessage("Bar Council enrollment and verification details updated.");
       await loadProfileDetails();
     } catch (err: any) {
-      flashMessage(err.message || "Failed to save verification details.", "error");
+      flashMessage(mapSupabaseError(err, "Failed to save verification details."), "error");
     } finally {
       setSaving(null);
     }
@@ -1474,7 +1475,7 @@ function CandidateProfileContent() {
                             if (error) throw error;
                             await loadProfileDetails();
                           } catch (err: any) {
-                            flashMessage(err.message, "error");
+                            flashMessage(mapSupabaseError(err, "Failed to add skill."), "error");
                           }
                         }}
                         className="text-[10px] font-bold text-[#013CF1] bg-blue-50 border border-blue-100 hover:bg-[#013CF1] hover:text-white px-3 py-1.5 rounded-xl transition-all"

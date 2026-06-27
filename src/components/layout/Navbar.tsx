@@ -10,21 +10,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname() || '';
+  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  if (!mounted) {
-    return null;
-  }
-
-  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard') || pathname.startsWith('/candidate')) {
-    return null;
-  }
-  
-  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -38,6 +29,14 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard') || pathname.startsWith('/candidate')) {
+    return null;
+  }
   const isJobSeekers = pathname.startsWith('/job-seekers');
   const isCompanies = pathname.startsWith('/for-companies') || pathname.startsWith('/customers') || pathname.startsWith('/pricing');
 

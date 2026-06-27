@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { calculateRecruiterStrength } from "@/lib/profileUtils";
+import { mapSupabaseError } from "@/lib/errorUtils";
 import {
   User,
   Mail,
@@ -243,7 +244,7 @@ function RecruiterProfileContent() {
 
     } catch (err: any) {
       console.error(err);
-      triggerMessage(err.message || "Failed to upload image", "error");
+      triggerMessage(mapSupabaseError(err, "Failed to upload image"), "error");
     } finally {
       setSaving(null);
     }
@@ -275,7 +276,7 @@ function RecruiterProfileContent() {
 
       triggerMessage("Personal details saved successfully!", "success");
     } catch (err: any) {
-      triggerMessage(err.message || "Failed to save personal info", "error");
+      triggerMessage(mapSupabaseError(err, "Failed to save personal info"), "error");
     } finally {
       setSaving(null);
     }
@@ -353,7 +354,7 @@ function RecruiterProfileContent() {
 
       triggerMessage("Company branding profile saved!", "success");
     } catch (err: any) {
-      triggerMessage(err.message || "Failed to save company details", "error");
+      triggerMessage(mapSupabaseError(err, "Failed to save company details"), "error");
     } finally {
       setSaving(null);
     }
@@ -390,7 +391,7 @@ function RecruiterProfileContent() {
 
       triggerMessage("Verification settings updated!", "success");
     } catch (err: any) {
-      triggerMessage(err.message || "Failed to save verification info", "error");
+      triggerMessage(mapSupabaseError(err, "Failed to save verification info"), "error");
     } finally {
       setSaving(null);
     }

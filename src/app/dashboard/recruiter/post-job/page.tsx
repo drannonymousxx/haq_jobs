@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { calculateRecruiterStrength } from "@/lib/profileUtils";
+import { mapSupabaseError } from "@/lib/errorUtils";
 import { 
   Briefcase, 
   MapPin, 
@@ -204,7 +205,7 @@ export default function PostJobPage() {
       router.push("/dashboard/recruiter/jobs");
     } catch (err: any) {
       console.error("Job posting error:", err);
-      setFormError(err.message || "An error occurred while publishing the job.");
+      setFormError(mapSupabaseError(err, "An error occurred while publishing the job."));
       window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSaving(null);

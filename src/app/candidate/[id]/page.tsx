@@ -619,6 +619,7 @@ export default function CandidatePublicProfilePage() {
           onSearchStatusChange={handleSearchStatusChange}
           onMenuToggle={() => setIsSidebarOpen(true)}
           onSignOut={handleSignOut}
+          onSearchClick={() => router.push("/dashboard/jobs?search=open")}
         />
 
         {/* Scrollable content */}

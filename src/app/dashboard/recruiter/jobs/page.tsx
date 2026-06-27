@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { mapSupabaseError } from "@/lib/errorUtils";
 import { 
   Briefcase, 
   MapPin, 
@@ -161,7 +162,7 @@ export default function ManageJobsPage() {
       setIsEditModalOpen(false);
       loadPostedJobs();
     } catch (err: any) {
-      setEditError(err.message || "Failed to update job details.");
+      setEditError(mapSupabaseError(err, "Failed to update job details."));
     }
   };
 

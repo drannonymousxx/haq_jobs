@@ -156,6 +156,7 @@ export default function CandidateDashboardLayout({
           onSearchStatusChange={handleSearchStatusChange}
           onMenuToggle={() => setIsSidebarOpen(true)}
           onSignOut={handleSignOut}
+          onSearchClick={() => router.push("/dashboard/jobs?search=open")}
         />
 
         {/* Scrollable content wrapper */}
