@@ -16,14 +16,30 @@ import {
   X,
   CheckCircle,
   AlertTriangle,
-  FolderOpen
+  FolderOpen,
+  Award,
+  Users
 } from "lucide-react";
 import Link from "next/link";
+
+// Inferred practice area helper based on title/description keywords
+const getPracticeArea = (job: any): string => {
+  const title = (job.title || "").toLowerCase();
+  const desc = (job.description || "").toLowerCase();
+  if (title.includes("corporate") || desc.includes("corporate")) return "Corporate Law";
+  if (title.includes("litigation") || desc.includes("litigation") || title.includes("advocate")) return "Litigation & Dispute";
+  if (title.includes("tax") || desc.includes("tax")) return "Tax Law";
+  if (title.includes("ip") || title.includes("patent") || title.includes("intellectual")) return "Intellectual Property";
+  if (title.includes("arbitration") || desc.includes("mediation")) return "Arbitration & ADR";
+  if (title.includes("employment") || title.includes("labor")) return "Labor & Employment";
+  return "General Legal Practice";
+};
 
 export default function ManageJobsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState<any[]>([]);
+  const [appCounts, setAppCounts] = useState<Record<string, number>>({});
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Edit Modal State
@@ -51,14 +67,32 @@ export default function ManageJobsPage() {
         return;
       }
 
-      const { data, error } = await supabase
+      const { data: jobsData, error: jobsErr } = await supabase
         .from("jobs")
         .select("*")
         .eq("recruiter_id", session.user.id)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      setJobs(data || []);
+      if (jobsErr) throw jobsErr;
+      const loadedJobs = jobsData || [];
+      setJobs(loadedJobs);
+
+      if (loadedJobs.length > 0) {
+        const jobIds = loadedJobs.map(j => String(j.id));
+        const { data: appsData, error: appsErr } = await supabase
+          .from("job_applications")
+          .select("id, job_id")
+          .in("job_id", jobIds);
+
+        if (!appsErr && appsData) {
+          const counts: Record<string, number> = {};
+          appsData.forEach(app => {
+            const jid = String(app.job_id);
+            counts[jid] = (counts[jid] || 0) + 1;
+          });
+          setAppCounts(counts);
+        }
+      }
     } catch (err) {
       console.error("Failed to load recruiter jobs:", err);
     } finally {
@@ -179,21 +213,21 @@ export default function ManageJobsPage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold text-slate-500">Loading posted jobs...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
+        <p className="text-xs font-semibold text-slate-500 font-poppins">Loading posted jobs...</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 w-full space-y-8">
+    <div className="max-w-6xl mx-auto px-6 py-10 w-full space-y-8 font-poppins">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-800 font-poppins tracking-tight">Manage Posted Jobs</h1>
+          <h1 className="text-2xl font-black text-slate-800 tracking-tight">Manage Posted Jobs</h1>
           <p className="text-xs text-slate-400 font-semibold mt-1">
-            Review, edit, close, or archive your legal job opportunities.
+            Click on any job opening to review applications, schedule interviews, and send offer letters.
           </p>
         </div>
         <Link
@@ -207,104 +241,119 @@ export default function ManageJobsPage() {
       {/* Jobs list grid */}
       {jobs.length > 0 ? (
         <div className="grid grid-cols-1 gap-4">
-          {jobs.map((job) => (
-            <div 
-              key={job.id} 
-              className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all duration-300"
-            >
-              <div className="space-y-2 flex-grow">
-                {/* Status and Title */}
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className={`text-[9px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-wider select-none ${getStatusColor(job.job_status)}`}>
-                    {job.job_status}
-                  </span>
-                  <h3 className="text-base font-extrabold text-slate-800 font-poppins">{job.title}</h3>
-                </div>
+          {jobs.map((job) => {
+            const practiceArea = getPracticeArea(job);
+            const totalApps = appCounts[String(job.id)] || 0;
 
-                {/* Job metadata fields */}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-xs text-slate-400 font-semibold">
-                  <div className="flex items-center gap-1">
-                    <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
-                      {job.employment_type}
+            return (
+              <div 
+                key={job.id} 
+                className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all duration-300 relative group"
+              >
+                <div className="space-y-2 flex-grow">
+                  {/* Status and Title */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`text-[9px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-wider select-none ${getStatusColor(job.job_status)}`}>
+                      {job.job_status}
                     </span>
+                    <Link 
+                      href={`/dashboard/recruiter/jobs/${job.id}`}
+                      className="text-base font-extrabold text-slate-800 hover:text-[#013CF1] transition-colors"
+                    >
+                      {job.title}
+                    </Link>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
-                      {job.work_mode}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MapPin size={13} className="text-slate-400" />
-                    <span>{job.location || "Remote"}</span>
-                  </div>
-                  {job.deadline && (
+
+                  {/* Job metadata fields */}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-xs text-slate-400 font-semibold">
+                    <div className="flex items-center gap-1">
+                      <Award size={13} className="text-slate-400" />
+                      <span>{practiceArea}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
+                        {job.employment_type}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
+                        {job.work_mode}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin size={13} className="text-slate-400" />
+                      <span>{job.location || "Remote"}</span>
+                    </div>
                     <div className="flex items-center gap-1">
                       <Calendar size={13} className="text-slate-400" />
-                      <span>Deadline: {job.deadline}</span>
+                      <span>Posted: {new Date(job.created_at).toLocaleDateString()}</span>
                     </div>
-                  )}
-                  <div className="text-slate-500 font-bold">
-                    Openings: <span className="text-slate-800 font-black">{job.openings}</span>
+                    <div className="flex items-center gap-1 bg-blue-50/50 text-[#013CF1] px-2 py-0.5 rounded-lg border border-blue-100/30">
+                      <Users size={12} />
+                      <span className="font-black">{totalApps} Applicants</span>
+                    </div>
                   </div>
-                  {job.salary && (
-                    <div className="text-slate-500 font-bold">
-                      Salary: <span className="text-slate-800 font-black">{job.salary}</span>
-                    </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 w-full md:w-auto border-t md:border-t-0 border-slate-50 pt-4 md:pt-0 justify-end">
+                  
+                  {/* Close / Reopen toggles */}
+                  {job.job_status === "Published" && (
+                    <button
+                      onClick={() => handleStatusChange(job.id, "Closed")}
+                      disabled={actionLoading === job.id}
+                      className="px-3.5 py-2 border border-red-150 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      Close Job
+                    </button>
                   )}
+
+                  {job.job_status === "Closed" && (
+                    <button
+                      onClick={() => handleStatusChange(job.id, "Published")}
+                      disabled={actionLoading === job.id}
+                      className="px-3.5 py-2 border border-emerald-150 hover:bg-emerald-50 text-emerald-600 font-bold text-xs rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      Reopen
+                    </button>
+                  )}
+
+                  {/* Edit Button */}
+                  <button
+                    onClick={() => openEditModal(job)}
+                    disabled={actionLoading === job.id}
+                    className="p-2 border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-600 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                    title="Edit details"
+                  >
+                    <Edit size={14} />
+                  </button>
+
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => handleDeleteJob(job.id)}
+                    disabled={actionLoading === job.id}
+                    className="p-2 border border-red-200 hover:border-red-400 hover:bg-red-50 text-red-500 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                    title="Permanently Delete"
+                  >
+                    {actionLoading === job.id ? (
+                      <Loader2 size={14} className="animate-spin text-red-500" />
+                    ) : (
+                      <Trash2 size={14} />
+                    )}
+                  </button>
+
+                  <Link
+                    href={`/dashboard/recruiter/jobs/${job.id}`}
+                    className="text-[10px] font-bold text-white bg-[#013CF1] hover:bg-blue-700 px-3.5 py-2.5 rounded-xl shadow-sm transition-all ml-1 whitespace-nowrap"
+                  >
+                    Review Applicants
+                  </Link>
+
                 </div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 w-full md:w-auto border-t md:border-t-0 border-slate-50 pt-4 md:pt-0 justify-end">
-                
-                {/* Close / Reopen toggles */}
-                {job.job_status === "Published" && (
-                  <button
-                    onClick={() => handleStatusChange(job.id, "Closed")}
-                    disabled={actionLoading === job.id}
-                    className="px-3.5 py-2 border border-red-150 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    Close Job
-                  </button>
-                )}
-
-                {job.job_status === "Closed" && (
-                  <button
-                    onClick={() => handleStatusChange(job.id, "Published")}
-                    disabled={actionLoading === job.id}
-                    className="px-3.5 py-2 border border-emerald-150 hover:bg-emerald-50 text-emerald-600 font-bold text-xs rounded-xl transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    Reopen
-                  </button>
-                )}
-
-                {/* Edit Button */}
-                <button
-                  onClick={() => openEditModal(job)}
-                  disabled={actionLoading === job.id}
-                  className="p-2 border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-600 rounded-xl transition-all cursor-pointer disabled:opacity-50"
-                  title="Edit details"
-                >
-                  <Edit size={14} />
-                </button>
-
-                {/* Delete Button */}
-                <button
-                  onClick={() => handleDeleteJob(job.id)}
-                  disabled={actionLoading === job.id}
-                  className="p-2 border border-red-200 hover:border-red-400 hover:bg-red-50 text-red-500 rounded-xl transition-all cursor-pointer disabled:opacity-50"
-                  title="Permanently Delete"
-                >
-                  {actionLoading === job.id ? (
-                    <Loader2 size={14} className="animate-spin text-red-500" />
-                  ) : (
-                    <Trash2 size={14} />
-                  )}
-                </button>
-
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">

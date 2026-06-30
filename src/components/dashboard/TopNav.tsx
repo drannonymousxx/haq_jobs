@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 import { 
   Menu, 
   Search, 
@@ -50,14 +51,50 @@ export default function TopNav({
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
 
   const statusRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
+  const loadNotifications = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+        const { data } = await supabase
+          .from("notifications")
+          .select("*")
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false });
+        if (data) {
+          setNotifications(data);
+        }
+      }
+    } catch (e) {
+      console.error("TopNav notification error:", e);
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 6000);
+    return () => clearInterval(interval);
   }, []);
+
+  const handleDismissNotification = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from("notifications")
+        .delete()
+        .eq("id", id);
+      if (!error) {
+        setNotifications(prev => prev.filter(n => n.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   // Click outside listener to close dropdowns
   useEffect(() => {
@@ -136,7 +173,11 @@ export default function TopNav({
             className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors relative cursor-pointer"
           >
             <Bell size={18} />
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#013CF1] rounded-full ring-2 ring-white" />
+            {notifications.length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-[#013CF1] text-white text-[8px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center ring-2 ring-white">
+                {notifications.length}
+              </span>
+            )}
           </button>
 
           {mounted && (
@@ -151,17 +192,34 @@ export default function TopNav({
                 >
                   <div className="flex justify-between items-center mb-4">
                     <h4 className="font-bold text-slate-800 font-poppins text-sm">Notifications</h4>
-                    <span className="text-[10px] bg-blue-50 text-[#013CF1] font-bold px-2 py-0.5 rounded-full">New</span>
+                    {notifications.length > 0 && (
+                      <span className="text-[9px] bg-blue-50 text-[#013CF1] font-black px-2 py-0.5 rounded-full">
+                        {notifications.length} New
+                      </span>
+                    )}
                   </div>
-                  <div className="space-y-3">
-                    <div className="p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer text-xs">
-                      <p className="font-semibold text-slate-700">Account verified</p>
-                      <p className="text-slate-400 mt-0.5">Welcome to HAQJobs! Complete your profile.</p>
-                    </div>
-                    <div className="p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer text-xs">
-                      <p className="font-semibold text-slate-700">Recommended job alert</p>
-                      <p className="text-slate-400 mt-0.5">SAM posted a new Corporate Law Intern opening.</p>
-                    </div>
+                  <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
+                    {notifications.length > 0 ? (
+                      notifications.map((n) => (
+                        <div key={n.id} className="p-2 hover:bg-slate-50 rounded-lg transition-colors text-xs flex justify-between gap-2 items-start border-b border-slate-50 pb-2">
+                          <div className="space-y-0.5">
+                            <p className="font-bold text-slate-700 leading-tight">{n.title}</p>
+                            <p className="text-slate-400 text-[10px] leading-relaxed">{n.content}</p>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDismissNotification(n.id);
+                            }}
+                            className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-650 transition-colors"
+                          >
+                            <Check size={11} />
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-slate-400 font-medium italic text-center py-4">No notifications.</p>
+                    )}
                   </div>
                 </motion.div>
               )}

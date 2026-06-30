@@ -364,5 +364,218 @@ USING (
   (storage.foldername(name))[2] = auth.uid()::text
 );
 
+-- =========================================================================
+-- 6. CREATE MESSAGES, INTERVIEWS, OFFERS, AND NOTIFICATIONS TABLES
+-- =========================================================================
+
+-- messages table
+CREATE TABLE IF NOT EXISTS public.messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    recipient_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    content TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT false NOT NULL,
+    attachment_url TEXT,
+    message_type TEXT DEFAULT 'text' NOT NULL CHECK (message_type IN ('text', 'image', 'file')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- interviews table
+CREATE TABLE IF NOT EXISTS public.interviews (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    application_id UUID REFERENCES public.job_applications(id) ON DELETE CASCADE NOT NULL,
+    title TEXT NOT NULL,
+    scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    duration TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('online', 'offline', 'phone')),
+    meeting_link TEXT,
+    location TEXT,
+    notes TEXT,
+    status TEXT DEFAULT 'pending' NOT NULL CHECK (status IN ('pending', 'accepted', 'declined', 'reschedule_requested')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- offers table
+CREATE TABLE IF NOT EXISTS public.offers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    application_id UUID REFERENCES public.job_applications(id) ON DELETE CASCADE NOT NULL,
+    position TEXT NOT NULL,
+    salary TEXT NOT NULL,
+    joining_date DATE NOT NULL,
+    employment_type TEXT NOT NULL,
+    notes TEXT,
+    status TEXT DEFAULT 'pending' NOT NULL CHECK (status IN ('pending', 'accepted', 'declined')),
+    created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    accepted_at TIMESTAMP WITH TIME ZONE,
+    declined_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- notifications table
+CREATE TABLE IF NOT EXISTS public.notifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT false NOT NULL,
+    type TEXT,
+    reference_id UUID,
+    reference_type TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Create performance indexes
+CREATE INDEX IF NOT EXISTS idx_messages_sender ON public.messages(sender_id);
+CREATE INDEX IF NOT EXISTS idx_messages_recipient ON public.messages(recipient_id);
+CREATE INDEX IF NOT EXISTS idx_interviews_app ON public.interviews(application_id);
+CREATE INDEX IF NOT EXISTS idx_offers_app ON public.offers(application_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user ON public.notifications(user_id);
+
+-- Enable RLS on new tables
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.interviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.offers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+
+-- Configure RLS policies
+DROP POLICY IF EXISTS "Allow users to read their own messages" ON public.messages;
+CREATE POLICY "Allow users to read their own messages" 
+ON public.messages FOR SELECT TO authenticated 
+USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
+
+DROP POLICY IF EXISTS "Allow users to send messages" ON public.messages;
+CREATE POLICY "Allow users to send messages" 
+ON public.messages FOR INSERT TO authenticated 
+WITH CHECK (auth.uid() = sender_id);
+
+-- Interviews Select RLS Policy
+DROP POLICY IF EXISTS "Allow authenticated to view interviews" ON public.interviews;
+DROP POLICY IF EXISTS "Allow users to view interviews" ON public.interviews;
+CREATE POLICY "Allow users to view interviews" ON public.interviews 
+FOR SELECT TO authenticated 
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  ) OR 
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+);
+
+-- Interviews Recruiters Manage RLS Policy
+DROP POLICY IF EXISTS "Allow authenticated to manage interviews" ON public.interviews;
+DROP POLICY IF EXISTS "Allow recruiters to manage interviews" ON public.interviews;
+CREATE POLICY "Allow recruiters to manage interviews" ON public.interviews 
+FOR ALL TO authenticated 
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+);
+
+-- Interviews Candidates Update status RLS Policy
+DROP POLICY IF EXISTS "Allow candidates to update interview status" ON public.interviews;
+CREATE POLICY "Allow candidates to update interview status" ON public.interviews
+FOR UPDATE TO authenticated
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  )
+);
+
+-- Offers Select RLS Policy
+DROP POLICY IF EXISTS "Allow authenticated to view offers" ON public.offers;
+DROP POLICY IF EXISTS "Allow users to view offers" ON public.offers;
+CREATE POLICY "Allow users to view offers" ON public.offers 
+FOR SELECT TO authenticated 
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  ) OR 
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+);
+
+-- Offers Recruiters Manage RLS Policy
+DROP POLICY IF EXISTS "Allow authenticated to manage offers" ON public.offers;
+DROP POLICY IF EXISTS "Allow recruiters to manage offers" ON public.offers;
+CREATE POLICY "Allow recruiters to manage offers" ON public.offers 
+FOR ALL TO authenticated 
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.job_applications ja 
+    JOIN public.jobs j ON ja.job_id = j.id 
+    WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
+  )
+);
+
+-- Offers Candidates Update status RLS Policy
+DROP POLICY IF EXISTS "Allow candidates to update offer status" ON public.offers;
+CREATE POLICY "Allow candidates to update offer status" ON public.offers
+FOR UPDATE TO authenticated
+USING (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.job_applications 
+    WHERE id = application_id AND profile_id = auth.uid()
+  )
+);
+
+-- Notifications RLS Policies
+DROP POLICY IF EXISTS "Allow users to read their own notifications" ON public.notifications;
+CREATE POLICY "Allow users to read their own notifications" 
+ON public.notifications FOR SELECT TO authenticated 
+USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Allow authenticated to insert notifications" ON public.notifications;
+CREATE POLICY "Allow authenticated to insert notifications" 
+ON public.notifications FOR INSERT TO authenticated 
+WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow users to update their own notifications" ON public.notifications;
+CREATE POLICY "Allow users to update their own notifications" 
+ON public.notifications FOR UPDATE TO authenticated 
+USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Allow users to delete their own notifications" ON public.notifications;
+CREATE POLICY "Allow users to delete their own notifications" 
+ON public.notifications FOR DELETE TO authenticated 
+USING (auth.uid() = user_id);
+
 -- Reload PostgREST schema cache to reflect updates instantly
 NOTIFY pgrst, 'reload schema';
