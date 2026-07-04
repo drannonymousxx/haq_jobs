@@ -6,7 +6,7 @@
   min-height: calc(100vh - 70px); /* Assuming navbar is ~70px */
   display: flex;
   align-items: center;
-  font-family: var(--font-satoshi), sans-serif;
+  font-family: var(--font-manrope), sans-serif;
 }
 
 .heroContainer {

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { mapSupabaseError } from "@/lib/errorUtils";
+import { triggerWorkflowEvent } from "@/lib/systemAccount";
 import StatsCard from "@/components/dashboard/StatsCard";
 import JobCard from "@/components/dashboard/JobCard";
 import { calculateProfileStrength } from "@/lib/profileUtils";
@@ -220,14 +221,15 @@ export default function CandidateDashboardPage() {
           title = "Interview Reschedule Requested";
           content = `Candidate ${profile?.full_name || "User"} has requested a reschedule for the interview invitation for "${jobTitle}".`;
         }
-        await supabase
-          .from("notifications")
-          .insert({
-            user_id: recruiterId,
-            title,
-            content,
-            is_read: false
-          });
+        
+        await triggerWorkflowEvent({
+          userId: recruiterId,
+          title,
+          content,
+          type: "interview",
+          referenceId: interviewId,
+          referenceType: "interviews"
+        });
       }
 
       await loadCandidateDashboardData();
@@ -267,17 +269,15 @@ export default function CandidateDashboardPage() {
       if (recruiterId) {
         const title = newStatus === "accepted" ? "Offer Accepted! 🎉" : "Offer Declined";
         const content = `Candidate ${profile?.full_name || "User"} has ${newStatus} the job offer for the position of "${position}".`;
-        await supabase
-          .from("notifications")
-          .insert({
-            user_id: recruiterId,
-            title,
-            content,
-            is_read: false,
-            type: "offer",
-            reference_id: appId,
-            reference_type: "job_applications"
-          });
+        
+        await triggerWorkflowEvent({
+          userId: recruiterId,
+          title,
+          content,
+          type: "offer",
+          referenceId: appId,
+          referenceType: "job_applications"
+        });
       }
 
       await loadCandidateDashboardData();
@@ -375,13 +375,27 @@ export default function CandidateDashboardPage() {
     const stringId = String(jobId);
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("job_applications")
         .insert({ profile_id: profile.id, job_id: stringId, status: "applied" })
-        .select();
+        .select()
+        .single();
 
       if (!error) {
         setAppliedJobs(prev => [...prev, stringId]);
+        
+        // Find matching job info
+        const jobInfo = jobs.find(j => String(j.id) === stringId);
+        if (jobInfo && jobInfo.recruiter_id) {
+          await triggerWorkflowEvent({
+            userId: jobInfo.recruiter_id,
+            title: "New Application Received",
+            content: `You have received a new application for the position of "${jobInfo.title}" from ${profile.full_name || "a candidate"}. Review their profile in your dashboard.`,
+            type: "applied",
+            referenceId: data?.id,
+            referenceType: "job_applications"
+          });
+        }
       } else {
         alert(mapSupabaseError(error, "Failed to apply for job."));
       }

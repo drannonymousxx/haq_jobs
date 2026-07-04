@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = localFont({
+  src: "../../public/fonts/Manrope/Manrope-VariableFont_wght.ttf",
+  variable: "--font-manrope",
+  weight: "100 900",
+  display: "swap",
+});
+
 const poppins = Poppins({ 
   weight: ['400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -23,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${poppins.variable}`}>
+      <body className={`${manrope.className} ${manrope.variable} ${poppins.variable}`}>
         <Navbar />
         <main>{children}</main>
         <Footer />

@@ -27,6 +27,7 @@ import {
   Info
 } from "lucide-react";
 import Link from "next/link";
+import { triggerWorkflowEvent } from "@/lib/systemAccount";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -51,6 +52,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
   const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState<any>(null);
+  const [editingInterviewId, setEditingInterviewId] = useState<string | null>(null);
 
   // Interview Form States
   const [interviewTitle, setInterviewTitle] = useState("");
@@ -128,18 +130,19 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         return;
       }
 
-      // Fetch candidate education & experience details
+      // Fetch candidate education, experience, and interview details
       const candidateIds = Array.from(new Set(rawApps.map((a: any) => a.profile_id).filter(Boolean)));
+      const appIds = rawApps.map((a: any) => a.id);
       
-      const { data: edus } = await supabase
-        .from("educations")
-        .select("profile_id, university_name, degree")
-        .in("profile_id", candidateIds);
+      const [edusRes, expsRes, interviewsRes] = await Promise.all([
+        supabase.from("educations").select("profile_id, university_name, degree").in("profile_id", candidateIds),
+        supabase.from("experiences").select("profile_id, firm_name, position").in("profile_id", candidateIds),
+        supabase.from("interviews").select("*").in("application_id", appIds)
+      ]);
 
-      const { data: exps } = await supabase
-        .from("experiences")
-        .select("profile_id, company_name, job_title")
-        .in("profile_id", candidateIds);
+      const edus = edusRes.data;
+      const exps = expsRes.data;
+      const interviewsData = interviewsRes.data;
 
       const eduMap = new Map();
       if (edus) {
@@ -154,25 +157,32 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
       if (exps) {
         exps.forEach((x: any) => {
           if (!expMap.has(x.profile_id)) {
-            expMap.set(x.profile_id, `${x.job_title} at ${x.company_name}`);
+            expMap.set(x.profile_id, `${x.position} at ${x.firm_name}`);
           }
         });
       }
 
-      const formatted = rawApps.map((app: any) => ({
-        id: app.id,
-        candidateId: app.profiles?.id,
-        candidateName: app.profiles?.full_name || "Anonymous Candidate",
-        candidateEmail: app.profiles?.email || "",
-        candidatePhoto: app.profiles?.profile_photo_url,
-        candidateLocation: app.profiles?.city && app.profiles?.state 
-          ? `${app.profiles.city}, ${app.profiles.state}` 
-          : "India",
-        university: eduMap.get(app.profiles?.id) || "Law Graduate",
-        latestJob: expMap.get(app.profiles?.id) || "Fresh Graduate",
-        appliedAt: app.created_at,
-        status: app.status || "applied"
-      }));
+      const formatted = rawApps.map((app: any) => {
+        const interviewRecord = interviewsData?.find((i: any) => 
+          i.application_id === app.id && 
+          ["pending", "accepted", "reschedule_requested"].includes(i.status)
+        );
+        return {
+          id: app.id,
+          candidateId: app.profiles?.id,
+          candidateName: app.profiles?.full_name || "Anonymous Candidate",
+          candidateEmail: app.profiles?.email || "",
+          candidatePhoto: app.profiles?.profile_photo_url,
+          candidateLocation: app.profiles?.city && app.profiles?.state 
+            ? `${app.profiles.city}, ${app.profiles.state}` 
+            : "India",
+          university: eduMap.get(app.profiles?.id) || "Law Graduate",
+          latestJob: expMap.get(app.profiles?.id) || "Fresh Graduate",
+          appliedAt: app.created_at,
+          status: app.status || "applied",
+          interview: interviewRecord || null
+        };
+      });
 
       setApplicants(formatted);
     } catch (err: any) {
@@ -206,6 +216,26 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
   // Status updates (Shortlist, Reject, etc.)
   const handleUpdateStatus = async (appId: string, candidateId: string, newStatus: string) => {
     try {
+      const app = applicants.find(a => a.id === appId);
+      if (!app) return;
+
+      const currentStatus = app.status;
+      let isValidTransition = false;
+      if (currentStatus === "applied") {
+        isValidTransition = (newStatus === "shortlisted" || newStatus === "rejected");
+      } else if (currentStatus === "shortlisted") {
+        isValidTransition = (newStatus === "interview" || newStatus === "offered" || newStatus === "rejected");
+      } else if (currentStatus === "interview") {
+        isValidTransition = (newStatus === "offered" || newStatus === "rejected");
+      } else if (currentStatus === "offered") {
+        isValidTransition = (newStatus === "hired" || newStatus === "rejected");
+      }
+
+      if (!isValidTransition) {
+        alert(`Invalid stage transition from "${currentStatus}" to "${newStatus}".`);
+        return;
+      }
+
       setActionLoading(appId);
       const { error } = await supabase
         .from("job_applications")
@@ -219,22 +249,33 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         prev.map(app => app.id === appId ? { ...app, status: newStatus } : app)
       );
 
-      // Create persistent notification for Candidate
+      // Create persistent notification & system message in sync
       const jobTitle = job ? job.title : "legal opening";
       const firmName = job ? job.firm_name || "the organization" : "the organization";
-      let title = "";
-      let content = "";
-      if (newStatus === "shortlisted") {
-        title = "Application Shortlisted";
-        content = `Your application for the position of "${jobTitle}" has been shortlisted. The recruitment team will reach out shortly.`;
-      } else if (newStatus === "rejected") {
-        title = "Application Status Updated";
-        content = `Thank you for your interest in "${jobTitle}" at ${firmName}. Unfortunately, they have decided to move forward with other candidates at this stage.`;
+      
+      if (candidateId) {
+        if (newStatus === "shortlisted") {
+          await triggerWorkflowEvent({
+            userId: candidateId,
+            title: "Application Shortlisted",
+            content: `Congratulations! Your application for the position of "${jobTitle}" at "${firmName}" has been shortlisted.`,
+            type: "shortlist",
+            referenceId: appId,
+            referenceType: "job_applications"
+          });
+        } else if (newStatus === "rejected") {
+          await triggerWorkflowEvent({
+            userId: candidateId,
+            title: "Application Status Update",
+            content: `Thank you for applying to "${firmName}".\n\nAfter careful consideration, we have decided not to move forward with your application.\n\nWe appreciate your interest and wish you success in your future opportunities.`,
+            type: "rejection",
+            referenceId: appId,
+            referenceType: "job_applications"
+          });
+        }
       }
       
-      if (candidateId && title) {
-        await createNotification(candidateId, title, content);
-      }
+      await loadJobData();
     } catch (err) {
       alert("Failed to update status. Please try again.");
     } finally {
@@ -242,11 +283,60 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
     }
   };
 
-  // Schedule Interview Save
+  // Cancel Interview
+  const handleCancelInterview = async (appId: string, interviewId: string, candidateId: string) => {
+    if (window.confirm("Are you sure you want to cancel this interview? This will revert the applicant stage to Shortlisted.")) {
+      try {
+        setActionLoading(appId);
+        
+        // 1. Cancel interview record (update status to cancelled instead of deleting)
+        const { error: updateIntErr } = await supabase
+          .from("interviews")
+          .update({ status: "cancelled" })
+          .eq("id", interviewId);
+          
+        if (updateIntErr) throw updateIntErr;
+
+        // 2. Revert application status
+        const { error: appErr } = await supabase
+          .from("job_applications")
+          .update({ status: "shortlisted" })
+          .eq("id", appId);
+
+        if (appErr) throw appErr;
+
+        // 3. Trigger cancel workflow event
+        const jobTitle = job ? job.title : "legal opening";
+        const firmName = job ? job.firm_name || "the organization" : "the organization";
+        await triggerWorkflowEvent({
+          userId: candidateId,
+          title: "Interview Cancelled",
+          content: `Your scheduled interview for "${jobTitle}" at "${firmName}" has been cancelled.`,
+          type: "cancelled",
+          referenceId: appId,
+          referenceType: "job_applications"
+        });
+
+        await loadJobData();
+      } catch (err: any) {
+        alert(mapSupabaseError(err, "Failed to cancel interview."));
+      } finally {
+        setActionLoading(null);
+      }
+    }
+  };
+
+  // Schedule Interview Save (Handles insert and update)
   const handleScheduleInterview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedApp || !job || actionLoading) return;
     
+    // Validate state transition for new interview
+    if (!editingInterviewId && selectedApp.status !== "shortlisted") {
+      alert("Interviews can only be scheduled for shortlisted candidates.");
+      return;
+    }
+
     setActionLoading("interview-save");
     try {
       // Format combined ISO date-time
@@ -261,57 +351,84 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         scheduledAtStr = new Date(interviewDate).toISOString();
       }
 
-      // 1. Insert into interviews table
-      const { error: intErr } = await supabase
-        .from("interviews")
-        .insert({
-          application_id: selectedApp.id,
-          title: interviewTitle,
-          scheduled_at: scheduledAtStr,
-          duration: interviewDuration,
-          type: interviewType,
-          meeting_link: interviewType === "online" ? meetingLink : null,
-          location: interviewType === "offline" ? officeLocation : null,
-          notes: interviewNotes,
-          status: "pending"
-        });
+      if (editingInterviewId) {
+        // Edit existing interview
+        const { error: intErr } = await supabase
+          .from("interviews")
+          .update({
+            title: interviewTitle,
+            scheduled_at: scheduledAtStr,
+            duration: interviewDuration,
+            type: interviewType,
+            meeting_link: interviewType === "online" ? meetingLink : null,
+            location: interviewType === "offline" ? officeLocation : null,
+            notes: interviewNotes
+          })
+          .eq("id", editingInterviewId);
 
-      if (intErr) throw intErr;
+        if (intErr) throw intErr;
 
-      // 2. Update job_applications status
-      const { error: appErr } = await supabase
-        .from("job_applications")
-        .update({ status: "interview" })
-        .eq("id", selectedApp.id);
-
-      if (appErr) throw appErr;
-
-      // Update local applicant state stage
-      setApplicants(prev => 
-        prev.map(app => app.id === selectedApp.id ? { ...app, status: "interview" } : app)
-      );
-
-      // 3. Create persistent notification for Candidate
-      const contentStr = `You have been invited for an interview on ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime} (${interviewType}). Please review and accept this invitation from your dashboard.`;
-      
-      await supabase
-        .from("notifications")
-        .insert({
-          user_id: selectedApp.candidateId,
-          title: "Interview Invitation",
+        // Trigger rescheduled workflow event (notifying candidate)
+        const contentStr = `Your interview for "${job.title}" has been rescheduled to ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime} (${interviewType}).\n\nNotes: ${interviewNotes || "None"}`;
+        await triggerWorkflowEvent({
+          userId: selectedApp.candidateId,
+          title: "Interview Rescheduled",
           content: contentStr,
-          is_read: false,
           type: "interview",
-          reference_id: selectedApp.id,
-          reference_type: "job_applications"
+          referenceId: selectedApp.id,
+          referenceType: "job_applications"
         });
+      } else {
+        // Create new interview
+        const { error: intErr } = await supabase
+          .from("interviews")
+          .insert({
+            application_id: selectedApp.id,
+            title: interviewTitle,
+            scheduled_at: scheduledAtStr,
+            duration: interviewDuration,
+            type: interviewType,
+            meeting_link: interviewType === "online" ? meetingLink : null,
+            location: interviewType === "offline" ? officeLocation : null,
+            notes: interviewNotes,
+            status: "pending"
+          });
+
+        if (intErr) throw intErr;
+
+        // Update job_applications status
+        const { error: appErr } = await supabase
+          .from("job_applications")
+          .update({ status: "interview" })
+          .eq("id", selectedApp.id);
+
+        if (appErr) throw appErr;
+
+        // Update local applicant state stage
+        setApplicants(prev => 
+          prev.map(app => app.id === selectedApp.id ? { ...app, status: "interview" } : app)
+        );
+
+        // Trigger workflow event (notifying candidate)
+        const contentStr = `Congratulations! You have been invited for an interview for "${job.title}".\n\nInterview Details:\nDate: ${new Date(interviewDate).toLocaleDateString()}\nTime: ${interviewTime}\nMeeting Link / Location: ${interviewType === "online" ? meetingLink : officeLocation}\n\nPlease join the meeting at the scheduled time.`;
+        await triggerWorkflowEvent({
+          userId: selectedApp.candidateId,
+          title: "Interview Scheduled",
+          content: contentStr,
+          type: "interview",
+          referenceId: selectedApp.id,
+          referenceType: "job_applications"
+        });
+      }
 
       setIsInterviewModalOpen(false);
+      setEditingInterviewId(null);
       
       // Clean states
       setInterviewNotes("");
       setMeetingLink("");
       setOfficeLocation("");
+      await loadJobData();
     } catch (err: any) {
       alert(mapSupabaseError(err, "Failed to schedule interview."));
     } finally {
@@ -323,6 +440,12 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
   const handleSendOffer = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedApp || !job || actionLoading) return;
+
+    // Validate state transition for offer extending
+    if (selectedApp.status !== "shortlisted" && selectedApp.status !== "interview") {
+      alert("Offers can only be extended to shortlisted or interviewed candidates.");
+      return;
+    }
 
     setActionLoading("offer-save");
     try {
@@ -358,25 +481,23 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         prev.map(app => app.id === selectedApp.id ? { ...app, status: "offered" } : app)
       );
 
-      // 3. Create persistent notification for Candidate
+      // 3. Trigger offer workflow event
       const firmName = job.firm_name || "the organization";
-      const contentStr = `Congratulations! You have received a job offer for the position of "${offerPosition}" from ${firmName} with a salary of ${offerSalary}. Review terms and accept the offer.`;
+      const contentStr = `Congratulations!\n\nWe are pleased to offer you the position of "${offerPosition}" at "${firmName}".\n\nOffer Details:\nSalary: ${offerSalary}\nJoining Date: ${new Date(offerJoiningDate).toLocaleDateString()}\nEmployment Type: ${job.employment_type || "Full Time"}\nNotes: ${offerNotes || "None"}\n\nPlease review and accept the offer details on your dashboard.`;
       
-      await supabase
-        .from("notifications")
-        .insert({
-          user_id: selectedApp.candidateId,
-          title: "Job Offer Extended 🎉",
-          content: contentStr,
-          is_read: false,
-          type: "offer",
-          reference_id: selectedApp.id,
-          reference_type: "job_applications"
-        });
+      await triggerWorkflowEvent({
+        userId: selectedApp.candidateId,
+        title: "Job Offer Extended 🎉",
+        content: contentStr,
+        type: "offer",
+        referenceId: selectedApp.id,
+        referenceType: "job_applications"
+      });
 
       setIsOfferModalOpen(false);
       setOfferNotes("");
       setOfferSalary("");
+      await loadJobData();
     } catch (err: any) {
       alert(mapSupabaseError(err, "Failed to send job offer."));
     } finally {
@@ -542,12 +663,64 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                       <button
                         onClick={() => {
                           setSelectedApp(app);
+                          setEditingInterviewId(null);
+                          setInterviewTitle(`Interview: ${job?.title || "Legal Position"}`);
+                          setInterviewDate("");
+                          setInterviewTime("");
+                          setInterviewDuration("30 minutes");
+                          setInterviewType("online");
+                          setMeetingLink("");
+                          setOfficeLocation("");
+                          setInterviewNotes("");
                           setIsInterviewModalOpen(true);
                         }}
                         className="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-bold text-xs rounded-xl transition-all cursor-pointer"
                       >
                         Schedule Interview
                       </button>
+                    )}
+
+                    {/* Edit Interview & Cancel Interview */}
+                    {app.status === "interview" && app.interview && (
+                      <>
+                        <button
+                          onClick={() => {
+                            setSelectedApp(app);
+                            setEditingInterviewId(app.interview.id);
+                            setInterviewTitle(app.interview.title);
+                            try {
+                              const d = new Date(app.interview.scheduled_at);
+                              const dateStr = d.toISOString().split('T')[0];
+                              const hours = d.getHours();
+                              const mins = d.getMinutes();
+                              const ampm = hours >= 12 ? 'PM' : 'AM';
+                              const formattedHours = hours % 12 || 12;
+                              const formattedMins = mins < 10 ? `0${mins}` : mins;
+                              setInterviewDate(dateStr);
+                              setInterviewTime(`${formattedHours}:${formattedMins} ${ampm}`);
+                            } catch (e) {
+                              setInterviewDate("");
+                              setInterviewTime("");
+                            }
+                            setInterviewDuration(app.interview.duration);
+                            setInterviewType(app.interview.type);
+                            setMeetingLink(app.interview.meeting_link || "");
+                            setOfficeLocation(app.interview.location || "");
+                            setInterviewNotes(app.interview.notes || "");
+                            setIsInterviewModalOpen(true);
+                          }}
+                          className="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-150 font-bold text-xs rounded-xl transition-all cursor-pointer"
+                        >
+                          Edit Interview
+                        </button>
+                        <button
+                          onClick={() => handleCancelInterview(app.id, app.interview.id, app.candidateId)}
+                          disabled={actionLoading === app.id}
+                          className="px-3 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-150 font-bold text-xs rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          Cancel Interview
+                        </button>
+                      </>
                     )}
 
                     {/* Send Offer Letter */}
@@ -598,7 +771,10 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative">
             <button 
-              onClick={() => setIsInterviewModalOpen(false)}
+              onClick={() => {
+                setIsInterviewModalOpen(false);
+                setEditingInterviewId(null);
+              }}
               className="absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:bg-slate-50 cursor-pointer"
             >
               <XCircle size={18} />
@@ -607,9 +783,12 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
             <div>
               <h3 className="text-base font-black text-slate-800 font-poppins flex items-center gap-1.5">
                 <CalendarDays size={18} className="text-amber-500" />
-                Schedule Interview
+                {editingInterviewId ? "Reschedule Interview" : "Schedule Interview"}
               </h3>
-              <p className="text-[11px] text-slate-400 font-bold mt-0.5">Inviting applicant: <span className="text-slate-700 font-black">{selectedApp.candidateName}</span></p>
+              <p className="text-[11px] text-slate-400 font-bold mt-0.5">
+                {editingInterviewId ? "Rescheduling for: " : "Inviting applicant: "}
+                <span className="text-slate-700 font-black">{selectedApp.candidateName}</span>
+              </p>
             </div>
 
             <form onSubmit={handleScheduleInterview} className="space-y-4">
@@ -716,7 +895,10 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
               <div className="flex justify-end gap-3 pt-4 border-t border-slate-50">
                 <button
                   type="button"
-                  onClick={() => setIsInterviewModalOpen(false)}
+                  onClick={() => {
+                    setIsInterviewModalOpen(false);
+                    setEditingInterviewId(null);
+                  }}
                   className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
                 >
                   Cancel
@@ -731,7 +913,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                   ) : (
                     <Send size={12} />
                   )}
-                  <span>Send Interview Invitation</span>
+                  <span>{editingInterviewId ? "Update & Reschedule" : "Send Interview Invitation"}</span>
                 </button>
               </div>
             </form>

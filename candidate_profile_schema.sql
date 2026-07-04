@@ -68,6 +68,62 @@ EXECUTE FUNCTION public.handle_updated_at();
 
 
 -- =========================================================================
+-- SEED SYSTEM USER & SYSTEM PROFILE (Production-Safe RLS Compliant)
+-- =========================================================================
+
+-- Seed the System User in auth.users (so foreign key constraint is satisfied)
+INSERT INTO auth.users (
+  id,
+  email,
+  raw_user_meta_data,
+  role,
+  aud,
+  email_confirmed_at,
+  created_at,
+  updated_at
+)
+VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'system@haqjobs.hq',
+  '{"full_name": "HAQJobs System", "role": "recruiter"}'::jsonb,
+  'authenticated',
+  'authenticated',
+  now(),
+  now(),
+  now()
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- Seed the System Profile in public.profiles
+INSERT INTO public.profiles (
+  id,
+  full_name,
+  email,
+  role,
+  company_name,
+  designation,
+  profile_photo_url
+)
+VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'HAQJobs System',
+  'system@haqjobs.hq',
+  'recruiter',
+  'HAQJobs HQ',
+  'System Administrator',
+  '/logohalf.png'
+)
+ON CONFLICT (id) DO UPDATE 
+SET 
+  full_name = EXCLUDED.full_name,
+  email = EXCLUDED.email,
+  role = EXCLUDED.role,
+  company_name = EXCLUDED.company_name,
+  designation = EXCLUDED.designation,
+  profile_photo_url = EXCLUDED.profile_photo_url;
+
+
+-- =========================================================================
 -- 2. CREATE CHILD TABLES
 -- =========================================================================
 
@@ -376,7 +432,8 @@ CREATE TABLE IF NOT EXISTS public.messages (
     content TEXT NOT NULL,
     is_read BOOLEAN DEFAULT false NOT NULL,
     attachment_url TEXT,
-    message_type TEXT DEFAULT 'text' NOT NULL CHECK (message_type IN ('text', 'image', 'file')),
+    message_type TEXT DEFAULT 'text' NOT NULL CHECK (message_type IN ('text', 'image', 'file', 'system', 'interview', 'offer', 'rejection', 'shortlist', 'cancelled')),
+    read_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -446,7 +503,7 @@ USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
 DROP POLICY IF EXISTS "Allow users to send messages" ON public.messages;
 CREATE POLICY "Allow users to send messages" 
 ON public.messages FOR INSERT TO authenticated 
-WITH CHECK (auth.uid() = sender_id);
+WITH CHECK (auth.uid() = sender_id OR sender_id = '00000000-0000-0000-0000-000000000000');
 
 -- Interviews Select RLS Policy
 DROP POLICY IF EXISTS "Allow authenticated to view interviews" ON public.interviews;
@@ -460,7 +517,7 @@ USING (
   ) OR 
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 );
@@ -473,14 +530,14 @@ FOR ALL TO authenticated
 USING (
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 )
 WITH CHECK (
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 );
@@ -514,7 +571,7 @@ USING (
   ) OR 
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 );
@@ -527,14 +584,14 @@ FOR ALL TO authenticated
 USING (
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 )
 WITH CHECK (
   EXISTS (
     SELECT 1 FROM public.job_applications ja 
-    JOIN public.jobs j ON ja.job_id = j.id 
+    JOIN public.jobs j ON ja.job_id = j.id::text 
     WHERE ja.id = application_id AND j.recruiter_id = auth.uid()
   )
 );
@@ -576,6 +633,28 @@ DROP POLICY IF EXISTS "Allow users to delete their own notifications" ON public.
 CREATE POLICY "Allow users to delete their own notifications" 
 ON public.notifications FOR DELETE TO authenticated 
 USING (auth.uid() = user_id);
+
+-- Recruiter update application policy
+DROP POLICY IF EXISTS "Allow recruiters to update applications for their jobs" ON public.job_applications;
+CREATE POLICY "Allow recruiters to update applications for their jobs"
+ON public.job_applications FOR UPDATE TO authenticated
+USING (
+  EXISTS (
+    SELECT 1 FROM public.jobs j
+    WHERE j.id::text = job_applications.job_id AND j.recruiter_id = auth.uid()
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.jobs j
+    WHERE j.id::text = job_applications.job_id AND j.recruiter_id = auth.uid()
+  )
+);
+
+-- ALTER TABLE updates to apply on existing databases
+ALTER TABLE public.messages ADD COLUMN IF NOT EXISTS read_at TIMESTAMP WITH TIME ZONE;
+ALTER TABLE public.messages DROP CONSTRAINT IF EXISTS messages_message_type_check;
+ALTER TABLE public.messages ADD CONSTRAINT messages_message_type_check CHECK (message_type IN ('text', 'image', 'file', 'system', 'interview', 'offer', 'rejection', 'shortlist', 'cancelled'));
 
 -- Reload PostgREST schema cache to reflect updates instantly
 NOTIFY pgrst, 'reload schema';

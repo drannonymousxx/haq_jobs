@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { Loader2, LogOut, Briefcase } from "lucide-react";
+import { Loader2, LogOut, Briefcase, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -120,6 +120,14 @@ export default function RecruiterDashboardLayout({
             >
               <Briefcase size={14} />
               <span>Manage Jobs</span>
+            </Link>
+
+            <Link 
+              href="/dashboard/messages" 
+              className="text-xs font-bold text-slate-500 hover:text-amber-600 transition-colors flex items-center gap-1"
+            >
+              <MessageSquare size={14} />
+              <span>Messages</span>
             </Link>
 
             {/* Sign Out Action */}

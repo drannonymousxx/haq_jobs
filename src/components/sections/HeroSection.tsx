@@ -1,19 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
-import localFont from 'next/font/local';
 import styles from '@/styles/Hero.module.css';
 import Button from '@/components/common/Button';
 import HeroBackground from './HeroBackground';
 
-const satoshi = localFont({
-  src: '../../../public/fonts/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2',
-  display: 'swap',
-  variable: '--font-satoshi',
-});
-
 export default function HeroSection() {
   return (
-    <section className={`${styles.hero} ${satoshi.variable}`}>
+    <section className={styles.hero}>
       <HeroBackground />
       <div className={`container ${styles.heroContainer}`}>
         <div className={styles.content}>

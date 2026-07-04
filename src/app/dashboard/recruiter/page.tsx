@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { 
-  User, 
-  Mail, 
-  Briefcase, 
-  Loader2, 
-  Building2, 
+import {
+  User,
+  Mail,
+  Briefcase,
+  Loader2,
+  Building2,
   Calendar as CalendarIcon,
-  PlusCircle, 
+  PlusCircle,
   Users,
   Search,
   ArrowRight,
@@ -41,6 +41,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { calculateRecruiterStrength } from "@/lib/profileUtils";
 import { mapSupabaseError } from "@/lib/errorUtils";
+import { triggerWorkflowEvent } from "@/lib/systemAccount";
 
 // Date formatting helper
 const formatRelativeDate = (dateStr: string): string => {
@@ -61,11 +62,11 @@ const formatRelativeDate = (dateStr: string): string => {
 
 export default function RecruiterDashboard() {
   const router = useRouter();
-  
+
   // Base loading states
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-  
+
   // Session & User Profile
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
@@ -88,7 +89,7 @@ export default function RecruiterDashboard() {
   const [applications, setApplications] = useState<any[]>([]);
   const [recruiterInterviews, setRecruiterInterviews] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<string[]>([]);
-  
+
   // Pipeline status count map
   const [pipelineCounts, setPipelineCounts] = useState<Record<string, number>>({
     applied: 0,
@@ -114,7 +115,7 @@ export default function RecruiterDashboard() {
   // Search on dashboard level (filters applications & jobs lists)
   const [dashboardSearch, setDashboardSearch] = useState("");
 
-  const hasActiveFilters = 
+  const hasActiveFilters =
     jobsSearchQuery !== "" ||
     jobsStatusFilter !== "" ||
     jobsTypeFilter !== "" ||
@@ -128,7 +129,7 @@ export default function RecruiterDashboard() {
   const loadDashboardData = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      
+
       if (!session || !session.user) {
         router.push("/login");
         return;
@@ -242,8 +243,8 @@ export default function RecruiterDashboard() {
               candidateName: app.profiles?.full_name || "Anonymous Candidate",
               candidateEmail: app.profiles?.email || "",
               candidatePhoto: app.profiles?.profile_photo_url,
-              candidateLocation: app.profiles?.city && app.profiles?.state 
-                ? `${app.profiles.city}, ${app.profiles.state}` 
+              candidateLocation: app.profiles?.city && app.profiles?.state
+                ? `${app.profiles.city}, ${app.profiles.state}`
                 : "N/A",
               university: eduMap.get(app.profiles?.id) || "Law Graduate",
               jobTitle: jobTitleMap.get(String(app.job_id)) || "Legal Position",
@@ -339,8 +340,27 @@ export default function RecruiterDashboard() {
   // Recruiter actions on applicant rows
   const handleUpdateAppStatus = async (appId: string, newStatus: string) => {
     try {
-      setActionLoading(appId);
       const app = applications.find(a => a.id === appId);
+      if (!app) return;
+
+      const currentStatus = app.status;
+      let isValidTransition = false;
+      if (currentStatus === "applied") {
+        isValidTransition = (newStatus === "shortlisted" || newStatus === "rejected");
+      } else if (currentStatus === "shortlisted") {
+        isValidTransition = (newStatus === "interview" || newStatus === "offered" || newStatus === "rejected");
+      } else if (currentStatus === "interview") {
+        isValidTransition = (newStatus === "offered" || newStatus === "rejected");
+      } else if (currentStatus === "offered") {
+        isValidTransition = (newStatus === "hired" || newStatus === "rejected");
+      }
+
+      if (!isValidTransition) {
+        alert(`Invalid stage transition from "${currentStatus}" to "${newStatus}".`);
+        return;
+      }
+
+      setActionLoading(appId);
       const { error } = await supabase
         .from("job_applications")
         .update({ status: newStatus })
@@ -348,30 +368,31 @@ export default function RecruiterDashboard() {
 
       if (!error) {
         // Update local state instantly (Optimistic UI)
-        setApplications(prev => 
+        setApplications(prev =>
           prev.map(a => a.id === appId ? { ...a, status: newStatus } : a)
         );
-        
-        // Add persistent candidate notification
-        if (app && app.candidateId) {
-          let title = "";
-          let content = "";
+
+        // Add persistent candidate notification & system message in sync
+        if (app.candidateId) {
+          const firmName = profile?.company_name || "the organization";
           if (newStatus === "shortlisted") {
-            title = "Application Shortlisted";
-            content = `Your application for the position of "${app.jobTitle}" has been shortlisted.`;
+            await triggerWorkflowEvent({
+              userId: app.candidateId,
+              title: "Application Shortlisted",
+              content: `Congratulations! Your application for the position of "${app.jobTitle}" at "${firmName}" has been shortlisted.`,
+              type: "shortlist",
+              referenceId: appId,
+              referenceType: "job_applications"
+            });
           } else if (newStatus === "rejected") {
-            title = "Application Status Updated";
-            content = `Thank you for your interest in "${app.jobTitle}". Unfortunately, the organization has decided to move forward with other candidates.`;
-          }
-          if (title) {
-            await supabase
-              .from("notifications")
-              .insert({
-                user_id: app.candidateId,
-                title,
-                content,
-                is_read: false
-              });
+            await triggerWorkflowEvent({
+              userId: app.candidateId,
+              title: "Application Status Update",
+              content: `Thank you for applying to "${firmName}".\n\nAfter careful consideration, we have decided not to move forward with your application.\n\nWe appreciate your interest and wish you success in your future opportunities.`,
+              type: "rejection",
+              referenceId: appId,
+              referenceType: "job_applications"
+            });
           }
         }
 
@@ -562,12 +583,12 @@ export default function RecruiterDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 font-poppins">
-      
+
       {/* =========================================================================
           LEFT COLUMN: RECRUITER PROFILE CARD
           ========================================================================= */}
-      <section className="lg:col-span-4 space-y-6">
-        <motion.div 
+      <section className="lg:col-span-4 lg:sticky lg:top-20 self-start space-y-6">
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col items-center text-center relative overflow-hidden"
@@ -577,9 +598,9 @@ export default function RecruiterDashboard() {
 
           {/* Profile Photo */}
           {profile?.profile_photo_url ? (
-            <img 
-              src={profile.profile_photo_url} 
-              alt={profile.full_name} 
+            <img
+              src={profile.profile_photo_url}
+              alt={profile.full_name}
               className="w-20 h-20 rounded-2xl object-cover border border-white shadow-md mb-4 ring-4 ring-blue-50/50"
             />
           ) : (
@@ -636,11 +657,11 @@ export default function RecruiterDashboard() {
               <span className="font-black text-[#013CF1]">{strengthScore}%</span>
             </div>
             <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden flex">
-              <motion.div 
+              <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${strengthScore}%` }}
                 transition={{ duration: 0.6 }}
-                className="bg-[#013CF1] h-full" 
+                className="bg-[#013CF1] h-full"
               />
             </div>
             <p className="text-[10px] text-slate-400 font-bold text-right capitalize">
@@ -649,7 +670,7 @@ export default function RecruiterDashboard() {
           </div>
 
           {/* Edit Profile Button */}
-          <Link 
+          <Link
             href="/dashboard/recruiter/profile"
             className="w-full mt-6 text-center text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 py-3 rounded-xl transition-all shadow-sm"
           >
@@ -660,24 +681,15 @@ export default function RecruiterDashboard() {
         {/* Global Dashboard Search */}
         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-3">
           <h4 className="text-xs font-bold text-slate-700 uppercase tracking-widest font-poppins">Quick Search</h4>
-          <div className="relative">
+          <Link href="/dashboard/recruiter/search" className="block relative w-full">
             <input
               type="text"
-              placeholder="Search jobs or applicants..."
-              value={dashboardSearch}
-              onChange={(e) => setDashboardSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#013CF1] text-xs bg-slate-50/50 font-medium"
+              placeholder="Search candidates..."
+              readOnly
+              className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#013CF1] text-xs bg-slate-50/50 font-medium cursor-pointer select-none pointer-events-none"
             />
             <Search size={14} className="text-slate-400 absolute left-3 top-3.5 select-none" />
-            {dashboardSearch && (
-              <button 
-                onClick={() => setDashboardSearch("")}
-                className="text-[10px] font-bold text-slate-400 hover:text-slate-600 absolute right-3 top-2.5 bg-slate-200/50 hover:bg-slate-200/80 px-2 py-0.5 rounded"
-              >
-                Clear
-              </button>
-            )}
-          </div>
+          </Link>
         </div>
 
         {/* Calendar Widget */}
@@ -710,13 +722,12 @@ export default function RecruiterDashboard() {
                 <button
                   key={`day-${i}`}
                   onClick={() => setSelectedCalendarDay(isSelected ? null : dStr)}
-                  className={`h-7 rounded-lg flex flex-col items-center justify-center relative transition-all cursor-pointer select-none ${
-                    isToday 
-                      ? "bg-[#013CF1] text-white font-bold" 
-                      : isSelected 
-                      ? "bg-slate-900 text-white" 
+                  className={`h-7 rounded-lg flex flex-col items-center justify-center relative transition-all cursor-pointer select-none ${isToday
+                    ? "bg-[#013CF1] text-white font-bold"
+                    : isSelected
+                      ? "bg-slate-900 text-white"
                       : "hover:bg-slate-100 text-slate-700"
-                  }`}
+                    }`}
                 >
                   <span>{dayObj.day}</span>
                   {hasExpiry && !isToday && !isSelected && (
@@ -730,7 +741,7 @@ export default function RecruiterDashboard() {
           {/* Event details */}
           <AnimatePresence mode="wait">
             {selectedCalendarDay && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 5 }}
@@ -759,9 +770,9 @@ export default function RecruiterDashboard() {
           RIGHT COLUMN: DASHBOARD FEED
           ========================================================================= */}
       <section className="lg:col-span-8 space-y-8">
-        
+
         {/* Modern Welcome Hero Card */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-gradient-to-r from-[#013CF1] to-blue-700 rounded-3xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden text-white"
@@ -792,11 +803,10 @@ export default function RecruiterDashboard() {
 
           <Link
             href={isProfileCompleteEnough ? "/dashboard/recruiter/post-job" : "/dashboard/recruiter/profile"}
-            className={`px-5 py-3 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap self-start sm:self-center select-none ${
-              isProfileCompleteEnough
-                ? "bg-white hover:bg-slate-100 text-[#013CF1]"
-                : "bg-white/20 text-white/60 border border-white/10 cursor-not-allowed"
-            }`}
+            className={`px-5 py-3 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap self-start sm:self-center select-none ${isProfileCompleteEnough
+              ? "bg-[#FFFFFF] hover:bg-[#FFFFFF] text-[#013CF1] border border-white shadow-xl"
+              : "bg-white/20 text-white/60 border border-white/10 cursor-not-allowed"
+              }`}
             onClick={(e) => {
               if (!isProfileCompleteEnough) {
                 e.preventDefault();
@@ -1143,8 +1153,8 @@ export default function RecruiterDashboard() {
               <p className="text-[10px] text-slate-400 font-bold mt-0.5">Live reviews and shortlist pipeline triggers.</p>
             </div>
             {filteredApplications.length > 0 && (
-              <Link 
-                href="/dashboard/recruiter/jobs" 
+              <Link
+                href="/dashboard/recruiter/jobs"
                 className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-0.5"
               >
                 Manage Openings <ArrowRight size={14} />
@@ -1166,16 +1176,16 @@ export default function RecruiterDashboard() {
                 const statusBadge = colorsMap[app.status] || "bg-slate-50 text-slate-600 border-slate-150";
 
                 return (
-                  <div 
-                    key={app.id} 
+                  <div
+                    key={app.id}
                     className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
                   >
                     {/* Left details */}
                     <div className="flex items-start gap-4">
                       {app.candidatePhoto ? (
-                        <img 
-                          src={app.candidatePhoto} 
-                          alt={app.candidateName} 
+                        <img
+                          src={app.candidatePhoto}
+                          alt={app.candidateName}
                           className="w-10 h-10 rounded-xl object-cover shadow-sm ring-2 ring-slate-100"
                         />
                       ) : (
@@ -1183,7 +1193,7 @@ export default function RecruiterDashboard() {
                           {app.candidateName?.charAt(0).toUpperCase() || "C"}
                         </div>
                       )}
-                      
+
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-slate-800 text-xs leading-none hover:text-[#013CF1]">
@@ -1193,9 +1203,9 @@ export default function RecruiterDashboard() {
                             {app.status}
                           </span>
                         </div>
-                        
+
                         <p className="text-[10px] text-slate-400 font-bold leading-none">{app.university}</p>
-                        
+
                         <div className="flex items-center gap-x-2.5 gap-y-0.5 flex-wrap text-[10px] text-slate-400 font-medium pt-0.5">
                           <span>Applied: <strong className="text-slate-500 font-semibold">{app.jobTitle}</strong></span>
                           <span>•</span>
@@ -1229,7 +1239,7 @@ export default function RecruiterDashboard() {
                         </button>
                       )}
                       {app.candidateId ? (
-                        <Link 
+                        <Link
                           href={`/candidate/${app.candidateId}`}
                           className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-[10px] font-bold transition-all shadow-sm"
                         >
@@ -1239,7 +1249,7 @@ export default function RecruiterDashboard() {
                         <span className="text-slate-400 italic text-[10px]">No Profile</span>
                       )}
                       <Link
-                        href="/dashboard/messages"
+                        href={app.candidateId ? `/dashboard/messages?chat=${app.candidateId}` : "/dashboard/messages"}
                         className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 rounded-xl transition-all"
                         title="Direct Message Candidate"
                       >
@@ -1265,7 +1275,7 @@ export default function RecruiterDashboard() {
         <section className="space-y-4">
           <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest font-poppins">Recruiter Quick Actions</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            
+
             <Link
               href={isProfileCompleteEnough ? "/dashboard/recruiter/post-job" : "/dashboard/recruiter/profile"}
               className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
@@ -1293,7 +1303,7 @@ export default function RecruiterDashboard() {
             </Link>
 
             <Link
-              href="/dashboard/discover"
+              href="/dashboard/recruiter/search"
               className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
             >
               <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all">
@@ -1326,7 +1336,7 @@ function getDaysInMonth(date: Date) {
   const month = date.getMonth();
   const firstDayIndex = new Date(year, month, 1).getDay();
   const lastDayDate = new Date(year, month + 1, 0).getDate();
-  
+
   const days = [];
   // padding for previous month days
   for (let i = 0; i < firstDayIndex; i++) {

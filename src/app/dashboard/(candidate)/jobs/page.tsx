@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { mapSupabaseError } from "@/lib/errorUtils";
+import { triggerWorkflowEvent } from "@/lib/systemAccount";
 import JobCard from "@/components/dashboard/JobCard";
 import { 
   Search, 
@@ -176,13 +177,36 @@ function CandidateJobsContent() {
     const stringId = String(jobId);
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("job_applications")
         .insert({ profile_id: currentUserId, job_id: stringId, status: "applied" })
-        .select();
+        .select()
+        .single();
 
       if (!error) {
         setAppliedJobs(prev => [...prev, stringId]);
+
+        // Find matching job info
+        const jobInfo = rawJobs.find(j => String(j.id) === stringId);
+        if (jobInfo && jobInfo.recruiter_id) {
+          // Fetch candidate name dynamically
+          const { data: candProfile } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", currentUserId)
+            .maybeSingle();
+
+          const candName = candProfile?.full_name || "a candidate";
+
+          await triggerWorkflowEvent({
+            userId: jobInfo.recruiter_id,
+            title: "New Application Received",
+            content: `You have received a new application for the position of "${jobInfo.title}" from ${candName}. Review their profile in your dashboard.`,
+            type: "applied",
+            referenceId: data?.id,
+            referenceType: "job_applications"
+          });
+        }
       } else {
         console.error("Apply error:", error.message);
         alert(mapSupabaseError(error, "Failed to apply for job."));
