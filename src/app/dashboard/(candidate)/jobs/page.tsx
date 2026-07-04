@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { mapSupabaseError } from "@/lib/errorUtils";
 import { triggerWorkflowEvent } from "@/lib/systemAccount";
 import JobCard from "@/components/dashboard/JobCard";
+import JobDetailsPanel from "@/components/dashboard/JobDetailsPanel";
 import { 
   Search, 
   Compass, 
@@ -74,6 +75,7 @@ function CandidateJobsContent() {
   const [savedJobs, setSavedJobs] = useState<string[]>([]);
   const [appliedJobs, setAppliedJobs] = useState<string[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
 
   // Search & Filter Panel Toggle State
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(shouldOpenSearch);
@@ -202,6 +204,16 @@ function CandidateJobsContent() {
             userId: jobInfo.recruiter_id,
             title: "New Application Received",
             content: `You have received a new application for the position of "${jobInfo.title}" from ${candName}. Review their profile in your dashboard.`,
+            type: "applied",
+            referenceId: data?.id,
+            referenceType: "job_applications"
+          });
+
+          // Notify Candidate
+          await triggerWorkflowEvent({
+            userId: currentUserId,
+            title: "Application Submitted Successfully",
+            content: `Your application for "${jobInfo.title}" at "${jobInfo.firm_name || "the organization"}" has been successfully submitted.`,
             type: "applied",
             referenceId: data?.id,
             referenceType: "job_applications"
@@ -674,7 +686,6 @@ function CandidateJobsContent() {
 
       {/* 3. Listings Grid or Empty States */}
       <div className="space-y-4">
-        {/* If database is initially empty */}
         {rawJobs.length === 0 ? (
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
             <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
@@ -688,28 +699,77 @@ function CandidateJobsContent() {
             </div>
           </div>
         ) : filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => {
-            const initials = getCompanyInitials(job.firm_name);
-            const bg = getCompanyBgColor(job.firm_name);
-            return (
-              <JobCard
-                key={job.id}
-                id={job.id}
-                title={job.title}
-                company={job.firm_name}
-                location={job.location}
-                type={job.employment_type}
-                workplace={job.work_mode}
-                postedAt={formatPostedAt(job.created_at)}
-                logoText={initials}
-                logoBg={bg}
-                onSave={handleSaveToggle}
-                initialSaved={savedJobs.includes(String(job.id))}
-                onApply={handleApply}
-                initialApplied={appliedJobs.includes(String(job.id))}
-              />
-            );
-          })
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Job Cards List */}
+            <div className={`space-y-4 ${expandedJobId ? "lg:col-span-5" : "lg:col-span-12 w-full"}`}>
+              {filteredJobs.map((job) => {
+                const initials = getCompanyInitials(job.firm_name);
+                const bg = getCompanyBgColor(job.firm_name);
+                const isExpanded = expandedJobId === String(job.id);
+                return (
+                  <div key={job.id} className="space-y-4">
+                    <JobCard
+                      id={job.id}
+                      title={job.title}
+                      company={job.firm_name}
+                      location={job.location}
+                      type={job.employment_type}
+                      workplace={job.work_mode}
+                      postedAt={formatPostedAt(job.created_at)}
+                      logoText={initials}
+                      logoBg={bg}
+                      onSave={handleSaveToggle}
+                      initialSaved={savedJobs.includes(String(job.id))}
+                      onApply={handleApply}
+                      initialApplied={appliedJobs.includes(String(job.id))}
+                      onClick={() => setExpandedJobId(isExpanded ? null : String(job.id))}
+                      isExpanded={isExpanded}
+                    />
+                    
+                    {/* Inline Mobile Expanded Details */}
+                    {isExpanded && (
+                      <div className="block lg:hidden mt-2">
+                        <JobDetailsPanel
+                          job={job}
+                          onClose={() => setExpandedJobId(null)}
+                          isApplied={appliedJobs.includes(String(job.id))}
+                          isSaved={savedJobs.includes(String(job.id))}
+                          onApply={handleApply}
+                          onSave={handleSaveToggle}
+                          logoText={initials}
+                          logoBg={bg}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right Column: Desktop Selected Job details panel */}
+            {expandedJobId && (
+              <div className="hidden lg:block lg:col-span-7 lg:sticky lg:top-24 max-h-[82vh] overflow-y-auto z-20">
+                {(() => {
+                  const selectedJob = filteredJobs.find(j => String(j.id) === expandedJobId);
+                  if (!selectedJob) return null;
+                  const initials = getCompanyInitials(selectedJob.firm_name);
+                  const bg = getCompanyBgColor(selectedJob.firm_name);
+                  return (
+                    <JobDetailsPanel
+                      job={selectedJob}
+                      onClose={() => setExpandedJobId(null)}
+                      isApplied={appliedJobs.includes(expandedJobId)}
+                      isSaved={savedJobs.includes(expandedJobId)}
+                      onApply={handleApply}
+                      onSave={handleSaveToggle}
+                      logoText={initials}
+                      logoBg={bg}
+                    />
+                  );
+                })()}
+              </div>
+            )}
+          </div>
         ) : (
           /* Empty Search results state */
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">

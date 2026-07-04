@@ -85,7 +85,7 @@ export default function CandidateDashboardPage() {
           supabase.from("saved_jobs").select("job_id").eq("profile_id", userId),
           supabase.from("job_applications").select("id, job_id, created_at, status").eq("profile_id", userId),
           supabase.from("jobs").select("*").eq("job_status", "Published").order("created_at", { ascending: false }).limit(3),
-          supabase.from("notifications").select("*").eq("user_id", userId).order("created_at", { ascending: false })
+          supabase.from("notifications").select("*").eq("user_id", userId).gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).order("created_at", { ascending: false })
         ]);
 
         // Handle notifications

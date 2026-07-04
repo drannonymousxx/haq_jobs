@@ -142,6 +142,7 @@ export default function CandidateDashboardLayout({
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)}
         roleBadgeText="Candidate"
+        logoHref="/dashboard"
       />
 
       {/* Main dashboard content body */}

@@ -269,5 +269,12 @@ $$ LANGUAGE plpgsql;
 -- Grant execution permissions
 GRANT EXECUTE ON FUNCTION public.search_candidates TO postgres, service_role, authenticated, anon;
 
+-- Messages UPDATE Policy (Allows recipients to mark messages as read persistently)
+DROP POLICY IF EXISTS "Allow recipients to update message status" ON public.messages;
+CREATE POLICY "Allow recipients to update message status" 
+ON public.messages FOR UPDATE TO authenticated 
+USING (auth.uid() = recipient_id)
+WITH CHECK (auth.uid() = recipient_id);
+
 -- Force PostgREST cache update
 NOTIFY pgrst, 'reload schema';

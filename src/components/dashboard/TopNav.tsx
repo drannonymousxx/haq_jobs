@@ -61,10 +61,12 @@ export default function TopNav({
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && session.user) {
+        const past24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
         const { data } = await supabase
           .from("notifications")
           .select("*")
           .eq("user_id", session.user.id)
+          .gte("created_at", past24Hours)
           .order("created_at", { ascending: false });
         if (data) {
           setNotifications(data);

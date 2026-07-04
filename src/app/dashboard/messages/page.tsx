@@ -309,9 +309,10 @@ function MessagingContent() {
       .channel(`room_${activeConversationId}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
+        { event: "*", schema: "public", table: "messages" },
         () => {
           fetchMessages();
+          loadConversations(currentUser.id, userRole || "candidate");
         }
       )
       .subscribe();
@@ -763,6 +764,7 @@ function MessagingContent() {
           isOpen={isSidebarOpen} 
           onClose={() => setIsSidebarOpen(false)}
           roleBadgeText="Candidate"
+          logoHref="/dashboard"
         />
         <div className="flex-grow flex flex-col h-screen overflow-hidden">
           <TopNav 

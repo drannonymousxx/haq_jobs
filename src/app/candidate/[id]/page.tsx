@@ -605,6 +605,7 @@ export default function CandidatePublicProfilePage() {
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)}
         roleBadgeText="Candidate"
+        logoHref="/dashboard"
       />
 
       {/* Main content body */}

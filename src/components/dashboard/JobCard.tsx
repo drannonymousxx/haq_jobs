@@ -17,6 +17,8 @@ interface JobCardProps {
   initialSaved?: boolean;
   onApply?: (id: number | string) => void;
   initialApplied?: boolean;
+  onClick?: () => void;
+  isExpanded?: boolean;
 }
 
 export default function JobCard({
@@ -32,7 +34,9 @@ export default function JobCard({
   onSave,
   initialSaved = false,
   onApply,
-  initialApplied = false
+  initialApplied = false,
+  onClick,
+  isExpanded = false
 }: JobCardProps) {
   const [saved, setSaved] = useState(initialSaved);
   const [applied, setApplied] = useState(initialApplied);
@@ -75,7 +79,14 @@ export default function JobCard({
   const badgeColorClass = workplaceColors[workplace] || workplaceColors.Onsite;
 
   return (
-    <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group">
+    <div 
+      onClick={onClick}
+      className={`p-5 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group cursor-pointer ${
+        isExpanded 
+          ? "border-blue-500 bg-blue-50/10 ring-2 ring-blue-500/10" 
+          : "border-slate-100 bg-white hover:border-slate-200"
+      }`}
+    >
       
       {/* Left section: Logo + Details */}
       <div className="flex items-start gap-4">

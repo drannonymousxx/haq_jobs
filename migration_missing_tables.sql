@@ -125,6 +125,13 @@ CREATE POLICY "Allow users to send messages"
 ON public.messages FOR INSERT TO authenticated 
 WITH CHECK (auth.uid() = sender_id);
 
+-- Messages UPDATE Policy (Allows recipients to mark messages as read persistently)
+DROP POLICY IF EXISTS "Allow recipients to update message status" ON public.messages;
+CREATE POLICY "Allow recipients to update message status" 
+ON public.messages FOR UPDATE TO authenticated 
+USING (auth.uid() = recipient_id)
+WITH CHECK (auth.uid() = recipient_id);
+
 -- Interviews SELECT Policy
 DROP POLICY IF EXISTS "Allow users to view interviews" ON public.interviews;
 CREATE POLICY "Allow users to view interviews" ON public.interviews 
