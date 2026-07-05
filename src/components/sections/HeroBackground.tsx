@@ -35,7 +35,11 @@ const floatingElements = [
   { text: 'Case Analysis', top: '50%', left: '92%', speed: 0.9 },
 ];
 
-export default function HeroBackground() {
+interface HeroBackgroundProps {
+  scrollProgress?: number;
+}
+
+export default function HeroBackground({ scrollProgress = 0 }: HeroBackgroundProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -53,9 +57,12 @@ export default function HeroBackground() {
   return (
     <div className={styles.backgroundContainer}>
       {floatingElements.map((el, i) => {
-        // Parallax offset
-        const offsetX = mousePosition.x * 20 * el.speed;
-        const offsetY = mousePosition.y * 20 * el.speed;
+        // Parallax offsets: combine mouse parallax + scroll progress parallax
+        const scrollOffsetX = scrollProgress * 50 * (i % 3 === 0 ? 1 : -1) * el.speed;
+        const scrollOffsetY = scrollProgress * 220 * (i % 2 === 0 ? 1 : -1) * el.speed;
+        
+        const offsetX = mousePosition.x * 20 * el.speed + scrollOffsetX;
+        const offsetY = mousePosition.y * 20 * el.speed + scrollOffsetY;
 
         return (
           <motion.div

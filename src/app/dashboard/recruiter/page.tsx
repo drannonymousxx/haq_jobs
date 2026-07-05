@@ -1217,7 +1217,7 @@ export default function RecruiterDashboard() {
                     </div>
 
                     {/* Right Action buttons */}
-                    <div className="flex items-center gap-2 self-end sm:self-center border-t sm:border-t-0 border-slate-50 pt-3 sm:pt-0 w-full sm:w-auto justify-end">
+                    <div className="flex flex-wrap items-center gap-2 self-end sm:self-center border-t sm:border-t-0 border-slate-50 pt-3 sm:pt-0 w-full sm:w-auto justify-end">
                       {app.status !== "shortlisted" && app.status !== "hired" && (
                         <button
                           onClick={() => handleUpdateAppStatus(app.id, "shortlisted")}

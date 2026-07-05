@@ -1,10 +1,10 @@
 .section {
-  padding: var(--spacing-lg) 0;
-  background-color: var(--light-bg);
+  width: 100%;
+  background: transparent !important;
 }
 
 .section:nth-child(even) {
-  background-color: var(--white);
+  background: transparent !important;
 }
 
 .header {
@@ -12,16 +12,19 @@
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: var(--spacing-md);
+  padding: 0 4px;
 }
 
 .viewAll {
-  color: var(--primary);
-  font-weight: 500;
+  color: #38bdf8; /* Soft sky blue */
+  font-weight: 700;
   cursor: pointer;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .viewAll:hover {
   text-decoration: underline;
+  color: #60a5fa;
 }
 
 .grid {
@@ -46,17 +49,19 @@
 .itemTitle {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--dark);
+  color: #ffffff; /* White title */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .itemSubtitle {
-  color: var(--text-muted);
+  color: #cbd5e1; /* slate-300 subtitle */
   font-size: 0.875rem;
   margin-bottom: var(--spacing-xs);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .itemMeta {
-  color: var(--text-muted);
+  color: #94a3b8; /* slate-400 meta details */
   font-size: 0.875rem;
   display: flex;
   align-items: center;
@@ -67,7 +72,7 @@
 
 .duration {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: #cbd5e1;
   font-weight: 500;
 }
 

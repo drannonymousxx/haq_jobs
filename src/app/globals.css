@@ -2,14 +2,14 @@
 
 @layer base {
   :root {
-    --primary: #105AEA;
-    --primary-hover: #0d4bc4;
-    --dark: #0A1428;
-    --light-bg: #F8FAFC;
-    --white: #FFFFFF;
-    --text-main: #1E293B;
-    --text-muted: #64748B;
-    --border-color: #E2E8F0;
+    --primary: #B63106;
+    --primary-hover: #932604;
+    --dark: #FFFFFF;
+    --light-bg: #121212;
+    --white: #000000;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --border-color: #27272A;
     
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;

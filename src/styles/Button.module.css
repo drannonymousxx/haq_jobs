@@ -39,6 +39,6 @@
 }
 
 .outline:hover {
-  background-color: rgba(16, 90, 234, 0.05);
+  background-color: rgba(182, 49, 6, 0.07);
   transform: translateY(-2px);
 }

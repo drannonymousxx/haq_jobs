@@ -1,0 +1,118 @@
+.scrollPlayWrapper {
+  width: 100%;
+  position: relative;
+  background-color: #000;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Overlay gradient mask to maintain high contrast for white overlays */
+.overlayCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.85) 100%),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 15%, transparent 85%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+}
+
+.backgroundEffectContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.05s ease-out;
+  will-change: opacity;
+}
+
+.slideWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.sectionInner {
+  width: 100%;
+  pointer-events: auto; /* Ensure forms/buttons inside sections are active */
+}
+
+/* Custom Local overrides for titles and subtitles inside absolute slides */
+.scrollPlayWrapper :global(.section-title) {
+  color: #ffffff !important;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.scrollPlayWrapper :global(.section-subtitle) {
+  color: #cbd5e1 !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Slide Layout Alignments */
+.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.split-left {
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 8%;
+  text-align: left;
+}
+
+.split-left .sectionInner {
+  max-width: 600px;
+}
+
+.split-right {
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 8%;
+  text-align: left;
+}
+
+.split-right .sectionInner {
+  max-width: 600px;
+}
+
+.full-width {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Static Fallback (Reduced Motion Accessibility Layout) */
+.staticLayout {
+  width: 100%;
+  background-color: var(--light-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.staticSection {
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--light-bg);
+}
+
+.staticSection:nth-child(even) {
+  background-color: var(--white);
+}
+
+.staticSection :global(.section) {
+  padding: var(--spacing-xl) 0;
+}

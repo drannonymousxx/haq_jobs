@@ -605,22 +605,22 @@ export default function CandidateDashboardPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 self-end sm:self-center">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto self-stretch sm:self-center">
                   <button
                     onClick={() => handleUpdateInterview(i.id, "accepted", i.recruiterId, i.jobTitle)}
-                    className="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm cursor-pointer transition-all"
+                    className="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm cursor-pointer transition-all text-center w-full sm:w-auto"
                   >
                     Accept Round
                   </button>
                   <button
                     onClick={() => handleUpdateInterview(i.id, "reschedule_requested", i.recruiterId, i.jobTitle)}
-                    className="px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold text-xs rounded-xl cursor-pointer transition-all"
+                    className="px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold text-xs rounded-xl cursor-pointer transition-all text-center w-full sm:w-auto"
                   >
                     Request Reschedule
                   </button>
                   <button
                     onClick={() => handleUpdateInterview(i.id, "declined", i.recruiterId, i.jobTitle)}
-                    className="px-3 py-2.5 border border-red-200 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl cursor-pointer transition-all"
+                    className="px-3 py-2.5 border border-red-200 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl cursor-pointer transition-all text-center w-full sm:w-auto"
                   >
                     Decline
                   </button>
@@ -676,16 +676,16 @@ export default function CandidateDashboardPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 self-end sm:self-center">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto self-stretch sm:self-center">
                   <button
                     onClick={() => handleUpdateOffer(o.id, "accepted", o.appId, o.recruiterId, o.position)}
-                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer transition-all"
+                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer transition-all text-center w-full sm:w-auto"
                   >
                     Accept Offer
                   </button>
                   <button
                     onClick={() => handleUpdateOffer(o.id, "declined", o.appId, o.recruiterId, o.position)}
-                    className="px-4 py-2.5 border border-red-200 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl cursor-pointer transition-all"
+                    className="px-4 py-2.5 border border-red-200 hover:bg-red-50 text-red-600 font-bold text-xs rounded-xl cursor-pointer transition-all text-center w-full sm:w-auto"
                   >
                     Decline
                   </button>

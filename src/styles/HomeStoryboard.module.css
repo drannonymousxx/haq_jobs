@@ -1,0 +1,90 @@
+.slideContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.tagline {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #38bdf8; /* sky blue accent */
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+}
+
+.mainTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin: 8px 0;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 8px 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.subtext {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 8px auto 0 auto;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.description {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-top: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.btnGroup {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  justify-content: center;
+}
+
+.ctaBtn {
+  font-weight: 700;
+  padding: 14px 28px;
+  box-shadow: 0 10px 25px rgba(1, 60, 241, 0.45);
+}
+
+.outlineBtn {
+  font-weight: 600;
+  padding: 14px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(8px);
+}
+
+.outlineBtn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+@media (min-width: 768px) {
+  .mainTitle {
+    font-size: 5.5rem;
+  }
+  .title {
+    font-size: 3.5rem;
+  }
+  .subtext {
+    font-size: 1.25rem;
+  }
+}

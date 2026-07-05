@@ -1,13 +1,29 @@
+'use client';
+
 import React from 'react';
-import Image from 'next/image';
 import styles from '@/styles/Hero.module.css';
 import Button from '@/components/common/Button';
 import HeroBackground from './HeroBackground';
+import { useScrollProgress } from '../common/ScrollProgressContext';
 
 export default function HeroSection() {
+  const scrollProgress = useScrollProgress();
+
+  // Text parallax: translate text upward as the user scrolls
+  const textTranslateY = -scrollProgress * 280;
+
   return (
-    <section className={styles.hero}>
-      <HeroBackground />
+    <div 
+      className={styles.hero}
+      style={{ 
+        transform: `translateY(${textTranslateY}px)`,
+        willChange: 'transform',
+        width: '100%'
+      }}
+    >
+      {/* Pass amplified progress so the floating pills animate dynamically in their active viewport window */}
+      <HeroBackground scrollProgress={scrollProgress * 7.5} />
+      
       <div className={`container ${styles.heroContainer}`}>
         <div className={styles.content}>
           <span className={styles.tagline}>DISCOVER. APPLY. GROW.</span>
@@ -37,6 +53,6 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

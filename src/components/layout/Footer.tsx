@@ -18,7 +18,7 @@ export default function Footer() {
     return null;
   }
 
-  if (pathname === '/login' || pathname.startsWith('/signup') || pathname?.startsWith('/dashboard') || pathname?.startsWith('/candidate')) {
+  if (pathname === '/' || pathname === '/login' || pathname.startsWith('/signup') || pathname?.startsWith('/dashboard') || pathname?.startsWith('/candidate')) {
     return null;
   }
   return (

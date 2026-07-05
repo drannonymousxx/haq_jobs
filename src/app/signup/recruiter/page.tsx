@@ -371,7 +371,7 @@ export default function RecruiterSignupPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label htmlFor="companyName" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
                   Company / Firm
