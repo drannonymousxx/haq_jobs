@@ -80,17 +80,17 @@ export default function RecruiterDashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 gap-4">
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
         <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
-        <p className="text-sm font-semibold text-slate-500">Securing recruiter session...</p>
+        <p className="text-sm font-semibold text-brand-text-muted">Securing recruiter session...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col">
+    <div className="min-h-screen bg-brand-bg/50 flex flex-col">
       {/* Recruiter Shared Topbar Header */}
-      <header className="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-40">
+      <header className="bg-brand-card border-b border-brand-border shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           
           {/* Logo */}
@@ -101,6 +101,7 @@ export default function RecruiterDashboardLayout({
               width={130} 
               height={34} 
               style={{ width: "130px", height: "auto" }}
+              className="brightness-0 invert"
               priority
             />
           </Link>
@@ -116,7 +117,7 @@ export default function RecruiterDashboardLayout({
             {/* Navigation links */}
             <Link 
               href="/dashboard/recruiter/jobs" 
-              className="text-xs font-bold text-slate-500 hover:text-amber-600 transition-colors flex items-center gap-1"
+              className="text-xs font-bold text-brand-text-muted hover:text-amber-600 transition-colors flex items-center gap-1"
             >
               <Briefcase size={14} />
               <span>Manage Jobs</span>
@@ -124,7 +125,7 @@ export default function RecruiterDashboardLayout({
 
             <Link 
               href="/dashboard/messages" 
-              className="text-xs font-bold text-slate-500 hover:text-amber-600 transition-colors flex items-center gap-1"
+              className="text-xs font-bold text-brand-text-muted hover:text-amber-600 transition-colors flex items-center gap-1"
             >
               <MessageSquare size={14} />
               <span>Messages</span>
@@ -133,7 +134,7 @@ export default function RecruiterDashboardLayout({
             {/* Sign Out Action */}
             <button
               onClick={handleSignOut}
-              className="text-slate-500 hover:text-red-600 p-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
+              className="text-brand-text-muted hover:text-red-600 p-2 rounded-lg hover:bg-brand-bg transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
               title="Sign Out"
             >
               <LogOut size={14} />

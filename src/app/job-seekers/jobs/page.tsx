@@ -16,7 +16,7 @@ export default function JobsPage() {
       {/* Premium Minimal Divider */}
       <div className="w-full bg-[#F7F8FC] py-8">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(1,60,241,0.15)] to-transparent"></div>
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(182, 49, 6,0.15)] to-transparent"></div>
         </div>
       </div>
 

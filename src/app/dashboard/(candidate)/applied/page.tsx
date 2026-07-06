@@ -38,9 +38,9 @@ const getCompanyInitials = (name: string): string => {
 };
 
 const getCompanyBgColor = (name: string): string => {
-  if (!name) return "bg-blue-100 text-[#013CF1]";
+  if (!name) return "bg-blue-100 text-[#B63106]";
   const colors = [
-    "bg-blue-100 text-blue-700",
+    "bg-blue-100 text-brand-hover",
     "bg-amber-100 text-amber-700",
     "bg-emerald-100 text-emerald-700",
     "bg-purple-100 text-purple-700",
@@ -186,8 +186,8 @@ export default function CandidateAppliedPage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500 font-poppins">Loading your applications history...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted font-poppins">Loading your applications history...</p>
       </div>
     );
   }
@@ -196,8 +196,8 @@ export default function CandidateAppliedPage() {
     return (
       <div className="bg-red-50/50 border border-red-100 rounded-3xl p-6 text-center max-w-md mx-auto space-y-4 font-poppins">
         <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
-        <h4 className="text-sm font-bold text-slate-800">Load Failure</h4>
-        <p className="text-xs text-slate-500 font-medium leading-relaxed">{error}</p>
+        <h4 className="text-sm font-bold text-brand-text">Load Failure</h4>
+        <p className="text-xs text-brand-text-muted font-medium leading-relaxed">{error}</p>
         <button 
           onClick={loadAppliedJobsData}
           className="text-xs font-bold bg-black text-white px-4 py-2 rounded-xl"
@@ -213,21 +213,21 @@ export default function CandidateAppliedPage() {
       
       {/* 1. Header Section */}
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-800 font-poppins">Applied Jobs</h1>
-        <p className="text-xs text-slate-400 font-semibold mt-1">
+        <h1 className="text-2xl font-extrabold text-brand-text font-poppins">Applied Jobs</h1>
+        <p className="text-xs text-brand-text-muted font-semibold mt-1">
           Track the status of your submitted legal internship and job applications.
         </p>
       </div>
 
       {/* 2. Listings Grid or Empty State */}
       {rawJobs.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center max-w-md mx-auto space-y-4">
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-12 text-center flex flex-col items-center max-w-md mx-auto space-y-4">
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <FileCheck size={22} />
           </div>
           <div className="space-y-1">
-            <h4 className="text-sm font-bold text-slate-700 font-poppins">No applications submitted yet</h4>
-            <p className="text-xs text-slate-400 font-semibold leading-relaxed">
+            <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No applications submitted yet</h4>
+            <p className="text-xs text-brand-text-muted font-semibold leading-relaxed">
               You haven't applied to any roles on HAQJobs yet. Start browsing jobs to submit your first application!
             </p>
           </div>

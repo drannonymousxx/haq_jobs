@@ -18,10 +18,10 @@ function CustomRadio({
 }) {
   return (
     <label className="flex items-center gap-3 cursor-pointer group">
-      <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${checked ? 'border-[#013CF1]' : 'border-[#CBD5E1] group-hover:border-[#94A3B8]'}`}>
-        <div className={`w-2.5 h-2.5 rounded-full bg-[#013CF1] transition-transform ${checked ? 'scale-100' : 'scale-0'}`} />
+      <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${checked ? 'border-[#B63106]' : 'border-brand-border group-hover:border-[#94A3B8]'}`}>
+        <div className={`w-2.5 h-2.5 rounded-full bg-[#B63106] transition-transform ${checked ? 'scale-100' : 'scale-0'}`} />
       </div>
-      <span className={`text-[15px] transition-colors ${checked ? 'text-[#191D20] font-medium' : 'text-[#475569] group-hover:text-[#191D20]'}`}>
+      <span className={`text-[15px] transition-colors ${checked ? 'text-brand-text font-medium' : 'text-[#475569] group-hover:text-brand-text'}`}>
         {label}
       </span>
       <input 
@@ -72,7 +72,7 @@ export default function CompaniesHiringForm() {
             transition={{ duration: 0.6 }}
             className="mb-6"
           >
-            <span className="inline-block text-xs font-bold tracking-[0.15em] text-[#013CF1] uppercase">
+            <span className="inline-block text-xs font-bold tracking-[0.15em] text-[#B63106] uppercase">
               Built for modern legal hiring
             </span>
           </motion.div>
@@ -82,7 +82,7 @@ export default function CompaniesHiringForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#191D20] tracking-tight leading-[1.1] mb-8 max-w-3xl"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-text tracking-tight leading-[1.1] mb-8 max-w-3xl"
           >
             Flexible hiring solutions for every stage of your legal growth
           </motion.h2>
@@ -100,7 +100,7 @@ export default function CompaniesHiringForm() {
             <p>
               Looking for something a bit more specific? We&apos;re happy to create a custom solution fit for your team.
             </p>
-            <p className="font-medium text-[#191D20] pt-2">
+            <p className="font-medium text-brand-text pt-2">
               To find you the best option, we just need a few details →
             </p>
           </motion.div>
@@ -112,12 +112,12 @@ export default function CompaniesHiringForm() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="w-full bg-white rounded-[28px] md:rounded-[36px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E2E8F0] overflow-hidden flex flex-col md:flex-row"
+          className="w-full bg-brand-card rounded-[28px] md:rounded-[36px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-brand-border overflow-hidden flex flex-col md:flex-row"
         >
           {/* Left Side */}
-          <div className="w-full md:w-[40%] p-10 md:p-14 flex flex-col items-start border-b md:border-b-0 md:border-r border-[#E2E8F0]">
+          <div className="w-full md:w-[40%] p-10 md:p-14 flex flex-col items-start border-b md:border-b-0 md:border-r border-brand-border">
             <div className="mb-16">
-              <Image 
+              <Image className="brightness-0 invert" 
                 src="/logofull.png" 
                 alt="HAQJobs Logo" 
                 width={140} 
@@ -127,7 +127,7 @@ export default function CompaniesHiringForm() {
             </div>
             
             <div className="mt-auto md:mt-10 lg:mt-20">
-              <h3 className="text-2xl font-bold text-[#191D20] mb-4">
+              <h3 className="text-2xl font-bold text-brand-text mb-4">
                 Schedule a hiring consultation
               </h3>
               <p className="text-[15px] text-[#64748B] leading-relaxed max-w-[280px]">
@@ -137,13 +137,13 @@ export default function CompaniesHiringForm() {
           </div>
 
           {/* Right Side - Form */}
-          <div className="w-full md:w-[60%] p-10 md:p-14 bg-white">
+          <div className="w-full md:w-[60%] p-10 md:p-14 bg-brand-card">
             <div className="flex flex-col gap-12">
               
               {/* Question 1 */}
               <div>
-                <h4 className="text-[16px] font-semibold text-[#191D20] mb-5">
-                  Where are you primarily hiring? <span className="text-[#013CF1]">*</span>
+                <h4 className="text-[16px] font-semibold text-brand-text mb-5">
+                  Where are you primarily hiring? <span className="text-[#B63106]">*</span>
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
                   {locations.map((loc) => (
@@ -160,8 +160,8 @@ export default function CompaniesHiringForm() {
 
               {/* Question 2 */}
               <div>
-                <h4 className="text-[16px] font-semibold text-[#191D20] mb-5">
-                  What best describes your role? <span className="text-[#013CF1]">*</span>
+                <h4 className="text-[16px] font-semibold text-brand-text mb-5">
+                  What best describes your role? <span className="text-[#B63106]">*</span>
                 </h4>
                 <div className="flex flex-col gap-4">
                   {roles.map((r) => (
@@ -178,8 +178,8 @@ export default function CompaniesHiringForm() {
 
               {/* Question 3 */}
               <div>
-                <h4 className="text-[16px] font-semibold text-[#191D20] mb-5">
-                  What is your company headcount? <span className="text-[#013CF1]">*</span>
+                <h4 className="text-[16px] font-semibold text-brand-text mb-5">
+                  What is your company headcount? <span className="text-[#B63106]">*</span>
                 </h4>
                 <div className="flex flex-col gap-4">
                   {headcounts.map((hc) => (

@@ -18,6 +18,6 @@
 
 .clickable:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(1, 60, 241, 0.15);
-  border-color: rgba(56, 189, 248, 0.4); /* soft sky-blue glow */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(182, 49, 6, 0.15);
+  border-color: rgba(182, 49, 6, 0.4); /* soft sky-blue glow */
 }

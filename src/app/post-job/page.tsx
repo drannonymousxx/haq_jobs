@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function PostJobPage() {
   return (
-    <main className="bg-white min-h-screen selection:bg-[#013CF1]/20 selection:text-black">
+    <main className="bg-brand-card min-h-screen selection:bg-[#B63106]/20 selection:text-black">
       <HeroSection />
       <VisibilitySection />
       <CompanyProfileSection />

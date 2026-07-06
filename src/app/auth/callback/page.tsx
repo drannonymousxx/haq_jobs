@@ -120,14 +120,14 @@ function AuthCallbackComponent() {
   }, [router, searchParams]);
 
   return (
-    <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl max-w-sm w-full text-center flex flex-col items-center">
+    <div className="bg-brand-card p-8 rounded-3xl border border-brand-border shadow-xl max-w-sm w-full text-center flex flex-col items-center">
       {error ? (
         <div className="space-y-4">
           <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto text-red-500 font-bold text-xl">
             !
           </div>
-          <h1 className="text-xl font-bold text-slate-800 font-poppins">Authentication Error</h1>
-          <p className="text-sm text-slate-500 leading-relaxed">{error}</p>
+          <h1 className="text-xl font-bold text-brand-text font-poppins">Authentication Error</h1>
+          <p className="text-sm text-brand-text-muted leading-relaxed">{error}</p>
           <button
             onClick={() => router.push("/login")}
             className="mt-4 px-5 py-2.5 bg-black hover:bg-slate-900 text-white font-semibold text-sm rounded-xl transition-colors cursor-pointer"
@@ -137,9 +137,9 @@ function AuthCallbackComponent() {
         </div>
       ) : (
         <div className="space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-[#013CF1] mx-auto" />
-          <h1 className="text-xl font-bold text-slate-800 font-poppins">Completing Sign In</h1>
-          <p className="text-sm text-slate-500 font-medium">{status}</p>
+          <Loader2 className="w-10 h-10 animate-spin text-[#B63106] mx-auto" />
+          <h1 className="text-xl font-bold text-brand-text font-poppins">Completing Sign In</h1>
+          <p className="text-sm text-brand-text-muted font-medium">{status}</p>
         </div>
       )}
     </div>
@@ -148,11 +148,11 @@ function AuthCallbackComponent() {
 
 export default function AuthCallbackPage() {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 p-6">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg p-6">
       <Suspense fallback={
-        <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl max-w-sm w-full text-center flex flex-col items-center space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-[#013CF1] mx-auto" />
-          <h1 className="text-xl font-bold text-slate-800 font-poppins">Loading authentication...</h1>
+        <div className="bg-brand-card p-8 rounded-3xl border border-brand-border shadow-xl max-w-sm w-full text-center flex flex-col items-center space-y-4">
+          <Loader2 className="w-10 h-10 animate-spin text-[#B63106] mx-auto" />
+          <h1 className="text-xl font-bold text-brand-text font-poppins">Loading authentication...</h1>
         </div>
       }>
         <AuthCallbackComponent />

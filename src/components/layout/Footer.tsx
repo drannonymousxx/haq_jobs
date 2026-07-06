@@ -30,7 +30,7 @@ export default function Footer() {
             alt="HAQJobs"
             width={180}
             height={48}
-            className={`${styles.logoImage} object-contain`}
+            className={`${styles.logoImage} object-contain brightness-0 invert`}
           />
           <p className={styles.description}>
             The premier legal career platform connecting top talent with top opportunities.

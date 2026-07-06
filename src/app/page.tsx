@@ -64,7 +64,7 @@ const ActionBackgroundGlow = () => (
     style={{
       position: 'absolute',
       inset: 0,
-      background: 'radial-gradient(circle at center, rgba(1, 60, 241, 0.12) 0%, transparent 60%)',
+      background: 'radial-gradient(circle at center, rgba(182, 49, 6, 0.12) 0%, transparent 60%)',
     }}
   />
 );

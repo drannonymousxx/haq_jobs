@@ -238,8 +238,8 @@ export default function CandidateDiscoverPage() {
       
       {/* 1. Header Section */}
       <div className="select-none">
-        <h1 className="text-2xl font-extrabold text-slate-800 font-poppins">Discover</h1>
-        <p className="text-xs text-slate-400 font-semibold mt-1">
+        <h1 className="text-2xl font-extrabold text-brand-text font-poppins">Discover</h1>
+        <p className="text-xs text-brand-text-muted font-semibold mt-1">
           Explore legal courses, certifications, moot courts, competitions, workshops, articles and career opportunities.
         </p>
       </div>
@@ -256,9 +256,9 @@ export default function CandidateDiscoverPage() {
             setSelectedCourseId(null);
             setSelectedEventId(null);
           }}
-          className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-2xl outline-none focus:border-[#013CF1] text-xs font-semibold bg-white transition-all shadow-sm"
+          className="w-full pl-10 pr-4 py-3 border border-brand-border rounded-2xl outline-none focus:border-[#B63106] text-xs font-semibold bg-brand-card transition-all shadow-sm"
         />
-        <Search size={14} className="text-slate-400 absolute left-3.5 top-4 pointer-events-none select-none" />
+        <Search size={14} className="text-brand-text-muted absolute left-3.5 top-4 pointer-events-none select-none" />
       </div>
 
       {/* 3. Horizontal Scrolling Category Pills */}
@@ -276,8 +276,8 @@ export default function CandidateDiscoverPage() {
               }}
               className={`px-4.5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 ${
                 isActive
-                  ? "bg-[#013CF1] text-white shadow-md border-transparent"
-                  : "bg-slate-50 border border-slate-150 text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                  ? "bg-brand text-white shadow-md border-transparent"
+                  : "bg-brand-bg border border-brand-border text-brand-text-muted hover:text-brand-text-secondary hover:bg-brand-bg"
               }`}
             >
               {cat}
@@ -289,8 +289,8 @@ export default function CandidateDiscoverPage() {
       {/* 4. Courses Section */}
       <div className="space-y-4 relative">
         <div className="flex justify-between items-center select-none">
-          <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-2">
-            <BookOpen size={16} className="text-[#013CF1]" />
+          <h2 className="text-base font-extrabold text-brand-text flex items-center gap-2">
+            <BookOpen size={16} className="text-[#B63106]" />
             <span>Courses</span>
           </h2>
           
@@ -299,13 +299,13 @@ export default function CandidateDiscoverPage() {
             <div className="flex gap-1">
               <button 
                 onClick={() => scrollCarousel(coursesScrollRef, "left")}
-                className="p-1.5 rounded-lg border border-slate-150 bg-white text-slate-500 hover:text-slate-700 cursor-pointer shadow-sm"
+                className="p-1.5 rounded-lg border border-brand-border bg-brand-card text-brand-text-muted hover:text-brand-text-secondary cursor-pointer shadow-sm"
               >
                 <ChevronLeft size={14} />
               </button>
               <button 
                 onClick={() => scrollCarousel(coursesScrollRef, "right")}
-                className="p-1.5 rounded-lg border border-slate-150 bg-white text-slate-500 hover:text-slate-700 cursor-pointer shadow-sm"
+                className="p-1.5 rounded-lg border border-brand-border bg-brand-card text-brand-text-muted hover:text-brand-text-secondary cursor-pointer shadow-sm"
               >
                 <ChevronRight size={14} />
               </button>
@@ -314,7 +314,7 @@ export default function CandidateDiscoverPage() {
         </div>
 
         {filteredCourses.length === 0 ? (
-          <div className="bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 p-8 text-center text-xs text-slate-400 font-semibold select-none">
+          <div className="bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border p-8 text-center text-xs text-brand-text-muted font-semibold select-none">
             No certificate courses match your criteria.
           </div>
         ) : (
@@ -332,12 +332,12 @@ export default function CandidateDiscoverPage() {
                     onClick={() => setSelectedCourseId(isSelected ? null : course.id)}
                     className="snap-start flex-shrink-0 w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] cursor-pointer select-none"
                   >
-                    <div className={`h-full bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
-                      isSelected ? "border-[#013CF1] ring-2 ring-[#013CF1]/10 bg-blue-50/5" : "border-slate-150"
+                    <div className={`h-full bg-brand-card border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
+                      isSelected ? "border-brand ring-2 ring-brand/10 bg-brand/5" : "border-brand-border"
                     }`}>
                       {/* Gradient card visual header */}
                       <div className="h-28 bg-gradient-to-br from-blue-500 to-indigo-600 p-4 flex flex-col justify-between text-white relative">
-                        <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
+                        <div className="absolute top-3 right-3 bg-brand-card/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
                           {course.level}
                         </div>
                         <BookOpen size={20} className="opacity-90" />
@@ -348,21 +348,21 @@ export default function CandidateDiscoverPage() {
 
                       {/* Info body */}
                       <div className="p-4 space-y-1.5 flex-grow">
-                        <h3 className="text-xs font-black text-slate-800 leading-tight">
+                        <h3 className="text-xs font-black text-brand-text leading-tight">
                           {course.title}
                         </h3>
-                        <p className="text-[10px] text-slate-400 font-medium leading-relaxed line-clamp-2">
+                        <p className="text-[10px] text-brand-text-muted font-medium leading-relaxed line-clamp-2">
                           {course.shortDesc}
                         </p>
                       </div>
 
                       {/* Info footer */}
-                      <div className="px-4 pb-4 pt-1 flex justify-between items-center border-t border-slate-50 text-[9px] text-slate-400 font-bold bg-slate-50/30">
+                      <div className="px-4 pb-4 pt-1 flex justify-between items-center border-t border-brand-border text-[9px] text-brand-text-muted font-bold bg-brand-bg/30">
                         <span className="flex items-center gap-1">
-                          <Clock size={11} className="text-slate-400" />
+                          <Clock size={11} className="text-brand-text-muted" />
                           {course.duration}
                         </span>
-                        <span className="text-[#013CF1] font-black tracking-wide">
+                        <span className="text-brand font-black tracking-wide">
                           {isSelected ? "Collapse Details" : "View Details"}
                         </span>
                       </div>
@@ -383,22 +383,22 @@ export default function CandidateDiscoverPage() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="overflow-hidden border border-slate-100 shadow-lg rounded-3xl bg-slate-50/20 p-5 md:p-6"
+                    className="overflow-hidden border border-brand-border shadow-lg rounded-3xl bg-brand-bg/20 p-5 md:p-6"
                   >
                     <div className="relative space-y-6">
                       {/* Close trigger */}
                       <button 
                         onClick={() => setSelectedCourseId(null)}
-                        className="absolute top-0 right-0 p-1.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 rounded-xl cursor-pointer"
+                        className="absolute top-0 right-0 p-1.5 bg-brand-card hover:bg-brand-card border border-brand-border text-brand-text-muted rounded-xl cursor-pointer"
                       >
                         <X size={14} />
                       </button>
 
                       {/* Header block */}
                       <div className="space-y-1 pr-8">
-                        <span className="text-[9px] font-black tracking-widest text-[#013CF1] uppercase">Course Curriculum Details</span>
-                        <h2 className="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight">{course.title}</h2>
-                        <span className="text-[10px] text-slate-400 font-bold block pt-0.5">Offered by {course.provider}</span>
+                        <span className="text-[9px] font-black tracking-widest text-[#B63106] uppercase">Course Curriculum Details</span>
+                        <h2 className="text-base sm:text-lg font-black text-brand-text tracking-tight leading-tight">{course.title}</h2>
+                        <span className="text-[10px] text-brand-text-muted font-bold block pt-0.5">Offered by {course.provider}</span>
                       </div>
 
                       {/* Splitted core grid */}
@@ -406,11 +406,11 @@ export default function CandidateDiscoverPage() {
                         {/* Left column: Syllabus / Overview */}
                         <div className="md:col-span-8 space-y-4">
                           <div className="space-y-2">
-                            <h4 className="text-[10px] font-black text-slate-800 tracking-wider uppercase">Syllabus Overview</h4>
+                            <h4 className="text-[10px] font-black text-brand-text tracking-wider uppercase">Syllabus Overview</h4>
                             <div className="space-y-2.5">
                               {course.syllabus.map((step, idx) => (
-                                <div key={idx} className="flex gap-2 text-xs text-slate-600 font-semibold leading-relaxed">
-                                  <span className="w-5 h-5 rounded-full bg-blue-50 text-[#013CF1] flex items-center justify-center text-[9px] font-black border border-blue-100 flex-shrink-0">
+                                <div key={idx} className="flex gap-2 text-xs text-brand-text-secondary font-semibold leading-relaxed">
+                                  <span className="w-5 h-5 rounded-full bg-brand/10 text-brand flex items-center justify-center text-[9px] font-black border border-brand-border flex-shrink-0">
                                     {idx + 1}
                                   </span>
                                   <span className="pt-0.5">{step}</span>
@@ -420,41 +420,41 @@ export default function CandidateDiscoverPage() {
                           </div>
 
                           <div className="space-y-1.5 pt-2">
-                            <h4 className="text-[10px] font-black text-slate-800 tracking-wider uppercase flex items-center gap-1 select-none">
-                              <User size={12} className="text-slate-400" />
+                            <h4 className="text-[10px] font-black text-brand-text tracking-wider uppercase flex items-center gap-1 select-none">
+                              <User size={12} className="text-brand-text-muted" />
                               Instructor Profile
                             </h4>
-                            <p className="text-xs text-slate-500 leading-normal font-semibold pl-4.5">
+                            <p className="text-xs text-brand-text-muted leading-normal font-semibold pl-4.5">
                               {course.instructor}
                             </p>
                           </div>
                         </div>
 
                         {/* Right column: Quick stats & apply CTA */}
-                        <div className="md:col-span-4 bg-white border border-slate-100 p-4 rounded-2xl shadow-sm space-y-4 select-none">
+                        <div className="md:col-span-4 bg-brand-card border border-brand-border p-4 rounded-2xl shadow-sm space-y-4 select-none">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center text-xs">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Duration</span>
-                              <span className="text-slate-800 font-extrabold flex items-center gap-1">
-                                <Clock size={12} className="text-slate-400" />
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Duration</span>
+                              <span className="text-brand-text font-extrabold flex items-center gap-1">
+                                <Clock size={12} className="text-brand-text-muted" />
                                 {course.duration}
                               </span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-t border-slate-50 pt-2.5">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Skill Level</span>
-                              <span className="bg-blue-50 text-[#013CF1] font-black px-2 py-0.5 rounded text-[9px] uppercase tracking-wide">
+                            <div className="flex justify-between items-center text-xs border-t border-brand-border pt-2.5">
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Skill Level</span>
+                              <span className="bg-brand/10 text-brand font-black px-2 py-0.5 rounded text-[9px] uppercase tracking-wide">
                                 {course.level}
                               </span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-t border-slate-50 pt-2.5">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Access Code</span>
-                              <span className="text-slate-800 font-mono font-bold">Free Trial</span>
+                            <div className="flex justify-between items-center text-xs border-t border-brand-border pt-2.5">
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Access Code</span>
+                              <span className="text-brand-text font-mono font-bold">Free Trial</span>
                             </div>
                           </div>
-
+ 
                           <button 
                             onClick={() => alert(`Registration pending request submitted for course: ${course.title}`)}
-                            className="w-full py-3 bg-black hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wide"
+                            className="w-full py-3 bg-brand hover:bg-brand-hover text-white font-bold text-xs rounded-xl shadow transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wide"
                           >
                             <PlayCircle size={13} />
                             <span>Enroll Course</span>
@@ -474,7 +474,7 @@ export default function CandidateDiscoverPage() {
       {/* 5. Events Section */}
       <div className="space-y-4 relative">
         <div className="flex justify-between items-center select-none">
-          <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-2">
+          <h2 className="text-base font-extrabold text-brand-text flex items-center gap-2">
             <Calendar size={16} className="text-amber-500" />
             <span>Events</span>
           </h2>
@@ -484,13 +484,13 @@ export default function CandidateDiscoverPage() {
             <div className="flex gap-1">
               <button 
                 onClick={() => scrollCarousel(eventsScrollRef, "left")}
-                className="p-1.5 rounded-lg border border-slate-150 bg-white text-slate-500 hover:text-slate-700 cursor-pointer shadow-sm"
+                className="p-1.5 rounded-lg border border-slate-150 bg-brand-card text-brand-text-muted hover:text-brand-text-secondary cursor-pointer shadow-sm"
               >
                 <ChevronLeft size={14} />
               </button>
               <button 
                 onClick={() => scrollCarousel(eventsScrollRef, "right")}
-                className="p-1.5 rounded-lg border border-slate-150 bg-white text-slate-500 hover:text-slate-700 cursor-pointer shadow-sm"
+                className="p-1.5 rounded-lg border border-slate-150 bg-brand-card text-brand-text-muted hover:text-brand-text-secondary cursor-pointer shadow-sm"
               >
                 <ChevronRight size={14} />
               </button>
@@ -499,7 +499,7 @@ export default function CandidateDiscoverPage() {
         </div>
 
         {filteredEvents.length === 0 ? (
-          <div className="bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 p-8 text-center text-xs text-slate-400 font-semibold select-none">
+          <div className="bg-brand-bg/50 rounded-2xl border border-dashed border-brand-border p-8 text-center text-xs text-brand-text-muted font-semibold select-none">
             No upcoming events match your criteria.
           </div>
         ) : (
@@ -517,12 +517,12 @@ export default function CandidateDiscoverPage() {
                     onClick={() => setSelectedEventId(isSelected ? null : event.id)}
                     className="snap-start flex-shrink-0 w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] cursor-pointer select-none"
                   >
-                    <div className={`h-full bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
-                      isSelected ? "border-amber-500 ring-2 ring-amber-500/10 bg-amber-50/5" : "border-slate-150"
+                    <div className={`h-full bg-brand-card border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
+                      isSelected ? "border-amber-500 ring-2 ring-amber-500/10 bg-amber-500/5" : "border-brand-border"
                     }`}>
                       {/* Gradient card visual header */}
                       <div className="h-28 bg-gradient-to-br from-amber-500 to-rose-500 p-4 flex flex-col justify-between text-white relative">
-                        <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
+                        <div className="absolute top-3 right-3 bg-brand-card/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider">
                           {event.status}
                         </div>
                         <Calendar size={20} className="opacity-90" />
@@ -533,18 +533,18 @@ export default function CandidateDiscoverPage() {
 
                       {/* Info body */}
                       <div className="p-4 space-y-1.5 flex-grow">
-                        <h3 className="text-xs font-black text-slate-800 leading-tight">
+                        <h3 className="text-xs font-black text-brand-text leading-tight">
                           {event.title}
                         </h3>
-                        <p className="text-[10px] text-slate-400 font-medium leading-relaxed line-clamp-2">
+                        <p className="text-[10px] text-brand-text-muted font-medium leading-relaxed line-clamp-2">
                           {event.shortDesc}
                         </p>
                       </div>
 
                       {/* Info footer */}
-                      <div className="px-4 pb-4 pt-1 flex justify-between items-center border-t border-slate-50 text-[9px] text-slate-400 font-bold bg-slate-50/30">
+                      <div className="px-4 pb-4 pt-1 flex justify-between items-center border-t border-brand-border text-[9px] text-brand-text-muted font-bold bg-brand-bg/30">
                         <span className="flex items-center gap-1">
-                          <MapPin size={11} className="text-slate-400" />
+                          <MapPin size={11} className="text-brand-text-muted" />
                           {event.location}
                         </span>
                         <span className="text-amber-600 font-black tracking-wide">
@@ -568,13 +568,13 @@ export default function CandidateDiscoverPage() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="overflow-hidden border border-slate-100 shadow-lg rounded-3xl bg-slate-50/20 p-5 md:p-6"
+                    className="overflow-hidden border border-brand-border shadow-lg rounded-3xl bg-brand-bg/20 p-5 md:p-6"
                   >
                     <div className="relative space-y-6">
                       {/* Close trigger */}
                       <button 
                         onClick={() => setSelectedEventId(null)}
-                        className="absolute top-0 right-0 p-1.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 rounded-xl cursor-pointer"
+                        className="absolute top-0 right-0 p-1.5 bg-brand-card hover:bg-brand-card border border-brand-border text-brand-text-muted rounded-xl cursor-pointer"
                       >
                         <X size={14} />
                       </button>
@@ -582,8 +582,8 @@ export default function CandidateDiscoverPage() {
                       {/* Header block */}
                       <div className="space-y-1 pr-8">
                         <span className="text-[9px] font-black tracking-widest text-amber-600 uppercase">Event Schedule & Highlights</span>
-                        <h2 className="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight">{event.title}</h2>
-                        <span className="text-[10px] text-slate-400 font-bold block pt-0.5">Hosted by {event.organizer}</span>
+                        <h2 className="text-base sm:text-lg font-black text-brand-text tracking-tight leading-tight">{event.title}</h2>
+                        <span className="text-[10px] text-brand-text-muted font-bold block pt-0.5">Hosted by {event.organizer}</span>
                       </div>
 
                       {/* Splitted core grid */}
@@ -591,17 +591,17 @@ export default function CandidateDiscoverPage() {
                         {/* Left column: Key Highlights */}
                         <div className="md:col-span-8 space-y-4">
                           <div className="space-y-2">
-                            <h4 className="text-[10px] font-black text-slate-800 tracking-wider uppercase">Event Overview</h4>
-                            <p className="text-xs text-slate-500 leading-relaxed font-semibold pl-1">
+                            <h4 className="text-[10px] font-black text-brand-text tracking-wider uppercase">Event Overview</h4>
+                            <p className="text-xs text-brand-text-muted leading-relaxed font-semibold pl-1">
                               {event.shortDesc}
                             </p>
                           </div>
 
                           <div className="space-y-2 pt-1">
-                            <h4 className="text-[10px] font-black text-slate-800 tracking-wider uppercase">Key Highlights</h4>
+                            <h4 className="text-[10px] font-black text-brand-text tracking-wider uppercase">Key Highlights</h4>
                             <div className="space-y-2.5">
                               {event.highlights.map((highlight, idx) => (
-                                <div key={idx} className="flex gap-2 text-xs text-slate-600 font-semibold leading-relaxed">
+                                <div key={idx} className="flex gap-2 text-xs text-brand-text-secondary font-semibold leading-relaxed">
                                   <span className="text-amber-500 font-bold">✓</span>
                                   <span>{highlight}</span>
                                 </div>
@@ -611,33 +611,33 @@ export default function CandidateDiscoverPage() {
                         </div>
 
                         {/* Right column: Venue stats & register CTA */}
-                        <div className="md:col-span-4 bg-white border border-slate-100 p-4 rounded-2xl shadow-sm space-y-4 select-none">
+                        <div className="md:col-span-4 bg-brand-card border border-brand-border p-4 rounded-2xl shadow-sm space-y-4 select-none">
                           <div className="space-y-3">
                             <div className="flex justify-between items-center text-xs">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Date & Timing</span>
-                              <span className="text-slate-800 font-extrabold flex items-center gap-1 text-[11px]">
-                                <Calendar size={12} className="text-slate-400" />
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Date & Timing</span>
+                              <span className="text-brand-text font-extrabold flex items-center gap-1 text-[11px]">
+                                <Calendar size={12} className="text-brand-text-muted" />
                                 {event.date}
                               </span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-t border-slate-50 pt-2.5">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Location Venue</span>
-                              <span className="text-slate-800 font-extrabold flex items-center gap-1">
-                                <MapPin size={12} className="text-slate-400" />
+                            <div className="flex justify-between items-center text-xs border-t border-brand-border pt-2.5">
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Location Venue</span>
+                              <span className="text-brand-text font-extrabold flex items-center gap-1">
+                                <MapPin size={12} className="text-brand-text-muted" />
                                 {event.location}
                               </span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-t border-slate-50 pt-2.5">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase">Timeline Duration</span>
-                              <span className="text-slate-800 font-semibold text-[11px] truncate max-w-[140px]">
+                            <div className="flex justify-between items-center text-xs border-t border-brand-border pt-2.5">
+                              <span className="text-[10px] text-brand-text-muted font-bold uppercase">Timeline Duration</span>
+                              <span className="text-brand-text font-semibold text-[11px] truncate max-w-[140px]">
                                 {event.schedule}
                               </span>
                             </div>
                           </div>
-
+ 
                           <button 
                             onClick={() => alert(`Registration request received for event: ${event.title}`)}
-                            className="w-full py-3 bg-black hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wide"
+                            className="w-full py-3 bg-brand hover:bg-brand-hover text-white font-bold text-xs rounded-xl shadow transition-all cursor-pointer flex items-center justify-center gap-1.5 uppercase tracking-wide"
                           >
                             <Award size={13} />
                             <span>Register Event</span>

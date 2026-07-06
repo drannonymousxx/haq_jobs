@@ -121,8 +121,8 @@ export default function CandidateReferPage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500 font-poppins">Loading your referral portal...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted font-poppins">Loading your referral portal...</p>
       </div>
     );
   }
@@ -271,7 +271,7 @@ export default function CandidateReferPage() {
 
       {/* 1. Curved Hero Section */}
       <div 
-        className="relative overflow-visible bg-[#013CF1] text-white pt-8 pb-20 flex flex-col items-center shadow-lg select-none"
+        className="relative overflow-visible bg-[#B63106] text-white pt-8 pb-20 flex flex-col items-center shadow-lg select-none"
         style={{
           borderBottomLeftRadius: "50% 80px",
           borderBottomRightRadius: "50% 80px"
@@ -281,7 +281,7 @@ export default function CandidateReferPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] bg-blue-400/25 rounded-full blur-[70px] pointer-events-none" />
 
         {/* Small Promotional Pill Badge */}
-        <div className="z-10 bg-white/10 backdrop-blur-md border border-white/15 px-4.5 py-1.5 rounded-full text-[9px] font-black tracking-widest uppercase text-blue-100">
+        <div className="z-10 bg-brand-card/10 backdrop-blur-md border border-white/15 px-4.5 py-1.5 rounded-full text-[9px] font-black tracking-widest uppercase text-blue-100">
           Limited Time Referral Campaign
         </div>
 
@@ -310,7 +310,7 @@ export default function CandidateReferPage() {
               }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="w-[300px] h-[175px] sm:w-[360px] sm:h-[205px] bg-gradient-to-tr from-white to-blue-50/95 border border-white rounded-3xl shadow-2xl p-5 flex cursor-pointer select-none text-slate-800 relative overflow-hidden"
+              className="w-[300px] h-[175px] sm:w-[360px] sm:h-[205px] bg-gradient-to-tr from-white to-blue-50/95 border border-white rounded-3xl shadow-2xl p-5 flex cursor-pointer select-none text-brand-text relative overflow-hidden"
             >
               {/* Overlay shading */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-transparent to-indigo-50/20 pointer-events-none" />
@@ -319,15 +319,15 @@ export default function CandidateReferPage() {
                 {/* Left Text Block */}
                 <div className="w-[58%] h-full flex flex-col justify-between py-1 text-left" style={{ transform: "translateZ(30px)" }}>
                   <div className="space-y-1">
-                    <span className="text-[9px] font-black tracking-widest text-[#013CF1] uppercase">Invite Friends</span>
-                    <h3 className="text-sm font-black text-slate-800 leading-tight">Earn ₹100</h3>
-                    <p className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">or</p>
-                    <h4 className="text-xs font-extrabold text-slate-700 leading-snug">Unlock 1 Month Premium</h4>
+                    <span className="text-[9px] font-black tracking-widest text-[#B63106] uppercase">Invite Friends</span>
+                    <h3 className="text-sm font-black text-brand-text leading-tight">Earn ₹100</h3>
+                    <p className="text-[8px] text-brand-text-muted font-bold uppercase tracking-wider">or</p>
+                    <h4 className="text-xs font-extrabold text-brand-text-secondary leading-snug">Unlock 1 Month Premium</h4>
                   </div>
                   
-                  <div className="pt-2 border-t border-slate-100 mt-2">
-                    <span className="text-[7px] text-slate-400 block font-bold uppercase">Referral Code</span>
-                    <span className="text-[10px] font-black tracking-wider text-[#013CF1] font-mono">{referralCode}</span>
+                  <div className="pt-2 border-t border-brand-border mt-2">
+                    <span className="text-[7px] text-brand-text-muted block font-bold uppercase">Referral Code</span>
+                    <span className="text-[10px] font-black tracking-wider text-[#B63106] font-mono">{referralCode}</span>
                   </div>
                 </div>
 
@@ -371,10 +371,10 @@ export default function CandidateReferPage() {
 
       {/* 2. Concise Content Section */}
       <div className="text-center max-w-xl mx-auto space-y-2 pt-4 px-4 select-none">
-        <h2 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-black text-brand-text tracking-tight">
           Refer Friends. Earn Rewards.
         </h2>
-        <p className="text-xs text-slate-400 font-semibold leading-relaxed max-w-md mx-auto">
+        <p className="text-xs text-brand-text-muted font-semibold leading-relaxed max-w-md mx-auto">
           Invite your classmates and fellow legal professionals to HAQJobs. When they register and complete their first application, you unlock exclusive referral rewards.
         </p>
       </div>
@@ -385,25 +385,25 @@ export default function CandidateReferPage() {
           
           {/* Reward 1 */}
           <div className="flex-1 space-y-1">
-            <h3 className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
+            <h3 className="text-2xl sm:text-3xl font-black text-brand-text tracking-tight leading-none">
               ₹100 Cashback
             </h3>
-            <p className="text-xs text-slate-400 font-semibold max-w-xs mx-auto leading-relaxed">
+            <p className="text-xs text-brand-text-muted font-semibold max-w-xs mx-auto leading-relaxed">
               Earn ₹100 directly in your registered UPI/bank account after a successful referral.
             </p>
           </div>
 
           {/* Divider plus */}
-          <div className="text-xl font-light text-slate-300 select-none flex items-center justify-center h-8 w-8 rounded-full border border-slate-100 bg-slate-50/50 shadow-sm flex-shrink-0">
+          <div className="text-xl font-light text-slate-300 select-none flex items-center justify-center h-8 w-8 rounded-full border border-brand-border bg-brand-bg/50 shadow-sm flex-shrink-0">
             +
           </div>
 
           {/* Reward 2 */}
           <div className="flex-1 space-y-1">
-            <h3 className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
+            <h3 className="text-2xl sm:text-3xl font-black text-brand-text tracking-tight leading-none">
               1 Month Premium
             </h3>
-            <p className="text-xs text-slate-400 font-semibold max-w-xs mx-auto leading-relaxed">
+            <p className="text-xs text-brand-text-muted font-semibold max-w-xs mx-auto leading-relaxed">
               Unlock HAQJobs Premium for one month with premium features and recruiter boosts.
             </p>
           </div>
@@ -416,14 +416,14 @@ export default function CandidateReferPage() {
         <div className="relative flex flex-col md:flex-row items-stretch justify-between gap-8 max-w-4xl mx-auto py-4">
           
           {/* Timeline connecting line background */}
-          <div className="absolute top-[38px] left-[12%] right-[12%] h-[2px] bg-slate-100 hidden md:block z-0" />
+          <div className="absolute top-[38px] left-[12%] right-[12%] h-[2px] bg-brand-bg hidden md:block z-0" />
           
           {/* Timeline animated line drawing */}
           <motion.div 
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 1.2, ease: "easeInOut", delay: 0.3 }}
-            className="absolute top-[38px] left-[12%] right-[12%] h-[2px] bg-[#013CF1] origin-left hidden md:block z-0"
+            className="absolute top-[38px] left-[12%] right-[12%] h-[2px] bg-[#B63106] origin-left hidden md:block z-0"
           />
 
           {[
@@ -457,17 +457,17 @@ export default function CandidateReferPage() {
                 className="flex-1 flex flex-col items-center text-center gap-3 relative z-10 group"
               >
                 {/* Timeline Milestone Circle */}
-                <div className="w-11 h-11 rounded-full bg-white border-2 border-slate-200 text-slate-400 group-hover:border-[#013CF1] group-hover:text-[#013CF1] flex items-center justify-center font-bold text-xs transition-all shadow-sm relative select-none">
+                <div className="w-11 h-11 rounded-full bg-brand-card border-2 border-brand-border text-brand-text-muted group-hover:border-[#B63106] group-hover:text-[#B63106] flex items-center justify-center font-bold text-xs transition-all shadow-sm relative select-none">
                   {/* Outer active pulse ring */}
                   <div className="absolute inset-0 rounded-full border border-blue-500/0 group-hover:border-blue-500/30 group-hover:scale-125 transition-all duration-300" />
                   <span>{item.step}</span>
                 </div>
                 
                 <div className="space-y-1 px-2 select-none">
-                  <h4 className="text-xs font-black text-slate-800 group-hover:text-[#013CF1] transition-colors">
+                  <h4 className="text-xs font-black text-brand-text group-hover:text-[#B63106] transition-colors">
                     {item.title}
                   </h4>
-                  <p className="text-[10px] text-slate-400 font-semibold leading-relaxed max-w-[170px] mx-auto">
+                  <p className="text-[10px] text-brand-text-muted font-semibold leading-relaxed max-w-[170px] mx-auto">
                     {item.desc}
                   </p>
                 </div>
@@ -478,24 +478,24 @@ export default function CandidateReferPage() {
       </div>
 
       {/* 5. Invite CTA and Clipboard Link details */}
-      <div className="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-center gap-4 justify-between max-w-2xl mx-auto">
+      <div className="bg-brand-card border border-brand-border rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row items-center gap-4 justify-between max-w-2xl mx-auto">
         <div className="flex-grow w-full max-w-sm space-y-1">
-          <label className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block pl-1 select-none">
+          <label className="text-[9px] font-extrabold text-brand-text-muted uppercase tracking-widest block pl-1 select-none">
             Invite Link
           </label>
-          <div className="w-full flex items-center gap-2 p-1.5 bg-slate-50 border border-slate-150 rounded-xl">
+          <div className="w-full flex items-center gap-2 p-1.5 bg-brand-bg border border-slate-150 rounded-xl">
             <input
               type="text"
               readOnly
               value={referralLink}
-              className="flex-grow bg-transparent outline-none text-[10px] font-bold text-slate-500 pl-2 select-all cursor-text font-mono"
+              className="flex-grow bg-transparent outline-none text-[10px] font-bold text-brand-text-muted pl-2 select-all cursor-text font-mono"
             />
             <button
               onClick={handleCopyLink}
               className={`px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all duration-200 flex items-center gap-1 cursor-pointer select-none ${
                 copied 
                   ? "bg-emerald-500 text-white shadow-sm" 
-                  : "bg-slate-200 text-slate-600 hover:bg-slate-300"
+                  : "bg-slate-200 text-brand-text-secondary hover:bg-slate-300"
               }`}
             >
               {copied ? <Check size={10} /> : <Copy size={10} />}
@@ -514,7 +514,7 @@ export default function CandidateReferPage() {
       </div>
 
       {/* 6. Footer */}
-      <div className="pt-8 border-t border-slate-100 flex justify-center text-[10px] font-bold select-none text-slate-400">
+      <div className="pt-8 border-t border-brand-border flex justify-center text-[10px] font-bold select-none text-brand-text-muted">
         <span>© 2026 HAQJobs. All rights reserved.</span>
       </div>
 

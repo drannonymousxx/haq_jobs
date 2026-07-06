@@ -18,10 +18,10 @@ export default function LegalCategories() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-[#191D20] mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-brand-text mb-4">
           Explore by Practice Area
         </h2>
-        <p className="text-[#191D20]/60 max-w-2xl mx-auto mb-10">
+        <p className="text-brand-text/60 max-w-2xl mx-auto mb-10">
           From big law to boutique firms and tech startups, find the exact legal niche that matches your career aspirations.
         </p>
       </motion.div>
@@ -42,7 +42,7 @@ export default function LegalCategories() {
             }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="px-5 py-2.5 bg-white border border-[#191D20]/10 rounded-full text-sm font-medium text-[#191D20]/80 hover:text-[#013CF1] hover:border-[#013CF1]/30 hover:shadow-sm transition-colors"
+            className="px-5 py-2.5 bg-brand-card border border-[#191D20]/10 rounded-full text-sm font-medium text-brand-text/80 hover:text-[#B63106] hover:border-[#B63106]/30 hover:shadow-sm transition-colors"
           >
             {category}
           </motion.button>

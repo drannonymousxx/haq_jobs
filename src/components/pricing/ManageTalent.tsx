@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ManageTalent() {
   return (
-    <section className="w-full bg-white py-12 md:py-16 mb-10">
+    <section className="w-full bg-brand-card py-12 md:py-16 mb-10">
       <div className="max-w-[1080px] mx-auto px-6 lg:px-8">
         
         {/* Section Header */}
@@ -15,7 +15,7 @@ export default function ManageTalent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[32px] md:text-[40px] font-bold text-[#013CF1] tracking-tight mb-4"
+            className="text-[32px] md:text-[40px] font-bold text-[#B63106] tracking-tight mb-4"
           >
             Manage Talent
           </motion.h2>
@@ -37,17 +37,17 @@ export default function ManageTalent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="w-full max-w-[500px] flex flex-col p-8 md:p-12 rounded-[32px] border border-[#E2E8F0] shadow-[0_12px_40px_rgb(0,0,0,0.04)] bg-white"
+            className="w-full max-w-[500px] flex flex-col p-8 md:p-12 rounded-[32px] border border-brand-border shadow-[0_12px_40px_rgb(0,0,0,0.04)] bg-brand-card"
           >
             <div className="mb-8">
-              <span className="text-[19px] font-bold text-[#191D20] block mb-6">Track</span>
+              <span className="text-[19px] font-bold text-brand-text block mb-6">Track</span>
               <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-[48px] md:text-[56px] font-bold text-[#191D20] leading-none tracking-tight">Free</span>
+                <span className="text-[48px] md:text-[56px] font-bold text-brand-text leading-none tracking-tight">Free</span>
               </div>
               <span className="text-[15px] text-[#475569]">Simple ATS for legal hiring teams</span>
             </div>
 
-            <div className="flex-1 border-t border-[#E2E8F0] pt-8 mb-10">
+            <div className="flex-1 border-t border-brand-border pt-8 mb-10">
               <ul className="space-y-4">
                 {[
                   "ATS integration",
@@ -56,10 +56,10 @@ export default function ManageTalent() {
                   "Legal hiring workflow management"
                 ].map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#191D20] shrink-0 mt-[2px]" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="w-5 h-5 text-brand-text shrink-0 mt-[2px]" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-[15px] text-[#191D20] leading-tight">{feature}</span>
+                    <span className="text-[15px] text-brand-text leading-tight">{feature}</span>
                   </li>
                 ))}
               </ul>

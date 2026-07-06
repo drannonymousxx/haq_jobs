@@ -20,25 +20,25 @@ export default function StatsCard({
   label,
   value,
   icon: Icon,
-  iconBgColor = "bg-blue-50",
-  iconColor = "text-[#013CF1]",
+  iconBgColor = "bg-brand/10",
+  iconColor = "text-[#B63106]",
   trend,
   description
 }: StatsCardProps) {
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-all duration-300">
+    <div className="bg-brand-card p-6 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-all duration-300">
       
       {/* Absolute decorative accent */}
-      <div className="absolute top-0 left-0 w-full h-[3px] bg-transparent group-hover:bg-[#013CF1] transition-all duration-300"></div>
+      <div className="absolute top-0 left-0 w-full h-[3px] bg-transparent group-hover:bg-[#B63106] transition-all duration-300"></div>
 
       <div className="flex justify-between items-start gap-4">
         
         {/* Metric info */}
         <div className="space-y-1">
-          <span className="block text-xs font-bold text-slate-400 uppercase tracking-widest select-none">
+          <span className="block text-xs font-bold text-brand-text-muted uppercase tracking-widest select-none">
             {label}
           </span>
-          <span className="block text-2xl sm:text-3xl font-black text-slate-800 font-poppins leading-none">
+          <span className="block text-2xl sm:text-3xl font-black text-brand-text font-poppins leading-none">
             {value}
           </span>
         </div>
@@ -54,7 +54,7 @@ export default function StatsCard({
 
       {/* Footer detail (Trend or description) */}
       {(trend || description) && (
-        <div className="flex items-center gap-1.5 pt-4 mt-4 border-t border-slate-50 text-xs font-medium text-slate-500">
+        <div className="flex items-center gap-1.5 pt-4 mt-4 border-t border-slate-50 text-xs font-medium text-brand-text-muted">
           {trend && (
             <span className={`flex items-center gap-0.5 font-bold ${trend.isPositive ? "text-emerald-600" : "text-rose-500"}`}>
               {trend.isPositive ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}

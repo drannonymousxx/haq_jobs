@@ -38,7 +38,7 @@ export default function FeatureSectionTwo() {
               transition={{ delay: 0.3 }}
               className="absolute top-12 -left-12 w-16 h-8 bg-[#3B82F6] rounded-full border-4 border-[#A7E9C3] flex items-center p-1"
             >
-              <div className="w-4 h-4 rounded-full bg-white" />
+              <div className="w-4 h-4 rounded-full bg-brand-card" />
             </motion.div>
 
             <motion.div 
@@ -59,7 +59,7 @@ export default function FeatureSectionTwo() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[2.5rem] md:text-[3.5rem] font-bold text-[#191D20] leading-[1.1] mb-6"
+            className="text-[2.5rem] md:text-[3.5rem] font-bold text-brand-text leading-[1.1] mb-6"
           >
             Brand yourself for new opportunities
           </motion.h2>
@@ -69,7 +69,7 @@ export default function FeatureSectionTwo() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl md:text-2xl text-[#191D20]/80 mb-12 leading-snug"
+            className="text-xl md:text-2xl text-brand-text/80 mb-12 leading-snug"
           >
             Create a profile that highlights your unique skills and preferences, then apply to jobs with just one click
           </motion.p>
@@ -83,14 +83,14 @@ export default function FeatureSectionTwo() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex gap-5 group cursor-default"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(1,60,241,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(1,60,241,0.12)] mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#013CF1]">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)] mt-1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
                   <path d="M12 20v-6M12 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-1">One click apply</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-base">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">One click apply</h3>
+                <p className="text-brand-text/70 leading-relaxed text-base">
                   Say goodbye to cover letters - your profile is all you need. One click to apply then you&apos;re done.
                 </p>
               </div>
@@ -104,14 +104,14 @@ export default function FeatureSectionTwo() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex gap-5 group cursor-default"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(1,60,241,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(1,60,241,0.12)] mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#013CF1]">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)] mt-1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-1">Set your preferences</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-base">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Set your preferences</h3>
+                <p className="text-brand-text/70 leading-relaxed text-base">
                   Streamline the interview process by setting your expectations (salary, industry, culture, etc.) upfront.
                 </p>
               </div>

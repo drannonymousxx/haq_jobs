@@ -126,15 +126,15 @@ export default function CandidateDashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <Loader2 className="w-10 h-10 animate-spin text-[#013CF1]" />
-        <p className="text-sm font-semibold text-slate-500">Securing dashboard session...</p>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Securing dashboard session...</p>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-full bg-slate-50/50 flex overflow-hidden">
+    <div className="h-screen w-full bg-brand-bg/50 flex overflow-hidden">
       
       {/* Reusable left sidebar */}
       <Sidebar 

@@ -118,7 +118,7 @@ export default function TopNav({
 
   const searchStatusOptions = [
     { label: "Ready to Interview", value: "Ready to Interview", color: "bg-emerald-500" },
-    { label: "Open to Opportunities", value: "Open to Opportunities", color: "bg-blue-500" },
+    { label: "Open to Opportunities", value: "Open to Opportunities", color: "bg-brand/100" },
     { label: "Not Looking", value: "Not Looking", color: "bg-slate-400" }
   ];
 
@@ -138,20 +138,20 @@ export default function TopNav({
   ];
 
   const actualProfileOptions = profileOptions || defaultProfileOptions;
-  const activeStatusColor = searchStatusOptions.find(o => o.value === searchStatus)?.color || "bg-blue-500";
+  const activeStatusColor = searchStatusOptions.find(o => o.value === searchStatus)?.color || "bg-brand/100";
 
   return (
-    <header className="bg-white border-b border-slate-100 shadow-sm h-16 w-full sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6">
+    <header className="bg-brand-card border-b border-brand-border shadow-sm h-16 w-full sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6">
       
       {/* Left section: Hamburger toggler */}
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuToggle}
-          className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-[#013CF1] hover:bg-slate-50 transition-colors cursor-pointer"
+          className="lg:hidden p-2 rounded-xl text-brand-text-muted hover:text-[#B63106] hover:bg-brand-bg transition-colors cursor-pointer"
         >
           <Menu size={20} />
         </button>
-        <span className="hidden sm:inline-block text-xs font-semibold text-slate-400">
+        <span className="hidden sm:inline-block text-xs font-semibold text-brand-text-muted">
           Last updated today
         </span>
       </div>
@@ -162,7 +162,7 @@ export default function TopNav({
         {/* Search Action */}
         <button
           onClick={onSearchClick}
-          className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+          className="p-2 rounded-xl text-brand-text-muted hover:text-brand-text-secondary hover:bg-brand-bg transition-colors cursor-pointer"
           title="Search Opportunities"
         >
           <Search size={18} />
@@ -172,11 +172,11 @@ export default function TopNav({
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors relative cursor-pointer"
+            className="p-2 rounded-xl text-brand-text-muted hover:text-brand-text-secondary hover:bg-brand-bg transition-colors relative cursor-pointer"
           >
             <Bell size={18} />
             {notifications.length > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-[#013CF1] text-white text-[8px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center ring-2 ring-white">
+              <span className="absolute -top-0.5 -right-0.5 bg-[#B63106] text-white text-[8px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center ring-2 ring-brand-border">
                 {notifications.length}
               </span>
             )}
@@ -190,12 +190,12 @@ export default function TopNav({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-3 w-80 bg-white rounded-2xl border border-slate-100 shadow-xl p-4 z-50 text-left"
+                  className="absolute right-0 mt-3 w-80 bg-brand-card rounded-2xl border border-brand-border shadow-xl p-4 z-50 text-left"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-bold text-slate-800 font-poppins text-sm">Notifications</h4>
+                    <h4 className="font-bold text-brand-text font-poppins text-sm">Notifications</h4>
                     {notifications.length > 0 && (
-                      <span className="text-[9px] bg-blue-50 text-[#013CF1] font-black px-2 py-0.5 rounded-full">
+                      <span className="text-[9px] bg-brand/10 text-[#B63106] font-black px-2 py-0.5 rounded-full">
                         {notifications.length} New
                       </span>
                     )}
@@ -203,24 +203,24 @@ export default function TopNav({
                   <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
                     {notifications.length > 0 ? (
                       notifications.map((n) => (
-                        <div key={n.id} className="p-2 hover:bg-slate-50 rounded-lg transition-colors text-xs flex justify-between gap-2 items-start border-b border-slate-50 pb-2">
+                        <div key={n.id} className="p-2 hover:bg-brand-bg rounded-lg transition-colors text-xs flex justify-between gap-2 items-start border-b border-slate-50 pb-2">
                           <div className="space-y-0.5">
-                            <p className="font-bold text-slate-700 leading-tight">{n.title}</p>
-                            <p className="text-slate-400 text-[10px] leading-relaxed">{n.content}</p>
+                            <p className="font-bold text-brand-text-secondary leading-tight">{n.title}</p>
+                            <p className="text-brand-text-muted text-[10px] leading-relaxed">{n.content}</p>
                           </div>
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDismissNotification(n.id);
                             }}
-                            className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-650 transition-colors"
+                            className="p-1 hover:bg-brand-bg rounded text-brand-text-muted hover:text-slate-650 transition-colors"
                           >
                             <Check size={11} />
                           </button>
                         </div>
                       ))
                     ) : (
-                      <p className="text-xs text-slate-400 font-medium italic text-center py-4">No notifications.</p>
+                      <p className="text-xs text-brand-text-muted font-medium italic text-center py-4">No notifications.</p>
                     )}
                   </div>
                 </motion.div>
@@ -234,14 +234,14 @@ export default function TopNav({
           {mounted ? (
             <button
               onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-100 hover:border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-3 py-1.5 bg-brand-bg border border-brand-border hover:border-brand-border rounded-xl text-xs font-semibold text-brand-text-secondary transition-colors cursor-pointer"
             >
               <span className={`w-2.5 h-2.5 rounded-full ${activeStatusColor}`} />
               <span>{searchStatus}</span>
-              <ChevronDown size={12} className="text-slate-400" />
+              <ChevronDown size={12} className="text-brand-text-muted" />
             </button>
           ) : (
-            <div className="w-36 h-8 bg-slate-50 border border-slate-100 rounded-xl animate-pulse" />
+            <div className="w-36 h-8 bg-brand-bg border border-brand-border rounded-xl animate-pulse" />
           )}
 
           {mounted && (
@@ -252,19 +252,19 @@ export default function TopNav({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-56 bg-white rounded-xl border border-slate-100 shadow-lg py-1 z-50 text-left"
+                  className="absolute right-0 mt-2 w-56 bg-brand-card rounded-xl border border-brand-border shadow-lg py-1 z-50 text-left"
                 >
                   {searchStatusOptions.map((opt) => (
                     <button
                       key={opt.value}
                       onClick={() => handleStatusSelect(opt.value)}
-                      className="w-full flex items-center justify-between px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-between px-4 py-2 text-xs font-medium text-brand-text-secondary hover:bg-brand-bg hover:text-brand-text transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${opt.color}`} />
                         <span>{opt.label}</span>
                       </div>
-                      {searchStatus === opt.value && <Check size={12} className="text-[#013CF1]" />}
+                      {searchStatus === opt.value && <Check size={12} className="text-[#B63106]" />}
                     </button>
                   ))}
                 </motion.div>
@@ -274,7 +274,7 @@ export default function TopNav({
         </div>
 
         {/* Profile Dropdown */}
-        <div className="relative border-l border-slate-100 pl-2 sm:pl-4" ref={profileRef}>
+        <div className="relative border-l border-brand-border pl-2 sm:pl-4" ref={profileRef}>
           <button
             onClick={() => setShowProfileDropdown(!showProfileDropdown)}
             className="flex items-center gap-1.5 focus:outline-none cursor-pointer group"
@@ -286,11 +286,11 @@ export default function TopNav({
                 className="w-9 h-9 rounded-full object-cover border border-blue-200/50"
               />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-[#013CF1]/10 text-[#013CF1] border border-blue-200/50 flex items-center justify-center font-bold text-sm group-hover:bg-[#013CF1]/20 transition-all">
+              <div className="w-9 h-9 rounded-full bg-[#B63106]/10 text-[#B63106] border border-blue-200/50 flex items-center justify-center font-bold text-sm group-hover:bg-[#B63106]/20 transition-all">
                 {mounted ? (userName?.charAt(0).toUpperCase() || "U") : "U"}
               </div>
             )}
-            <ChevronDown size={14} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
+            <ChevronDown size={14} className="text-brand-text-muted group-hover:text-brand-text-secondary transition-colors" />
           </button>
 
           {mounted && (
@@ -301,12 +301,12 @@ export default function TopNav({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-3 w-64 bg-white rounded-2xl border border-slate-100 shadow-xl py-2 z-50 text-left overflow-hidden"
+                  className="absolute right-0 mt-3 w-64 bg-brand-card rounded-2xl border border-brand-border shadow-xl py-2 z-50 text-left overflow-hidden"
                 >
                   {/* User card header */}
-                  <div className="px-4 py-3 border-b border-slate-50 bg-slate-50/20">
-                    <p className="text-sm font-bold text-slate-800 font-poppins">{userName}</p>
-                    {userEmail && <p className="text-[11px] text-slate-400 mt-0.5 truncate">{userEmail}</p>}
+                  <div className="px-4 py-3 border-b border-slate-50 bg-brand-bg/20">
+                    <p className="text-sm font-bold text-brand-text font-poppins">{userName}</p>
+                    {userEmail && <p className="text-[11px] text-brand-text-muted mt-0.5 truncate">{userEmail}</p>}
                   </div>
 
                   {/* Dropdown links */}
@@ -319,9 +319,9 @@ export default function TopNav({
                             key={opt.name + i}
                             href={opt.href}
                             onClick={() => setShowProfileDropdown(false)}
-                            className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#013CF1] transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-brand-text-secondary hover:bg-brand-bg hover:text-[#B63106] transition-colors"
                           >
-                            <Icon size={14} className="text-slate-400" />
+                            <Icon size={14} className="text-brand-text-muted" />
                             <span>{opt.name}</span>
                           </Link>
                         );
@@ -333,9 +333,9 @@ export default function TopNav({
                               opt.onClick?.();
                               setShowProfileDropdown(false);
                             }}
-                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#013CF1] transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-brand-text-secondary hover:bg-brand-bg hover:text-[#B63106] transition-colors cursor-pointer"
                           >
-                            <Icon size={14} className="text-slate-400" />
+                            <Icon size={14} className="text-brand-text-muted" />
                             <span>{opt.name}</span>
                           </button>
                         );

@@ -14,7 +14,7 @@ export default function FeatureSectionOne() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[3rem] md:text-[4.5rem] font-bold text-[#191D20] leading-[1.02] mb-6 max-w-2xl tracking-tight"
+            className="text-[3rem] md:text-[4.5rem] font-bold text-brand-text leading-[1.02] mb-6 max-w-2xl tracking-tight"
           >
             Find work that works for you
           </motion.h2>
@@ -24,7 +24,7 @@ export default function FeatureSectionOne() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-[#191D20]/80 mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-brand-text/80 mb-12 leading-relaxed"
           >
             A personalized and private job search, with all the info you care about, all upfront.
           </motion.p>
@@ -38,14 +38,14 @@ export default function FeatureSectionOne() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex gap-5 group cursor-default"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(1,60,241,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(1,60,241,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#013CF1]">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
                   <path d="M15 3h6v6" /><path d="M9 21H3v-6" /><path d="M21 3l-7 7" /><path d="M3 21l7-7" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-2">Stay in the know</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-lg">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Stay in the know</h3>
+                <p className="text-brand-text/70 leading-relaxed text-lg">
                   No guessing games. View compensation and firm culture before you apply.
                 </p>
               </div>
@@ -59,14 +59,14 @@ export default function FeatureSectionOne() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex gap-5 group cursor-default"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(1,60,241,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(1,60,241,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#013CF1]">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
                   <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="16" /><line x1="8" y1="12" x2="16" y2="12" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-2">Personalized search</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-lg">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Personalized search</h3>
+                <p className="text-brand-text/70 leading-relaxed text-lg">
                   Personalized filters make it quick and easy to find the legal roles you care about.
                 </p>
               </div>
@@ -80,14 +80,14 @@ export default function FeatureSectionOne() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex gap-5 group cursor-default"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(1,60,241,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(1,60,241,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#013CF1]">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
                   <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-2">Unique roles, exciting teams</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-lg">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Unique roles, exciting teams</h3>
+                <p className="text-brand-text/70 leading-relaxed text-lg">
                   Discover unique legal jobs with future-defining firms.
                 </p>
               </div>
@@ -105,7 +105,7 @@ export default function FeatureSectionOne() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, type: "spring" }}
-            className="absolute top-20 left-10 w-4/5 bg-white h-24 rounded-full shadow-lg flex items-center px-6 border border-[#2563EB]/10 group cursor-default hover:scale-[1.02] transition-transform duration-300"
+            className="absolute top-20 left-10 w-4/5 bg-brand-card h-24 rounded-full shadow-lg flex items-center px-6 border border-[#2563EB]/10 group cursor-default hover:scale-[1.02] transition-transform duration-300"
           >
             <div className="w-8 h-8 rounded-full border-4 border-[#2563EB] flex-shrink-0 bg-[#60A5FA]/20" />
             <div className="ml-4 w-1/2 h-4 rounded-full bg-[#60A5FA]/20" />

@@ -50,12 +50,12 @@ const stories = [
 
 export default function FeaturedStories() {
   return (
-    <section className="bg-white pt-10 pb-24 md:pt-14 md:pb-32 w-full">
+    <section className="bg-brand-card pt-10 pb-24 md:pt-14 md:pb-32 w-full">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
 
         {/* Section Header */}
         <div className="mb-12">
-          <span className="inline-block text-[13px] font-bold tracking-[0.2em] text-[#013CF1] uppercase">
+          <span className="inline-block text-[13px] font-bold tracking-[0.2em] text-[#B63106] uppercase">
             Featured Stories
           </span>
         </div>
@@ -69,23 +69,23 @@ export default function FeaturedStories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-              className="group flex flex-col bg-white rounded-3xl border border-[#E2E8F0] overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300"
+              className="group flex flex-col bg-brand-card rounded-3xl border border-brand-border overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300"
             >
               {/* Top Strip (Logo Area Placeholder) */}
-              <div className="bg-[#EEF2FF] px-8 py-6 border-b border-[#E2E8F0] flex items-center">
-                <span className="text-xl font-bold text-[#191D20] tracking-tight">
+              <div className="bg-[#EEF2FF] px-8 py-6 border-b border-brand-border flex items-center">
+                <span className="text-xl font-bold text-brand-text tracking-tight">
                   {story.company}
                 </span>
               </div>
 
               {/* Main Body */}
               <div className="flex flex-col flex-1 p-8">
-                <p className="text-[15px] leading-[1.65] text-[#191D20] mb-8 flex-1">
+                <p className="text-[15px] leading-[1.65] text-brand-text mb-8 flex-1">
                   {story.quote}
                 </p>
 
                 <div className="mt-auto flex flex-col gap-1 mb-8">
-                  <span className="font-bold text-[15px] text-[#191D20]">
+                  <span className="font-bold text-[15px] text-brand-text">
                     {story.author}
                   </span>
                   <span className="text-[14px] text-[#64748B]">
@@ -95,7 +95,7 @@ export default function FeaturedStories() {
 
                 <Link
                   href={`/customers/${story.slug}`}
-                  className="inline-flex text-[15px] text-[#013CF1] hover:text-[#012bb5] transition-colors font-medium border-b border-transparent hover:border-[#012bb5] self-start"
+                  className="inline-flex text-[15px] text-[#B63106] hover:text-[#012bb5] transition-colors font-medium border-b border-transparent hover:border-[#012bb5] self-start"
                 >
                   View success story
                 </Link>

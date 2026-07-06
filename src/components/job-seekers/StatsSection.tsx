@@ -35,8 +35,8 @@ function AnimatedNumber({ value, suffix, delay = 0 }: { value: number, suffix: s
 
 export default function StatsSection() {
   return (
-    <section className="bg-[#013CF1] text-white pt-10 pb-24 relative">
-      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-[#013CF1] rounded-full flex items-center justify-center">
+    <section className="bg-[#B63106] text-white pt-10 pb-24 relative">
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-[#B63106] rounded-full flex items-center justify-center">
         <ArrowDown size={20} className="text-white" />
       </div>
       

@@ -23,9 +23,9 @@ const featuredJobs = [
 
 export default function FeaturedSidebar() {
   return (
-    <div className="bg-white rounded-[1.5rem] border border-[#E2E8F0] shadow-[0_10px_30px_-15px_rgba(1,60,241,0.05)] overflow-hidden flex flex-col h-[calc(100vh-140px)] max-h-[900px] min-h-[500px]">
+    <div className="bg-brand-card rounded-[1.5rem] border border-brand-border shadow-[0_10px_30px_-15px_rgba(182, 49, 6,0.05)] overflow-hidden flex flex-col h-[calc(100vh-140px)] max-h-[900px] min-h-[500px]">
       <div className="p-5 border-b border-[#F1F5F9] bg-[#F8FAFC]">
-        <h3 className="font-bold text-[#191D20] text-[16px] tracking-tight">Featured</h3>
+        <h3 className="font-bold text-brand-text text-[16px] tracking-tight">Featured</h3>
       </div>
       
       <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[#E2E8F0] [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[#CBD5E1]">
@@ -37,11 +37,11 @@ export default function FeaturedSidebar() {
               className="group block"
             >
               <div className={`p-4 flex gap-3.5 items-start transition-colors duration-200 hover:bg-[#EEF2FF] ${index !== featuredJobs.length - 1 ? 'border-b border-[#F1F5F9]' : ''}`}>
-                <div className="w-10 h-10 rounded-xl bg-white border border-[rgba(1,60,241,0.08)] shadow-[0_2px_8px_-2px_rgba(1,60,241,0.05)] flex items-center justify-center flex-shrink-0 text-[#013CF1] font-bold text-[14px]">
+                <div className="w-10 h-10 rounded-xl bg-brand-card border border-[rgba(182, 49, 6,0.08)] shadow-[0_2px_8px_-2px_rgba(182, 49, 6,0.05)] flex items-center justify-center flex-shrink-0 text-[#B63106] font-bold text-[14px]">
                   {job.company.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-bold text-[#191D20] group-hover:text-[#013CF1] transition-colors leading-tight mb-1.5 pr-2">
+                  <h4 className="text-[14px] font-bold text-brand-text group-hover:text-[#B63106] transition-colors leading-tight mb-1.5 pr-2">
                     {job.title}
                   </h4>
                   <div className="flex items-center gap-1.5 text-[12px] text-[#64748B]">

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function CustomersHero() {
   return (
-    <section className="relative w-full bg-white overflow-hidden pt-12 pb-10 md:pt-16 md:pb-14">
+    <section className="relative w-full bg-brand-card overflow-hidden pt-12 pb-10 md:pt-16 md:pb-14">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
 
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16 lg:gap-24">
@@ -16,7 +16,7 @@ export default function CustomersHero() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="text-[44px] md:text-5xl lg:text-[64px] font-bold text-[#191D20] tracking-tight leading-[1.05] mb-6"
+              className="text-[44px] md:text-5xl lg:text-[64px] font-bold text-brand-text tracking-tight leading-[1.05] mb-6"
             >
               Customer Stories
             </motion.h1>
@@ -44,7 +44,7 @@ export default function CustomersHero() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="relative w-full aspect-video overflow-hidden rounded-[24px] border border-[#E2E8F0] bg-black shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]"
+              className="relative w-full aspect-video overflow-hidden rounded-[24px] border border-brand-border bg-black shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]"
             >
               <video
                 src="/videos/testimonialvideo1.mp4"

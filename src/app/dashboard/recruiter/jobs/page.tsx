@@ -203,18 +203,18 @@ export default function ManageJobsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Published": return "bg-emerald-50 text-emerald-700 border-emerald-100";
-      case "Draft": return "bg-slate-50 text-slate-500 border-slate-100";
+      case "Draft": return "bg-brand-bg text-brand-text-muted border-brand-border";
       case "Closed": return "bg-red-50 text-red-700 border-red-100";
-      case "Archived": return "bg-blue-50 text-blue-700 border-blue-100";
-      default: return "bg-slate-50 text-slate-500 border-slate-100";
+      case "Archived": return "bg-brand/10 text-brand-hover border-blue-100";
+      default: return "bg-brand-bg text-brand-text-muted border-brand-border";
     }
   };
 
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500 font-poppins">Loading posted jobs...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted font-poppins">Loading posted jobs...</p>
       </div>
     );
   }
@@ -223,10 +223,10 @@ export default function ManageJobsPage() {
     <div className="max-w-6xl mx-auto px-6 py-10 w-full space-y-8 font-poppins">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-800 tracking-tight">Manage Posted Jobs</h1>
-          <p className="text-xs text-slate-400 font-semibold mt-1">
+          <h1 className="text-2xl font-black text-brand-text tracking-tight">Manage Posted Jobs</h1>
+          <p className="text-xs text-brand-text-muted font-semibold mt-1">
             Click on any job opening to review applications, schedule interviews, and send offer letters.
           </p>
         </div>
@@ -248,7 +248,7 @@ export default function ManageJobsPage() {
             return (
               <div 
                 key={job.id} 
-                className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all duration-300 relative group"
+                className="bg-brand-card rounded-3xl border border-brand-border p-5 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:shadow-md transition-all duration-300 relative group"
               >
                 <div className="space-y-2 flex-grow">
                   {/* Status and Title */}
@@ -258,37 +258,37 @@ export default function ManageJobsPage() {
                     </span>
                     <Link 
                       href={`/dashboard/recruiter/jobs/${job.id}`}
-                      className="text-base font-extrabold text-slate-800 hover:text-[#013CF1] transition-colors"
+                      className="text-base font-extrabold text-brand-text hover:text-[#B63106] transition-colors"
                     >
                       {job.title}
                     </Link>
                   </div>
 
                   {/* Job metadata fields */}
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-xs text-slate-400 font-semibold">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-xs text-brand-text-muted font-semibold">
                     <div className="flex items-center gap-1">
-                      <Award size={13} className="text-slate-400" />
+                      <Award size={13} className="text-brand-text-muted" />
                       <span>{practiceArea}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
+                      <span className="bg-brand-bg text-brand-text-secondary px-2 py-0.5 rounded-md font-bold text-[10px]">
                         {job.employment_type}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="bg-slate-50 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
+                      <span className="bg-brand-bg text-brand-text-secondary px-2 py-0.5 rounded-md font-bold text-[10px]">
                         {job.work_mode}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <MapPin size={13} className="text-slate-400" />
+                      <MapPin size={13} className="text-brand-text-muted" />
                       <span>{job.location || "Remote"}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Calendar size={13} className="text-slate-400" />
+                      <Calendar size={13} className="text-brand-text-muted" />
                       <span>Posted: {new Date(job.created_at).toLocaleDateString()}</span>
                     </div>
-                    <div className="flex items-center gap-1 bg-blue-50/50 text-[#013CF1] px-2 py-0.5 rounded-lg border border-blue-100/30">
+                    <div className="flex items-center gap-1 bg-brand/10/50 text-[#B63106] px-2 py-0.5 rounded-lg border border-blue-100/30">
                       <Users size={12} />
                       <span className="font-black">{totalApps} Applicants</span>
                     </div>
@@ -323,7 +323,7 @@ export default function ManageJobsPage() {
                   <button
                     onClick={() => openEditModal(job)}
                     disabled={actionLoading === job.id}
-                    className="p-2 border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-600 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                    className="p-2 border border-brand-border hover:border-slate-400 hover:bg-brand-bg text-brand-text-secondary rounded-xl transition-all cursor-pointer disabled:opacity-50"
                     title="Edit details"
                   >
                     <Edit size={14} />
@@ -345,7 +345,7 @@ export default function ManageJobsPage() {
 
                   <Link
                     href={`/dashboard/recruiter/jobs/${job.id}`}
-                    className="text-[10px] font-bold text-white bg-[#013CF1] hover:bg-blue-700 px-3.5 py-2.5 rounded-xl shadow-sm transition-all ml-1 whitespace-nowrap"
+                    className="text-[10px] font-bold text-white bg-[#B63106] hover:bg-brand-hover px-3.5 py-2.5 rounded-xl shadow-sm transition-all ml-1 whitespace-nowrap"
                   >
                     Review Applicants
                   </Link>
@@ -356,13 +356,13 @@ export default function ManageJobsPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-text-muted">
             <FolderOpen size={22} />
           </div>
           <div className="space-y-1">
-            <h4 className="text-sm font-bold text-slate-700 font-poppins">No Jobs Posted</h4>
-            <p className="text-xs text-slate-400 font-semibold leading-relaxed">
+            <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No Jobs Posted</h4>
+            <p className="text-xs text-brand-text-muted font-semibold leading-relaxed">
               You haven't posted any legal vacancies or internship postings yet. Create one to get started.
             </p>
           </div>
@@ -378,18 +378,18 @@ export default function ManageJobsPage() {
       {/* EDIT JOB MODAL */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative">
             
             <button 
               onClick={() => setIsEditModalOpen(false)}
-              className="absolute right-4 top-4 p-1.5 rounded-lg text-slate-400 hover:bg-slate-50 cursor-pointer"
+              className="absolute right-4 top-4 p-1.5 rounded-lg text-brand-text-muted hover:bg-brand-bg cursor-pointer"
             >
               <X size={18} />
             </button>
 
             <div>
-              <h3 className="text-base font-black text-slate-800 font-poppins">Edit Job details</h3>
-              <p className="text-[11px] text-slate-400 font-bold mt-0.5">Modify properties for the selected listing.</p>
+              <h3 className="text-base font-black text-brand-text font-poppins">Edit Job details</h3>
+              <p className="text-[11px] text-brand-text-muted font-bold mt-0.5">Modify properties for the selected listing.</p>
             </div>
 
             {editError && (
@@ -400,23 +400,23 @@ export default function ManageJobsPage() {
 
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Job Title</label>
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Job Title</label>
                 <input
                   type="text"
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                  className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Employment Type</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Employment Type</label>
                   <select
                     value={editType}
                     onChange={(e) => setEditType(e.target.value)}
-                    className="w-full px-3 py-2.5 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-3 py-2.5 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   >
                     <option value="Internship">Internship</option>
                     <option value="Full Time">Full Time</option>
@@ -427,11 +427,11 @@ export default function ManageJobsPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Work Mode</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Work Mode</label>
                   <select
                     value={editMode}
                     onChange={(e) => setEditMode(e.target.value)}
-                    className="w-full px-3 py-2.5 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-3 py-2.5 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   >
                     <option value="On Site">On Site</option>
                     <option value="Hybrid">Hybrid</option>
@@ -441,56 +441,56 @@ export default function ManageJobsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Location</label>
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Location</label>
                 <input
                   type="text"
                   value={editLocation}
                   onChange={(e) => setEditLocation(e.target.value)}
                   disabled={editMode === "Remote"}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800 disabled:bg-slate-50 disabled:text-slate-400"
+                  className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text disabled:bg-brand-bg disabled:text-brand-text-muted"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Salary / Stipend</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Salary / Stipend</label>
                   <input
                     type="text"
                     value={editSalary}
                     onChange={(e) => setEditSalary(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Deadline</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Deadline</label>
                   <input
                     type="date"
                     value={editDeadline}
                     onChange={(e) => setEditDeadline(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Openings</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Openings</label>
                   <input
                     type="number"
                     min={1}
                     value={editOpenings}
                     onChange={(e) => setEditOpenings(parseInt(e.target.value) || 1)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Job Status</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Job Status</label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value)}
-                    className="w-full px-3 py-2.5 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800"
+                    className="w-full px-3 py-2.5 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                   >
                     <option value="Draft">Draft</option>
                     <option value="Published">Published</option>
@@ -501,13 +501,13 @@ export default function ManageJobsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Job Description</label>
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Job Description</label>
                 <textarea
                   rows={4}
                   required
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-xs bg-white text-slate-800 resize-y"
+                  className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text resize-y"
                 />
               </div>
 
@@ -515,7 +515,7 @@ export default function ManageJobsPage() {
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
+                  className="px-4 py-2.5 bg-brand-bg hover:bg-slate-200 text-brand-text-secondary font-bold text-xs rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>

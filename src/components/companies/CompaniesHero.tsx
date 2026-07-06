@@ -14,7 +14,7 @@ export default function CompaniesHero() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-8"
         >
-          <span className="inline-block text-[13px] font-bold tracking-[0.2em] text-[#013CF1] uppercase">
+          <span className="inline-block text-[13px] font-bold tracking-[0.2em] text-[#B63106] uppercase">
             For Law Firms, Startups & Legal Teams
           </span>
         </motion.div>
@@ -23,7 +23,7 @@ export default function CompaniesHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-6xl lg:text-[76px] font-bold text-[#191D20] tracking-tight leading-[1.05] max-w-[1000px] mb-12"
+          className="text-5xl md:text-6xl lg:text-[76px] font-bold text-brand-text tracking-tight leading-[1.05] max-w-[1000px] mb-12"
         >
           The complete platform to discover, hire & manage top legal talent
         </motion.h1>
@@ -34,7 +34,7 @@ export default function CompaniesHero() {
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           className="mb-10"
         >
-          <span className="inline-block text-[13px] font-bold tracking-[0.15em] text-[#013CF1] uppercase">
+          <span className="inline-block text-[13px] font-bold tracking-[0.15em] text-[#B63106] uppercase">
             Start hiring in minutes
           </span>
         </motion.div>
@@ -53,7 +53,7 @@ export default function CompaniesHero() {
           </Link>
           <Link
             href="/for-companies/demo"
-            className="w-full sm:w-auto px-8 py-4 bg-white text-[#191D20] rounded-xl font-semibold text-[15px] border border-[#E2E8F0] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:bg-[#F8FAFC] hover:shadow-[0_10px_20px_-10px_rgba(0,0,0,0.1)] transition-all duration-300 flex items-center justify-center"
+            className="w-full sm:w-auto px-8 py-4 bg-brand-card text-brand-text rounded-xl font-semibold text-[15px] border border-brand-border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:bg-[#F8FAFC] hover:shadow-[0_10px_20px_-10px_rgba(0,0,0,0.1)] transition-all duration-300 flex items-center justify-center"
           >
             Book a demo
           </Link>

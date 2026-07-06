@@ -91,15 +91,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-12 bg-white">
+    <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-12 bg-brand-card">
       
       {/* LEFT COLUMN: Authentication Panel */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 md:p-16 lg:p-12 xl:p-16 bg-white min-h-screen">
+      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 md:p-16 lg:p-12 xl:p-16 bg-brand-card min-h-screen">
         
         {/* Top: Logo */}
         <div className="w-full flex justify-between items-center mb-8 lg:mb-0">
           <Link href="/" className="flex items-center">
-            <Image 
+            <Image className="brightness-0 invert" 
               src="/logofull.png" 
               alt="HAQJobs Logo" 
               width={150} 
@@ -113,10 +113,10 @@ export default function LoginPage() {
         {/* Center: Auth Form */}
         <div className="flex-1 flex flex-col justify-center max-w-sm w-full mx-auto py-10 lg:py-0">
           <div className="mb-8">
-            <h1 className="text-3xl font-extrabold text-[#191D20] tracking-tight font-poppins mb-2">
+            <h1 className="text-3xl font-extrabold text-brand-text tracking-tight font-poppins mb-2">
               Login
             </h1>
-            <p className="text-sm text-slate-500 font-medium">
+            <p className="text-sm text-brand-text-muted font-medium">
               Step into your next legal opportunity!
             </p>
           </div>
@@ -140,22 +140,22 @@ export default function LoginPage() {
             onClick={handleGoogleLogin}
             disabled={loading}
             type="button"
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-brand-card border border-brand-border rounded-xl hover:bg-brand-bg transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
               <g transform="matrix(1, 0, 0, 1, 0, 0)">
                 <path d="M21.35,11.1H12v2.7h5.38C16.88,16.03,14.77,17.4,12,17.4c-3.14,0-5.8-2.24-6.76-5.26a7.252,7.252,0,0,1,0-4.28C6.2,4.84,8.86,2.6,12,2.6c1.78,0,3.37.64,4.63,1.84l3.12-3.12A11.961,11.961,0,0,0,12,0,11.967,11.967,0,0,0,.76,6.88a11.854,11.854,0,0,0,0,10.24A11.967,11.967,0,0,0,12,24c3.24,0,5.97-1.08,7.96-2.92l-3.07-2.38c-.84.56-1.93.9-3.29.9-2.53,0-4.67-1.71-5.43-4.01a7.218,7.218,0,0,1,0-2.34C8.93,12.91,11.07,11.2,13.6,11.2A5.993,5.993,0,0,1,18.4,13.2l2.95-2.1Z" fill="#ea4335" className="group-hover:opacity-90 transition-opacity" />
               </g>
             </svg>
-            <span className="text-sm font-semibold text-slate-700">Log in with Google</span>
+            <span className="text-sm font-semibold text-brand-text-secondary">Log in with Google</span>
           </button>
 
           {/* Divider */}
           <div className="relative my-6 flex items-center justify-center">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
+              <div className="w-full border-t border-brand-border"></div>
             </div>
-            <span className="relative px-3 bg-white text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="relative px-3 bg-brand-card text-xs font-semibold text-brand-text-muted uppercase tracking-wider">
               or Login with Email
             </span>
           </div>
@@ -163,7 +163,7 @@ export default function LoginPage() {
           {/* Email/Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+              <label htmlFor="email" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-2">
                 Email Address
               </label>
               <input
@@ -174,19 +174,19 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
                 required
-                className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#013CF1]/20 focus:border-[#013CF1] placeholder:text-slate-400 bg-white"
+                className="w-full px-4 py-3 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
               />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label htmlFor="password" className="block text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <label htmlFor="password" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider">
                   Password
                 </label>
                 <Link
                   href="#"
                   onClick={() => alert("Password reset functionality is handled through Supabase. Contact admin or check your email verification for details.")}
-                  className="text-xs font-semibold text-slate-600 hover:text-[#013CF1] transition-colors"
+                  className="text-xs font-semibold text-brand-text-secondary hover:text-[#B63106] transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -200,12 +200,12 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                   required
-                  className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#013CF1]/20 focus:border-[#013CF1] placeholder:text-slate-400 bg-white"
+                  className="w-full px-4 py-3 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -226,29 +226,29 @@ export default function LoginPage() {
           </form>
 
           {/* Create Account Link */}
-          <div className="mt-8 text-center text-sm font-medium text-slate-500">
+          <div className="mt-8 text-center text-sm font-medium text-brand-text-muted">
             Not registered?{" "}
-            <Link href="/signup" className="text-[#013CF1] hover:underline font-semibold transition-all">
+            <Link href="/signup" className="text-[#B63106] hover:underline font-semibold transition-all">
               Create an Account
             </Link>
           </div>
         </div>
 
         {/* Bottom footer text (Desktop only) */}
-        <div className="hidden lg:block text-xs text-slate-400 font-medium mt-8">
+        <div className="hidden lg:block text-xs text-brand-text-muted font-medium mt-8">
           &copy; {new Date().getFullYear()} HAQJobs. All rights reserved.
         </div>
       </div>
 
       {/* RIGHT COLUMN: Marketing Panel */}
-      <div className="lg:col-span-7 bg-slate-50/50 border-l border-slate-100 hidden lg:flex flex-col justify-center items-center p-12 xl:p-16 relative overflow-hidden min-h-screen">
+      <div className="lg:col-span-7 bg-brand-bg/50 border-l border-brand-border hidden lg:flex flex-col justify-center items-center p-12 xl:p-16 relative overflow-hidden min-h-screen">
         
         {/* Playful Geometric Grid inspired by the reference but Legal & Career themed */}
         <div className="relative w-full max-w-[480px] mb-12 flex justify-center z-10">
           <div className="grid grid-cols-4 gap-4 w-full aspect-square max-w-[420px]">
             
             {/* Square 1: Blue geometric scales pattern */}
-            <div className="bg-[#013CF1] rounded-2xl flex items-center justify-center p-4 shadow-sm relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+            <div className="bg-[#B63106] rounded-2xl flex items-center justify-center p-4 shadow-sm relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
               <Scale className="text-white w-8 h-8 relative z-10" />
             </div>
@@ -278,8 +278,8 @@ export default function LoginPage() {
 
             {/* Square 5 & 6 (Col-span 2, Row-span 1): Yellow/Orange arch block representation of legal structures */}
             <div className="col-span-2 bg-gradient-to-r from-amber-400 to-amber-500 rounded-3xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between group hover:scale-[1.01] transition-transform duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full translate-x-12 -translate-y-12"></div>
-              <div className="bg-white/20 backdrop-blur-sm self-start px-3 py-1 rounded-full text-[10px] font-bold text-amber-950 uppercase tracking-widest">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-card/10 rounded-full translate-x-12 -translate-y-12"></div>
+              <div className="bg-brand-card/20 backdrop-blur-sm self-start px-3 py-1 rounded-full text-[10px] font-bold text-amber-950 uppercase tracking-widest">
                 Firm partners
               </div>
               <div className="flex justify-between items-end">
@@ -291,8 +291,8 @@ export default function LoginPage() {
             </div>
 
             {/* Square 7: Abstract Blue star/circle grid */}
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl flex items-center justify-center p-4 shadow-sm group hover:scale-[1.02] transition-transform duration-300">
-              <Award className="text-[#013CF1] w-8 h-8" />
+            <div className="bg-brand/10 border border-blue-100 rounded-2xl flex items-center justify-center p-4 shadow-sm group hover:scale-[1.02] transition-transform duration-300">
+              <Award className="text-[#B63106] w-8 h-8" />
             </div>
 
             {/* Square 8: Portrait of professional */}
@@ -344,17 +344,17 @@ export default function LoginPage() {
 
         {/* Large Marketing Headline & Subtext */}
         <div className="text-center relative z-10 max-w-lg">
-          <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-[1.15] font-poppins mb-4">
+          <h2 className="text-4xl font-black text-brand-text tracking-tight leading-[1.15] font-poppins mb-4">
             Find the legal career <br className="hidden xl:inline" />
             made for you.
           </h2>
-          <p className="text-sm font-medium text-slate-500 max-w-sm mx-auto leading-relaxed">
+          <p className="text-sm font-medium text-brand-text-muted max-w-sm mx-auto leading-relaxed">
             Explore premier internships, clerkships, and associate roles at leading law firms and corporate legal departments.
           </p>
         </div>
 
         {/* Bottom Wavy Shape Overlay */}
-        <div className="absolute bottom-0 right-0 w-80 h-32 bg-gradient-to-tr from-[#013CF1]/5 to-transparent rounded-tl-[100%] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-80 h-32 bg-gradient-to-tr from-[#B63106]/5 to-transparent rounded-tl-[100%] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-48 h-20 bg-gradient-to-br from-amber-400/5 to-transparent rounded-tr-[100%] pointer-events-none"></div>
 
       </div>

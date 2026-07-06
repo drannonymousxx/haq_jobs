@@ -410,34 +410,34 @@ function MessagingContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <Loader2 className="w-10 h-10 animate-spin text-[#013CF1]" />
-        <p className="text-sm font-semibold text-slate-500">Loading messaging inbox...</p>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Loading messaging inbox...</p>
       </div>
     );
   }
 
   // Visual layout content container
   const renderChatInterface = () => (
-    <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden h-[75vh] grid grid-cols-1 md:grid-cols-12 font-poppins">
+    <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm overflow-hidden h-[75vh] grid grid-cols-1 md:grid-cols-12 font-poppins">
       
       {/* =========================================================================
           LEFT PANEL: CONVERSATIONS LIST
           ========================================================================= */}
-      <div className={`md:col-span-4 border-r border-slate-100 flex flex-col h-full bg-slate-50/30 ${
+      <div className={`md:col-span-4 border-r border-brand-border flex flex-col h-full bg-brand-bg/30 ${
         activeConversationId ? "hidden md:flex" : "flex"
       }`}>
         {/* Search */}
-        <div className="p-4 border-b border-slate-100">
+        <div className="p-4 border-b border-brand-border">
           <div className="relative">
             <input
               type="text"
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-xl outline-none focus:border-[#013CF1] text-xs bg-white font-medium"
+              className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-xl outline-none focus:border-[#B63106] text-xs bg-brand-card font-medium"
             />
-            <Search size={13} className="text-slate-400 absolute left-3 top-3 select-none" />
+            <Search size={13} className="text-brand-text-muted absolute left-3 top-3 select-none" />
           </div>
         </div>
 
@@ -452,18 +452,18 @@ function MessagingContent() {
                 <button
                   key={partner.id}
                   onClick={() => selectConversation(partner)}
-                  className={`w-full p-4 flex items-start gap-3 hover:bg-slate-50/80 transition-colors text-left relative cursor-pointer ${
-                    isSelected ? "bg-slate-100/50" : ""
+                  className={`w-full p-4 flex items-start gap-3 hover:bg-brand-bg/80 transition-colors text-left relative cursor-pointer ${
+                    isSelected ? "bg-brand-bg/50" : ""
                   }`}
                 >
                   {/* Active bar */}
                   {isSelected && (
-                    <span className="w-1 h-12 bg-[#013CF1] rounded-r absolute left-0 top-0.5" />
+                    <span className="w-1 h-12 bg-[#B63106] rounded-r absolute left-0 top-0.5" />
                   )}
 
                   {/* Avatar */}
                   {isSystem ? (
-                    <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center p-1.5 flex-shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-brand/10 border border-blue-100 flex items-center justify-center p-1.5 flex-shrink-0">
                       <img src="/logohalf.png" className="w-full h-full object-contain" alt="HAQJobs Logo" />
                     </div>
                   ) : partner.avatarUrl ? (
@@ -473,7 +473,7 @@ function MessagingContent() {
                       className="w-9 h-9 rounded-xl object-cover shadow-sm flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-xs flex-shrink-0 border border-blue-100">
+                    <div className="w-9 h-9 rounded-xl bg-brand/10 text-brand font-bold flex items-center justify-center text-xs flex-shrink-0 border border-blue-100">
                       {partner.name.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -481,17 +481,17 @@ function MessagingContent() {
                   {/* Meta Details */}
                   <div className="flex-grow min-w-0 space-y-1">
                     <div className="flex justify-between items-baseline gap-1.5">
-                      <span className={`text-xs truncate leading-none ${isSystem ? "font-black text-blue-900" : "font-bold text-slate-800"}`}>
+                      <span className={`text-xs truncate leading-none ${isSystem ? "font-black text-blue-900" : "font-bold text-brand-text"}`}>
                         {partner.name}
                       </span>
                       {partner.lastMessageTime && (
-                        <span className="text-[9px] text-slate-400 font-medium whitespace-nowrap">
+                        <span className="text-[9px] text-brand-text-muted font-medium whitespace-nowrap">
                           {new Date(partner.lastMessageTime).toLocaleDateString("default", { month: "short", day: "numeric" })}
                         </span>
                       )}
                     </div>
                     
-                    <p className="text-[10px] text-slate-400 font-bold truncate leading-none">
+                    <p className="text-[10px] text-brand-text-muted font-bold truncate leading-none">
                       {isSystem 
                         ? "Platform Notifications" 
                         : partner.role === "recruiter" 
@@ -500,7 +500,7 @@ function MessagingContent() {
                     </p>
 
                     <p className={`text-[11px] truncate leading-tight ${
-                      partner.unreadCount > 0 ? "text-slate-900 font-extrabold" : "text-slate-400"
+                      partner.unreadCount > 0 ? "text-brand-text font-extrabold" : "text-brand-text-muted"
                     }`}>
                       {partner.lastMessage}
                     </p>
@@ -508,7 +508,7 @@ function MessagingContent() {
 
                   {/* Unread badge */}
                   {partner.unreadCount > 0 && (
-                    <span className="w-4 h-4 bg-[#013CF1] text-white rounded-full flex items-center justify-center text-[9px] font-black absolute right-4 top-8 shadow-sm">
+                    <span className="w-4 h-4 bg-[#B63106] text-white rounded-full flex items-center justify-center text-[9px] font-black absolute right-4 top-8 shadow-sm">
                       {partner.unreadCount}
                     </span>
                   )}
@@ -516,7 +516,7 @@ function MessagingContent() {
               );
             })
           ) : (
-            <div className="p-8 text-center text-slate-400 text-xs font-medium">
+            <div className="p-8 text-center text-brand-text-muted text-xs font-medium">
               No conversations found.
             </div>
           )}
@@ -526,13 +526,13 @@ function MessagingContent() {
       {/* =========================================================================
           RIGHT PANEL: ACTIVE CHAT SECTION
           ========================================================================= */}
-      <div className={`md:col-span-8 flex flex-col h-full bg-white relative ${
+      <div className={`md:col-span-8 flex flex-col h-full bg-brand-card relative ${
         !activeConversationId ? "hidden md:flex" : "flex"
       }`}>
         {activePartner ? (
           <>
             {/* Header info */}
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="p-4 border-b border-brand-border flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {/* Back button for mobile screens */}
                 <button 
@@ -540,13 +540,13 @@ function MessagingContent() {
                     setActiveConversationId(null);
                     setActivePartner(null);
                   }}
-                  className="p-1 text-slate-400 hover:text-slate-600 md:hidden bg-slate-50 rounded-lg cursor-pointer"
+                  className="p-1 text-brand-text-muted hover:text-brand-text-secondary md:hidden bg-brand-bg rounded-lg cursor-pointer"
                 >
                   <ChevronLeft size={18} />
                 </button>
 
                 {activePartner.id === SYSTEM_USER_ID ? (
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center p-1.5 flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-brand/10 border border-blue-100 flex items-center justify-center p-1.5 flex-shrink-0">
                     <img src="/logohalf.png" className="w-full h-full object-contain" alt="HAQJobs Logo" />
                   </div>
                 ) : activePartner.avatarUrl ? (
@@ -556,16 +556,16 @@ function MessagingContent() {
                     className="w-10 h-10 rounded-xl object-cover shadow-sm flex-shrink-0"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 font-black flex items-center justify-center text-sm flex-shrink-0 border border-blue-100">
+                  <div className="w-10 h-10 rounded-xl bg-brand/10 text-brand font-black flex items-center justify-center text-sm flex-shrink-0 border border-blue-100">
                     {activePartner.name.charAt(0).toUpperCase()}
                   </div>
                 )}
 
                 <div>
-                  <h3 className="font-bold text-slate-800 text-xs leading-none">
+                  <h3 className="font-bold text-brand-text text-xs leading-none">
                     {activePartner.name}
                   </h3>
-                  <p className="text-[10px] text-slate-400 font-bold mt-1">
+                  <p className="text-[10px] text-brand-text-muted font-bold mt-1">
                     {activePartner.id === SYSTEM_USER_ID
                       ? "Official System Alerts & Platform Communications"
                       : activePartner.role === "recruiter"
@@ -578,7 +578,7 @@ function MessagingContent() {
               {activePartner.id !== SYSTEM_USER_ID && activePartner.role === "candidate" && (
                 <Link
                   href={`/candidate/${activePartner.id}`}
-                  className="text-[10px] font-bold text-slate-650 hover:text-[#013CF1] px-3 py-1.5 border border-slate-200 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors shadow-sm"
+                  className="text-[10px] font-bold text-slate-650 hover:text-[#B63106] px-3 py-1.5 border border-brand-border rounded-xl bg-brand-bg/50 hover:bg-brand-bg transition-colors shadow-sm"
                 >
                   View Profile
                 </Link>
@@ -586,7 +586,7 @@ function MessagingContent() {
             </div>
 
             {/* Messages body thread */}
-            <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-slate-50/20">
+            <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-brand-bg/20">
               {messages.length > 0 ? (
                 messages.map((msg) => {
                   const isOutgoing = msg.sender_id === currentUser.id;
@@ -598,15 +598,15 @@ function MessagingContent() {
                     // Styled visual alert box for system/platform logs
                     return (
                       <div key={msg.id} className="flex justify-center my-2 max-w-2xl mx-auto w-full">
-                        <div className="bg-gradient-to-r from-blue-50/70 to-indigo-50/40 border border-blue-100 rounded-2xl p-4 shadow-sm space-y-2.5 w-full text-slate-900">
+                        <div className="bg-gradient-to-r from-blue-50/70 to-indigo-50/40 border border-blue-100 rounded-2xl p-4 shadow-sm space-y-2.5 w-full text-brand-text">
                           <div className="flex items-center gap-2 border-b border-blue-100/50 pb-2">
-                            <div className="w-5 h-5 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center p-0.5">
+                            <div className="w-5 h-5 rounded-md bg-brand/10 border border-blue-200 flex items-center justify-center p-0.5">
                               <img src="/logohalf.png" className="w-full h-full object-contain" alt="HQ Logo" />
                             </div>
                             <span className="text-[10px] font-black text-blue-900 uppercase tracking-widest leading-none">
                               HAQJobs System Notification
                             </span>
-                            <span className="text-[9px] text-slate-400 font-bold ml-auto leading-none">
+                            <span className="text-[9px] text-brand-text-muted font-bold ml-auto leading-none">
                               {formatTime(msg.created_at)}
                             </span>
                           </div>
@@ -621,7 +621,7 @@ function MessagingContent() {
                                 href={msg.attachment_url} 
                                 target="_blank" 
                                 rel="noreferrer" 
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-200 rounded-xl text-blue-700 hover:text-blue-800 hover:bg-blue-50 font-bold text-[10px] transition-all shadow-sm"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-card border border-blue-200 rounded-xl text-brand-hover hover:text-blue-800 hover:bg-brand/10 font-bold text-[10px] transition-all shadow-sm"
                               >
                                 <Paperclip size={11} />
                                 <span>Download Attached File / Document</span>
@@ -645,10 +645,10 @@ function MessagingContent() {
                           <img 
                             src={activePartner.avatarUrl} 
                             alt={activePartner.name} 
-                            className="w-6.5 h-6.5 rounded-lg object-cover border border-slate-100 shadow-sm flex-shrink-0 mb-4"
+                            className="w-6.5 h-6.5 rounded-lg object-cover border border-brand-border shadow-sm flex-shrink-0 mb-4"
                           />
                         ) : (
-                          <div className="w-6.5 h-6.5 rounded-lg bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mb-4 border border-blue-100">
+                          <div className="w-6.5 h-6.5 rounded-lg bg-brand/10 text-brand font-bold flex items-center justify-center text-[10px] flex-shrink-0 mb-4 border border-blue-100">
                             {activePartner.name.charAt(0).toUpperCase()}
                           </div>
                         )
@@ -657,7 +657,7 @@ function MessagingContent() {
                       <div className={`max-w-[70%] space-y-1 flex flex-col ${isOutgoing ? "items-end" : "items-start"}`}>
                         {/* Sender details on incoming */}
                         {!isOutgoing && (
-                          <span className="text-[9px] font-bold text-slate-400 leading-none px-1">
+                          <span className="text-[9px] font-bold text-brand-text-muted leading-none px-1">
                             {activePartner.name} {activePartner.role === "recruiter" && `• ${activePartner.company}`}
                           </span>
                         )}
@@ -665,8 +665,8 @@ function MessagingContent() {
                         {/* Bubble */}
                         <div className={`px-4 py-2.5 rounded-2xl text-xs font-medium leading-relaxed shadow-sm whitespace-pre-wrap ${
                           isOutgoing 
-                            ? "bg-[#013CF1] text-white rounded-tr-none" 
-                            : "bg-white text-slate-800 border border-slate-100 rounded-tl-none"
+                            ? "bg-[#B63106] text-white rounded-tr-none" 
+                            : "bg-brand-card text-brand-text border border-brand-border rounded-tl-none"
                         }`}>
                           {msg.content}
                           
@@ -678,7 +678,7 @@ function MessagingContent() {
                                 target="_blank" 
                                 rel="noreferrer" 
                                 className={`flex items-center gap-1.5 text-[10px] font-bold ${
-                                  isOutgoing ? "text-blue-100 hover:text-white" : "text-blue-700 hover:text-blue-800"
+                                  isOutgoing ? "text-blue-100 hover:text-white" : "text-brand-hover hover:text-blue-800"
                                 }`}
                               >
                                 <Paperclip size={11} />
@@ -689,11 +689,11 @@ function MessagingContent() {
                         </div>
 
                         {/* Timestamp & Receipts */}
-                        <div className="flex items-center gap-1.5 text-[9px] text-slate-400 font-semibold px-1 select-none">
+                        <div className="flex items-center gap-1.5 text-[9px] text-brand-text-muted font-semibold px-1 select-none">
                           <span>{formatTime(msg.created_at)}</span>
                           {isOutgoing && (
                             <div className="flex items-center" title={msg.is_read ? formatReadTimestamp(msg.read_at) : "Sent"}>
-                              <CheckCheck size={11} className={msg.is_read ? "text-[#013CF1]" : "text-slate-350"} />
+                              <CheckCheck size={11} className={msg.is_read ? "text-[#B63106]" : "text-slate-350"} />
                             </div>
                           )}
                         </div>
@@ -702,7 +702,7 @@ function MessagingContent() {
                   );
                 })
               ) : (
-                <div className="h-full flex items-center justify-center text-xs text-slate-400 font-medium italic">
+                <div className="h-full flex items-center justify-center text-xs text-brand-text-muted font-medium italic">
                   Send a message to start conversation history.
                 </div>
               )}
@@ -713,38 +713,38 @@ function MessagingContent() {
             {activePartner.id !== SYSTEM_USER_ID ? (
               <form 
                 onSubmit={handleSendMessage}
-                className="p-4 border-t border-slate-100 flex items-center gap-3 bg-white"
+                className="p-4 border-t border-brand-border flex items-center gap-3 bg-brand-card"
               >
                 <input
                   type="text"
                   placeholder="Type your message here..."
                   value={newMessageText}
                   onChange={(e) => setNewMessageText(e.target.value)}
-                  className="flex-grow px-4 py-3 border border-slate-200 rounded-xl outline-none focus:border-[#013CF1] text-xs bg-slate-50/50"
+                  className="flex-grow px-4 py-3 border border-brand-border rounded-xl outline-none focus:border-[#B63106] text-xs bg-brand-bg/50"
                   required
                 />
                 <button
                   type="submit"
                   disabled={sending || !newMessageText.trim()}
-                  className="p-3 bg-[#013CF1] text-white rounded-xl shadow hover:bg-blue-700 disabled:opacity-40 transition-colors flex items-center justify-center flex-shrink-0 cursor-pointer"
+                  className="p-3 bg-[#B63106] text-white rounded-xl shadow hover:bg-brand-hover disabled:opacity-40 transition-colors flex items-center justify-center flex-shrink-0 cursor-pointer"
                 >
                   <Send size={14} />
                 </button>
               </form>
             ) : (
-              <div className="p-4 bg-slate-50 border-t border-slate-150 text-center text-[10px] text-slate-400 font-bold uppercase tracking-wider select-none leading-none">
+              <div className="p-4 bg-brand-bg border-t border-slate-150 text-center text-[10px] text-brand-text-muted font-bold uppercase tracking-wider select-none leading-none">
                 Replies are disabled in System Notification channels.
               </div>
             )}
           </>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-slate-50/10">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 text-[#013CF1] flex items-center justify-center">
+          <div className="h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-brand-bg/10">
+            <div className="w-12 h-12 rounded-2xl bg-brand/10 border border-blue-100 text-[#B63106] flex items-center justify-center">
               <MessageSquare size={22} />
             </div>
             <div className="space-y-1">
-              <h4 className="text-sm font-bold text-slate-700 font-poppins">Select a conversation</h4>
-              <p className="text-xs text-slate-400 font-semibold max-w-xs leading-relaxed">
+              <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">Select a conversation</h4>
+              <p className="text-xs text-brand-text-muted font-semibold max-w-xs leading-relaxed">
                 Select a recruiter or candidate from the side list panel to start messaging.
               </p>
             </div>
@@ -758,7 +758,7 @@ function MessagingContent() {
   // Wrap in matching role layouts
   if (userRole === "candidate") {
     return (
-      <div className="h-screen w-full bg-slate-50/50 flex overflow-hidden">
+      <div className="h-screen w-full bg-brand-bg/50 flex overflow-hidden">
         <Sidebar 
           links={candidateLinks} 
           isOpen={isSidebarOpen} 
@@ -781,8 +781,8 @@ function MessagingContent() {
             <div className="max-w-7xl mx-auto h-full flex flex-col justify-between">
               {/* Header */}
               <div className="mb-4">
-                <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-none">Messaging</h1>
-                <p className="text-xs text-slate-400 font-bold mt-1">
+                <h1 className="text-2xl font-black text-brand-text tracking-tight leading-none">Messaging</h1>
+                <p className="text-xs text-brand-text-muted font-bold mt-1">
                   Direct recruitment communications and official interview notices.
                 </p>
               </div>
@@ -796,11 +796,11 @@ function MessagingContent() {
 
   // Recruiter Layout wrapping
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col">
-      <header className="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-40">
+    <div className="min-h-screen bg-brand-bg/50 flex flex-col">
+      <header className="bg-brand-card border-b border-brand-border shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/dashboard/recruiter" className="flex items-center">
-            <Image 
+            <Image className="brightness-0 invert" 
               src="/logofull.png" 
               alt="HAQJobs Logo" 
               width={130} 
@@ -815,7 +815,7 @@ function MessagingContent() {
             </span>
             <Link 
               href="/dashboard/recruiter/jobs" 
-              className="text-xs font-bold text-slate-500 hover:text-amber-650 transition-colors flex items-center gap-1"
+              className="text-xs font-bold text-brand-text-muted hover:text-amber-650 transition-colors flex items-center gap-1"
             >
               <Briefcase size={14} />
               <span>Manage Jobs</span>
@@ -829,7 +829,7 @@ function MessagingContent() {
             </Link>
             <button
               onClick={handleSignOut}
-              className="text-slate-500 hover:text-red-600 p-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
+              className="text-brand-text-muted hover:text-red-600 p-2 rounded-lg hover:bg-brand-bg transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
               title="Sign Out"
             >
               <LogOut size={14} />
@@ -841,8 +841,8 @@ function MessagingContent() {
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-6 py-8 flex flex-col justify-between overflow-hidden">
         <div className="mb-4">
-          <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-none">Messages Inbox</h1>
-          <p className="text-xs text-slate-400 font-bold mt-1">
+          <h1 className="text-2xl font-black text-brand-text tracking-tight leading-none">Messages Inbox</h1>
+          <p className="text-xs text-brand-text-muted font-bold mt-1">
             Connect with applicant candidates and manage interview communication channels.
           </p>
         </div>
@@ -855,9 +855,9 @@ function MessagingContent() {
 export default function SharedMessagesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <Loader2 className="w-10 h-10 animate-spin text-[#013CF1]" />
-        <p className="text-sm font-semibold text-slate-500">Prerendering chat modules...</p>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Prerendering chat modules...</p>
       </div>
     }>
       <MessagingContent />

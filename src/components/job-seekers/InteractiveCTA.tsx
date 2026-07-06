@@ -65,7 +65,7 @@ export default function InteractiveCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[2.3rem] md:text-[3.2rem] font-bold text-[#191D20] leading-[1.05] tracking-tight mb-6"
+            className="text-[2.3rem] md:text-[3.2rem] font-bold text-brand-text leading-[1.05] tracking-tight mb-6"
           >
             Let the opportunities come to you
           </motion.h2>
@@ -75,7 +75,7 @@ export default function InteractiveCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-[1.65rem] text-[#191D20]/80 mb-12 leading-relaxed max-w-2xl"
+            className="text-lg md:text-[1.65rem] text-brand-text/80 mb-12 leading-relaxed max-w-2xl"
           >
             Create a profile that highlights your unique skills and preferences, then apply to jobs with just one click.
           </motion.p>
@@ -95,8 +95,8 @@ export default function InteractiveCTA() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-1">Connect with founders</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-base">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Connect with founders</h3>
+                <p className="text-brand-text/70 leading-relaxed text-base">
                   Let founders pitch you directly on their opportunity.
                 </p>
               </div>
@@ -117,8 +117,8 @@ export default function InteractiveCTA() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-[1.1rem] font-bold text-[#191D20] mb-1">Get featured</h3>
-                <p className="text-[#191D20]/70 leading-relaxed text-base">
+                <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Get featured</h3>
+                <p className="text-brand-text/70 leading-relaxed text-base">
                   Feature your profile even further and make more meaningful legal connections.
                 </p>
               </div>
@@ -165,8 +165,8 @@ export default function InteractiveCTA() {
             >
               {/* Canopy */}
               <div className="relative w-80 h-32 -mb-2 z-20">
-                <svg viewBox="0 0 200 100" className="w-full h-full drop-shadow-xl" style={{ filter: 'drop-shadow(0px 15px 15px rgba(1,60,241,0.2))' }}>
-                  <path d="M 10 90 Q 50 65 100 90 Q 150 65 190 90 L 100 15 Z" fill="#013CF1" />
+                <svg viewBox="0 0 200 100" className="w-full h-full drop-shadow-xl" style={{ filter: 'drop-shadow(0px 15px 15px rgba(182, 49, 6,0.2))' }}>
+                  <path d="M 10 90 Q 50 65 100 90 Q 150 65 190 90 L 100 15 Z" fill="#B63106" />
                   <path d="M 50 78 Q 100 65 150 78 L 100 15 Z" fill="#255aff" opacity="0.8" />
                   <path d="M 80 85 Q 100 75 120 85 L 100 15 Z" fill="#4d77ff" opacity="0.6" />
                 </svg>
@@ -184,7 +184,7 @@ export default function InteractiveCTA() {
             >
               <div className="relative w-64 h-48">
                 {/* Backrest */}
-                <div className="absolute top-6 left-12 w-32 h-48 border-[6px] border-[#013CF1] bg-[#F4AFCB] rounded-xl origin-bottom rotate-[-35deg] shadow-2xl flex items-center justify-center overflow-hidden z-10">
+                <div className="absolute top-6 left-12 w-32 h-48 border-[6px] border-[#B63106] bg-[#F4AFCB] rounded-xl origin-bottom rotate-[-35deg] shadow-2xl flex items-center justify-center overflow-hidden z-10">
                   {/* Fabric texture lines */}
                   <div className="w-full h-full opacity-10 flex flex-col justify-evenly">
                     <div className="w-full h-1 bg-black"></div>
@@ -193,16 +193,16 @@ export default function InteractiveCTA() {
                   </div>
                 </div>
                 {/* Seat */}
-                <div className="absolute bottom-12 left-6 w-48 h-16 border-[6px] border-[#013CF1] bg-[#F4AFCB] rounded-xl origin-bottom-left rotate-12 shadow-lg z-20 overflow-hidden">
+                <div className="absolute bottom-12 left-6 w-48 h-16 border-[6px] border-[#B63106] bg-[#F4AFCB] rounded-xl origin-bottom-left rotate-12 shadow-lg z-20 overflow-hidden">
                   {/* Fabric texture lines */}
                   <div className="w-full h-full opacity-10 flex flex-col justify-evenly">
                     <div className="w-full h-1 bg-black"></div>
                   </div>
                 </div>
                 {/* Front Leg */}
-                <div className="absolute bottom-4 left-36 w-3 h-20 border-[4px] border-[#013CF1] rounded-full rotate-[-25deg] z-0" />
+                <div className="absolute bottom-4 left-36 w-3 h-20 border-[4px] border-[#B63106] rounded-full rotate-[-25deg] z-0" />
                 {/* Back Leg */}
-                <div className="absolute bottom-4 left-16 w-3 h-20 border-[4px] border-[#013CF1] rounded-full rotate-[25deg] z-30" />
+                <div className="absolute bottom-4 left-16 w-3 h-20 border-[4px] border-[#B63106] rounded-full rotate-[25deg] z-30" />
               </div>
             </motion.div>
 
@@ -210,12 +210,12 @@ export default function InteractiveCTA() {
             {/* Sphere */}
             <motion.div
               style={{ x: sphereX, y: sphereY }}
-              className="absolute bottom-44 left-44 w-24 h-24 rounded-full z-30 shadow-[0_20px_40px_rgba(1,60,241,0.4)]"
+              className="absolute bottom-44 left-44 w-24 h-24 rounded-full z-30 shadow-[0_20px_40px_rgba(182, 49, 6,0.4)]"
               initial={{ y: 20 }}
               animate={{ y: [0, -10, 0] }}
               transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
             >
-              <div className="w-full h-full rounded-full" style={{ background: 'radial-gradient(circle at 35% 35%, #4f79ff, #013CF1)' }} />
+              <div className="w-full h-full rounded-full" style={{ background: 'radial-gradient(circle at 35% 35%, #4f79ff, #B63106)' }} />
             </motion.div>
 
             {/* Rounded Cube */}

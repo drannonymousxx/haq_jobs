@@ -192,19 +192,19 @@ export default function CandidatePublicProfilePage() {
 
   if (loading || !mounted) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <Loader2 className="w-10 h-10 animate-spin text-[#013CF1]" />
-        <p className="text-sm font-semibold text-slate-500">Loading profile portfolio...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Loading profile portfolio...</p>
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 text-center space-y-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-bg p-6 text-center space-y-4">
         <ShieldAlert className="w-16 h-16 text-rose-500" />
-        <h2 className="text-xl font-bold text-slate-800">Profile Not Found</h2>
-        <p className="text-sm text-slate-500 max-w-sm">
+        <h2 className="text-xl font-bold text-brand-text">Profile Not Found</h2>
+        <p className="text-sm text-brand-text-muted max-w-sm">
           The candidate profile you are trying to view does not exist or has been removed.
         </p>
         <button 
@@ -225,10 +225,10 @@ export default function CandidatePublicProfilePage() {
 
   if (!canAccess) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6 text-center space-y-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-bg p-6 text-center space-y-4">
         <ShieldAlert className="w-16 h-16 text-amber-500" />
-        <h2 className="text-xl font-bold text-slate-800">Private Profile</h2>
-        <p className="text-sm text-slate-500 max-w-sm">
+        <h2 className="text-xl font-bold text-brand-text">Private Profile</h2>
+        <p className="text-sm text-brand-text-muted max-w-sm">
           This profile's visibility has been restricted by the candidate.
         </p>
         <button 
@@ -249,7 +249,7 @@ export default function CandidatePublicProfilePage() {
       <div className="flex justify-between items-center">
         <button 
           onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-black bg-white border border-slate-200 px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm hover:shadow"
+          className="flex items-center gap-1.5 text-xs font-bold text-brand-text-secondary hover:text-black bg-brand-card border border-brand-border px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm hover:shadow"
         >
           <ArrowLeft size={14} /> Back
         </button>
@@ -257,7 +257,7 @@ export default function CandidatePublicProfilePage() {
         {viewer?.id === candidateId && (
           <Link 
             href="/dashboard/profile"
-            className="text-xs font-bold text-[#013CF1] hover:text-white bg-blue-50/50 hover:bg-[#013CF1] border border-blue-100 hover:border-[#013CF1] px-4 py-2.5 rounded-xl transition-all shadow-sm"
+            className="text-xs font-bold text-[#B63106] hover:text-white bg-brand/10/50 hover:bg-[#B63106] border border-blue-100 hover:border-[#B63106] px-4 py-2.5 rounded-xl transition-all shadow-sm"
           >
             Edit My Profile
           </Link>
@@ -265,44 +265,44 @@ export default function CandidatePublicProfilePage() {
       </div>
 
       {/* 1. Header Card */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 relative overflow-hidden">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 relative overflow-hidden">
         {profile.profile_photo_url ? (
           <img 
             src={profile.profile_photo_url} 
             alt={profile.full_name} 
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border border-slate-100 shadow-sm"
+            className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border border-brand-border shadow-sm"
           />
         ) : (
-          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-[#013CF1]/10 to-blue-200/30 rounded-2xl flex items-center justify-center font-bold text-3xl text-[#013CF1] border border-blue-100">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-[#B63106]/10 to-blue-200/30 rounded-2xl flex items-center justify-center font-bold text-3xl text-[#B63106] border border-blue-100">
             {profile.full_name?.charAt(0).toUpperCase() || "C"}
           </div>
         )}
 
         <div className="space-y-2 flex-grow">
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-800 font-poppins tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-brand-text font-poppins tracking-tight">
             {profile.full_name}
           </h1>
-          <p className="text-xs text-slate-400 font-bold flex items-center justify-center sm:justify-start gap-1 select-none">
-            <MapPin size={12} className="text-slate-400" />
+          <p className="text-xs text-brand-text-muted font-bold flex items-center justify-center sm:justify-start gap-1 select-none">
+            <MapPin size={12} className="text-brand-text-muted" />
             {profile.city && profile.state ? `${profile.city}, ${profile.state}` : profile.company_name || "Location Not Added"}
           </p>
           
-          <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 pt-2 text-xs font-semibold text-slate-600">
+          <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3 pt-2 text-xs font-semibold text-brand-text-secondary">
             <span className="flex items-center gap-1">
-              <Mail size={13} className="text-slate-400" /> {profile.email}
+              <Mail size={13} className="text-brand-text-muted" /> {profile.email}
             </span>
             {profile.contact_number && (
               <span className="flex items-center gap-1">
-                <Phone size={13} className="text-slate-400" /> {profile.contact_number}
+                <Phone size={13} className="text-brand-text-muted" /> {profile.contact_number}
               </span>
             )}
           </div>
 
           <div className="pt-2 flex flex-wrap justify-center sm:justify-start gap-2">
-            <span className="text-[10px] font-bold bg-blue-50 text-[#013CF1] px-2.5 py-1 rounded-full uppercase tracking-wider select-none">
+            <span className="text-[10px] font-bold bg-brand/10 text-[#B63106] px-2.5 py-1 rounded-full uppercase tracking-wider select-none">
               Candidate
             </span>
-            <span className="text-[10px] font-bold bg-slate-50 text-slate-600 px-2.5 py-1 rounded-full uppercase tracking-wider select-none capitalize">
+            <span className="text-[10px] font-bold bg-brand-bg text-brand-text-secondary px-2.5 py-1 rounded-full uppercase tracking-wider select-none capitalize">
               Status: {profile.job_search_status || "Open to Opportunities"}
             </span>
           </div>
@@ -311,9 +311,9 @@ export default function CandidatePublicProfilePage() {
 
       {/* 2. Bio / About */}
       {profile.bio && (
-        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-3">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">About Me</h3>
-          <p className="text-xs text-slate-500 leading-relaxed whitespace-pre-wrap font-medium">
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-3">
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">About Me</h3>
+          <p className="text-xs text-brand-text-muted leading-relaxed whitespace-pre-wrap font-medium">
             {profile.bio}
           </p>
         </section>
@@ -322,56 +322,56 @@ export default function CandidatePublicProfilePage() {
       {/* 3. Career Preferences & Specialization */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Preferences */}
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Career Preferences</h3>
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Career Preferences</h3>
           <div className="flex flex-wrap gap-2">
             {Array.isArray(profile.career_preferences) && profile.career_preferences.length > 0 ? (
               profile.career_preferences.map((pref: string) => (
-                <span key={pref} className="text-xs font-bold text-slate-700 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-xl">
+                <span key={pref} className="text-xs font-bold text-brand-text-secondary bg-brand-bg border border-brand-border px-3 py-1.5 rounded-xl">
                   {pref}
                 </span>
               ))
             ) : (
-              <span className="text-xs text-slate-400 font-medium">No preferences selected</span>
+              <span className="text-xs text-brand-text-muted font-medium">No preferences selected</span>
             )}
           </div>
         </div>
 
         {/* Legal Specializations */}
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Legal Specializations</h3>
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Legal Specializations</h3>
           <div className="flex flex-wrap gap-2">
             {Array.isArray(profile.legal_specializations) && profile.legal_specializations.length > 0 ? (
               profile.legal_specializations.map((domain: string) => (
-                <span key={domain} className="text-xs font-bold text-[#013CF1] bg-blue-50/50 border border-blue-50 px-3 py-1.5 rounded-xl">
+                <span key={domain} className="text-xs font-bold text-[#B63106] bg-brand/10/50 border border-blue-50 px-3 py-1.5 rounded-xl">
                   {domain}
                 </span>
               ))
             ) : (
-              <span className="text-xs text-slate-400 font-medium">No domains specified</span>
+              <span className="text-xs text-brand-text-muted font-medium">No domains specified</span>
             )}
           </div>
         </div>
       </section>
 
       {/* 4. Experience */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
         <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
-          <Briefcase className="text-[#013CF1]" size={18} />
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Experience</h3>
+          <Briefcase className="text-[#B63106]" size={18} />
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Experience</h3>
         </div>
 
         <div className="space-y-6">
           {experiences.length > 0 ? (
             experiences.map((exp: any, index: number) => (
               <div key={exp.id} className={`relative flex gap-4 ${index !== experiences.length - 1 ? "border-l-2 border-slate-50 pb-6 ml-4 pl-6" : "ml-4 pl-6"}`}>
-                <div className="absolute w-3 h-3 bg-[#013CF1] rounded-full -left-[7px] top-1.5 shadow-sm" />
+                <div className="absolute w-3 h-3 bg-[#B63106] rounded-full -left-[7px] top-1.5 shadow-sm" />
                 
                 <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-slate-800 leading-snug">{exp.position}</h4>
-                  <p className="text-xs font-bold text-[#013CF1]">{exp.firm_name}</p>
+                  <h4 className="text-sm font-bold text-brand-text leading-snug">{exp.position}</h4>
+                  <p className="text-xs font-bold text-[#B63106]">{exp.firm_name}</p>
                   
-                  <p className="text-[10px] font-bold text-slate-400">
+                  <p className="text-[10px] font-bold text-brand-text-muted">
                     {formatDateString(exp.start_date)} - {
                       exp.currently_working 
                         ? "Present" 
@@ -382,7 +382,7 @@ export default function CandidatePublicProfilePage() {
                   </p>
 
                   {exp.description && (
-                    <p className="text-xs text-slate-500 font-medium pt-2 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-xs text-brand-text-muted font-medium pt-2 leading-relaxed whitespace-pre-wrap">
                       {exp.description}
                     </p>
                   )}
@@ -390,42 +390,42 @@ export default function CandidatePublicProfilePage() {
               </div>
             ))
           ) : (
-            <p className="text-xs text-slate-400 font-medium text-center py-4">No professional experience listed</p>
+            <p className="text-xs text-brand-text-muted font-medium text-center py-4">No professional experience listed</p>
           )}
         </div>
       </section>
 
       {/* 5. Education */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
         <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
-          <GraduationCap className="text-[#013CF1]" size={18} />
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Education</h3>
+          <GraduationCap className="text-[#B63106]" size={18} />
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Education</h3>
         </div>
 
         <div className="space-y-6">
           {educations.length > 0 ? (
             educations.map((edu: any, index: number) => (
               <div key={edu.id} className={`relative flex gap-4 ${index !== educations.length - 1 ? "border-l-2 border-slate-50 pb-6 ml-4 pl-6" : "ml-4 pl-6"}`}>
-                <div className="absolute w-3 h-3 bg-[#013CF1] rounded-full -left-[7px] top-1.5 shadow-sm" />
+                <div className="absolute w-3 h-3 bg-[#B63106] rounded-full -left-[7px] top-1.5 shadow-sm" />
 
                 <div className="space-y-1 w-full">
                   <div className="flex justify-between items-start gap-4">
                     <div>
-                      <h4 className="text-sm font-bold text-slate-800 leading-snug">{edu.degree}</h4>
+                      <h4 className="text-sm font-bold text-brand-text leading-snug">{edu.degree}</h4>
                       {edu.specialization && (
-                        <p className="text-xs font-semibold text-slate-500">{edu.specialization}</p>
+                        <p className="text-xs font-semibold text-brand-text-muted">{edu.specialization}</p>
                       )}
-                      <p className="text-xs font-bold text-[#013CF1]">{edu.university_name}</p>
+                      <p className="text-xs font-bold text-[#B63106]">{edu.university_name}</p>
                     </div>
-                    <span className="text-[10px] font-extrabold bg-slate-50 text-slate-600 px-2 py-1 rounded-lg">
+                    <span className="text-[10px] font-extrabold bg-brand-bg text-brand-text-secondary px-2 py-1 rounded-lg">
                       Passing: {edu.passing_year}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between pt-2">
                     {edu.cgpa_percentage && (
-                      <p className="text-xs text-slate-500 font-bold">
-                        Score: <span className="text-slate-800 font-black">{edu.cgpa_percentage}</span>
+                      <p className="text-xs text-brand-text-muted font-bold">
+                        Score: <span className="text-brand-text font-black">{edu.cgpa_percentage}</span>
                       </p>
                     )}
                     
@@ -434,7 +434,7 @@ export default function CandidatePublicProfilePage() {
                         href={edu.certificate_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-[10px] font-bold text-[#013CF1] hover:underline"
+                        className="inline-flex items-center gap-1 text-[10px] font-bold text-[#B63106] hover:underline"
                       >
                         View Certificate <ExternalLink size={10} />
                       </a>
@@ -444,56 +444,56 @@ export default function CandidatePublicProfilePage() {
               </div>
             ))
           ) : (
-            <p className="text-xs text-slate-400 font-medium text-center py-4">No educational history listed</p>
+            <p className="text-xs text-brand-text-muted font-medium text-center py-4">No educational history listed</p>
           )}
         </div>
       </section>
 
       {/* 6. Skills Tags */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
-          <Award className="text-[#013CF1]" size={18} />
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Skills & Expertise</h3>
+          <Award className="text-[#B63106]" size={18} />
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Skills & Expertise</h3>
         </div>
         
         <div className="flex flex-wrap gap-2 pt-2">
           {skills.length > 0 ? (
             skills.map((s: any) => (
-              <span key={s.id} className="text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl">
+              <span key={s.id} className="text-xs font-bold text-brand-text-secondary bg-brand-bg border border-brand-border px-3.5 py-2 rounded-xl">
                 {s.skill}
               </span>
             ))
           ) : (
-            <p className="text-xs text-slate-400 font-medium">No skills tags specified</p>
+            <p className="text-xs text-brand-text-muted font-medium">No skills tags specified</p>
           )}
         </div>
       </section>
 
       {/* 7. Bar Enrollment details */}
       {profile.bar_enrollment_number && (
-        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
             <Award className="text-amber-500" size={18} />
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Professional Verification</h3>
+            <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Professional Verification</h3>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs font-semibold text-slate-600">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 text-xs font-semibold text-brand-text-secondary">
             <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Bar Enrollment Number</span>
-              <span className="text-slate-800 font-bold">{profile.bar_enrollment_number}</span>
+              <span className="text-[10px] text-brand-text-muted uppercase tracking-wider block">Bar Enrollment Number</span>
+              <span className="text-brand-text font-bold">{profile.bar_enrollment_number}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">State Bar Council</span>
-              <span className="text-slate-800 font-bold">{profile.state_bar_council || "N/A"}</span>
+              <span className="text-[10px] text-brand-text-muted uppercase tracking-wider block">State Bar Council</span>
+              <span className="text-brand-text font-bold">{profile.state_bar_council || "N/A"}</span>
             </div>
             <div className="space-y-1">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Enrollment Year</span>
-              <span className="text-slate-800 font-bold">{profile.enrollment_year || "N/A"}</span>
+              <span className="text-[10px] text-brand-text-muted uppercase tracking-wider block">Enrollment Year</span>
+              <span className="text-brand-text font-bold">{profile.enrollment_year || "N/A"}</span>
             </div>
             {profile.tribunal_details && (
               <div className="space-y-1">
-                <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Tribunal Details</span>
-                <span className="text-slate-800 font-bold">{profile.tribunal_details}</span>
+                <span className="text-[10px] text-brand-text-muted uppercase tracking-wider block">Tribunal Details</span>
+                <span className="text-brand-text font-bold">{profile.tribunal_details}</span>
               </div>
             )}
           </div>
@@ -502,20 +502,20 @@ export default function CandidatePublicProfilePage() {
 
       {/* 8. Resume & Files */}
       {profile.resume_url && (
-        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
-            <FileText className="text-[#013CF1]" size={18} />
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Documents Portfolio</h3>
+            <FileText className="text-[#B63106]" size={18} />
+            <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Documents Portfolio</h3>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-slate-50/50 border border-slate-100 rounded-2xl">
+          <div className="flex items-center justify-between p-4 bg-brand-bg/50 border border-brand-border rounded-2xl">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#013CF1] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-brand/10 text-[#B63106] flex items-center justify-center">
                 <FileText size={18} />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-800">Resume / Curriculum Vitae</h4>
-                <p className="text-[10px] text-slate-400 font-semibold">PDF File Format</p>
+                <h4 className="text-xs font-bold text-brand-text">Resume / Curriculum Vitae</h4>
+                <p className="text-[10px] text-brand-text-muted font-semibold">PDF File Format</p>
               </div>
             </div>
             
@@ -532,20 +532,20 @@ export default function CandidatePublicProfilePage() {
       )}
 
       {/* 9. Reviews & Recommendations */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-4">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
           <Star className="text-amber-500" size={18} />
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Reviews & Recommendations</h3>
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Reviews & Recommendations</h3>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center py-4">
-          <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-            <h4 className="text-xs font-bold text-slate-700">Client Reviews</h4>
-            <p className="text-xs text-slate-400 font-semibold mt-1">No Reviews Yet</p>
+          <div className="p-4 bg-brand-bg/50 rounded-2xl border border-brand-border">
+            <h4 className="text-xs font-bold text-brand-text-secondary">Client Reviews</h4>
+            <p className="text-xs text-brand-text-muted font-semibold mt-1">No Reviews Yet</p>
           </div>
-          <div className="p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-            <h4 className="text-xs font-bold text-slate-700">Peer Recommendations</h4>
-            <p className="text-xs text-slate-400 font-semibold mt-1">No Recommendations Yet</p>
+          <div className="p-4 bg-brand-bg/50 rounded-2xl border border-brand-border">
+            <h4 className="text-xs font-bold text-brand-text-secondary">Peer Recommendations</h4>
+            <p className="text-xs text-brand-text-muted font-semibold mt-1">No Recommendations Yet</p>
           </div>
         </div>
       </section>
@@ -557,12 +557,12 @@ export default function CandidatePublicProfilePage() {
   if (viewer?.role === "recruiter") {
     // Recruiter panel style header layout wrapper
     return (
-      <div className="min-h-screen bg-slate-50/50 flex flex-col">
+      <div className="min-h-screen bg-brand-bg/50 flex flex-col">
         {/* Recruiter Topbar */}
-        <header className="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-40">
+        <header className="bg-brand-card border-b border-brand-border shadow-sm sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <Link href="/dashboard/recruiter" className="flex items-center">
-              <Image 
+              <Image className="brightness-0 invert" 
                 src="/logofull.png" 
                 alt="HAQJobs Logo" 
                 width={130} 
@@ -577,7 +577,7 @@ export default function CandidatePublicProfilePage() {
               </span>
               <button
                 onClick={handleSignOut}
-                className="text-slate-500 hover:text-red-600 p-2 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
+                className="text-brand-text-muted hover:text-red-600 p-2 rounded-lg hover:bg-brand-bg transition-colors flex items-center gap-1.5 text-sm font-semibold cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut size={16} />
@@ -597,7 +597,7 @@ export default function CandidatePublicProfilePage() {
 
   // Candidate panel style sidebar layout wrapper (default fallback)
   return (
-    <div className="h-screen w-full bg-slate-50/50 flex overflow-hidden">
+    <div className="h-screen w-full bg-brand-bg/50 flex overflow-hidden">
       
       {/* Left Sidebar */}
       <Sidebar 

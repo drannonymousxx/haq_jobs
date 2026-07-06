@@ -574,9 +574,9 @@ export default function RecruiterDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50/50 gap-4">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500">Loading recruiter dashboard...</p>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg/50 gap-4">
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted">Loading recruiter dashboard...</p>
       </div>
     );
   }
@@ -591,7 +591,7 @@ export default function RecruiterDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col items-center text-center relative overflow-hidden"
+          className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 flex flex-col items-center text-center relative overflow-hidden"
         >
           {/* Subtle blue accent background bubble */}
           <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-50/30 to-indigo-50/20 -z-10" />
@@ -604,23 +604,23 @@ export default function RecruiterDashboard() {
               className="w-20 h-20 rounded-2xl object-cover border border-white shadow-md mb-4 ring-4 ring-blue-50/50"
             />
           ) : (
-            <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 text-[#013CF1] font-black text-2xl border border-blue-100 shadow-sm ring-4 ring-blue-50/50">
+            <div className="w-20 h-20 bg-brand/10 rounded-2xl flex items-center justify-center mb-4 text-[#B63106] font-black text-2xl border border-blue-100 shadow-sm ring-4 ring-blue-50/50">
               {profile?.full_name?.charAt(0).toUpperCase() || "R"}
             </div>
           )}
 
           {/* Name & Badge */}
           <div className="flex items-center gap-1.5 justify-center mt-1">
-            <h2 className="text-lg font-bold text-slate-800">{profile?.full_name}</h2>
+            <h2 className="text-lg font-bold text-brand-text">{profile?.full_name}</h2>
             {profile?.official_email_domain && (
-              <span className="w-4 h-4 bg-blue-100 text-[#013CF1] rounded-full flex items-center justify-center text-[10px]" title="Verified Recruiter Profile">
+              <span className="w-4 h-4 bg-blue-100 text-[#B63106] rounded-full flex items-center justify-center text-[10px]" title="Verified Recruiter Profile">
                 ✓
               </span>
             )}
           </div>
 
-          <p className="text-xs text-slate-400 font-bold mt-1">
-            {profile?.designation || "HR Lead"} at <span className="text-slate-700 font-black">{profile?.company_name || "Unspecified Law Firm"}</span>
+          <p className="text-xs text-brand-text-muted font-bold mt-1">
+            {profile?.designation || "HR Lead"} at <span className="text-brand-text-secondary font-black">{profile?.company_name || "Unspecified Law Firm"}</span>
           </p>
 
           {/* Verification Badge */}
@@ -631,21 +631,21 @@ export default function RecruiterDashboard() {
           )}
 
           {/* Dynamic details listing */}
-          <div className="w-full space-y-3 text-left border-t border-slate-50 mt-5 pt-4 pb-4 text-xs font-semibold text-slate-500">
+          <div className="w-full space-y-3 text-left border-t border-slate-50 mt-5 pt-4 pb-4 text-xs font-semibold text-brand-text-muted">
             <div className="flex items-center gap-2.5">
-              <Mail size={14} className="text-slate-400 flex-shrink-0" />
+              <Mail size={14} className="text-brand-text-muted flex-shrink-0" />
               <span className="truncate">{profile?.email}</span>
             </div>
             {profile?.company_website && (
               <div className="flex items-center gap-2.5">
-                <Globe size={14} className="text-slate-400 flex-shrink-0" />
-                <a href={profile.company_website} target="_blank" rel="noreferrer" className="truncate text-blue-600 hover:underline">
+                <Globe size={14} className="text-brand-text-muted flex-shrink-0" />
+                <a href={profile.company_website} target="_blank" rel="noreferrer" className="truncate text-brand hover:underline">
                   {profile.company_website.replace(/(^\w+:|^)\/\//, "")}
                 </a>
               </div>
             )}
             <div className="flex items-center gap-2.5">
-              <CalendarIcon size={14} className="text-slate-400 flex-shrink-0" />
+              <CalendarIcon size={14} className="text-brand-text-muted flex-shrink-0" />
               <span>Joined {profile?.created_at ? new Date(profile.created_at).toLocaleDateString("default", { month: "long", year: "numeric" }) : "June 2026"}</span>
             </div>
           </div>
@@ -653,18 +653,18 @@ export default function RecruiterDashboard() {
           {/* Profile Completion percentage */}
           <div className="w-full border-t border-slate-50 pt-4 space-y-2 text-left">
             <div className="flex justify-between items-center text-xs">
-              <span className="font-bold text-slate-400">Profile Completion</span>
-              <span className="font-black text-[#013CF1]">{strengthScore}%</span>
+              <span className="font-bold text-brand-text-muted">Profile Completion</span>
+              <span className="font-black text-[#B63106]">{strengthScore}%</span>
             </div>
-            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden flex">
+            <div className="w-full bg-brand-bg h-1.5 rounded-full overflow-hidden flex">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${strengthScore}%` }}
                 transition={{ duration: 0.6 }}
-                className="bg-[#013CF1] h-full"
+                className="bg-[#B63106] h-full"
               />
             </div>
-            <p className="text-[10px] text-slate-400 font-bold text-right capitalize">
+            <p className="text-[10px] text-brand-text-muted font-bold text-right capitalize">
               {strengthLabel} Status
             </p>
           </div>
@@ -672,39 +672,39 @@ export default function RecruiterDashboard() {
           {/* Edit Profile Button */}
           <Link
             href="/dashboard/recruiter/profile"
-            className="w-full mt-6 text-center text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 py-3 rounded-xl transition-all shadow-sm"
+            className="w-full mt-6 text-center text-xs font-bold text-brand-text-secondary bg-brand-bg hover:bg-brand-bg border border-brand-border/50 py-3 rounded-xl transition-all shadow-sm"
           >
             Edit Company Profile
           </Link>
         </motion.div>
 
         {/* Global Dashboard Search */}
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-3">
-          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-widest font-poppins">Quick Search</h4>
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-5 space-y-3">
+          <h4 className="text-xs font-bold text-brand-text-secondary uppercase tracking-widest font-poppins">Quick Search</h4>
           <Link href="/dashboard/recruiter/search" className="block relative w-full">
             <input
               type="text"
               placeholder="Search candidates..."
               readOnly
-              className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#013CF1] text-xs bg-slate-50/50 font-medium cursor-pointer select-none pointer-events-none"
+              className="w-full pl-9 pr-4 py-2.5 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#B63106] text-xs bg-brand-bg/50 font-medium cursor-pointer select-none pointer-events-none"
             />
-            <Search size={14} className="text-slate-400 absolute left-3 top-3.5 select-none" />
+            <Search size={14} className="text-brand-text-muted absolute left-3 top-3.5 select-none" />
           </Link>
         </div>
 
         {/* Calendar Widget */}
-        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-5 space-y-4">
+        <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-5 space-y-4">
           <div className="flex justify-between items-center">
-            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-widest font-poppins">Calendar</h4>
+            <h4 className="text-xs font-bold text-brand-text-secondary uppercase tracking-widest font-poppins">Calendar</h4>
             <div className="flex items-center gap-1">
-              <button onClick={handlePrevMonth} className="p-1 rounded bg-slate-50 hover:bg-slate-100 text-slate-500"><ChevronLeft size={14} /></button>
-              <span className="text-xs font-bold text-slate-700 whitespace-nowrap px-1.5">{monthName} {yearNumber}</span>
-              <button onClick={handleNextMonth} className="p-1 rounded bg-slate-50 hover:bg-slate-100 text-slate-500"><ChevronRight size={14} /></button>
+              <button onClick={handlePrevMonth} className="p-1 rounded bg-brand-bg hover:bg-brand-bg text-brand-text-muted"><ChevronLeft size={14} /></button>
+              <span className="text-xs font-bold text-brand-text-secondary whitespace-nowrap px-1.5">{monthName} {yearNumber}</span>
+              <button onClick={handleNextMonth} className="p-1 rounded bg-brand-bg hover:bg-brand-bg text-brand-text-muted"><ChevronRight size={14} /></button>
             </div>
           </div>
 
           {/* Grid Layout of Calendar */}
-          <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400">
+          <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-brand-text-muted">
             <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
           </div>
 
@@ -723,10 +723,10 @@ export default function RecruiterDashboard() {
                   key={`day-${i}`}
                   onClick={() => setSelectedCalendarDay(isSelected ? null : dStr)}
                   className={`h-7 rounded-lg flex flex-col items-center justify-center relative transition-all cursor-pointer select-none ${isToday
-                    ? "bg-[#013CF1] text-white font-bold"
+                    ? "bg-[#B63106] text-white font-bold"
                     : isSelected
                       ? "bg-slate-900 text-white"
-                      : "hover:bg-slate-100 text-slate-700"
+                      : "hover:bg-brand-bg text-brand-text-secondary"
                     }`}
                 >
                   <span>{dayObj.day}</span>
@@ -750,13 +750,13 @@ export default function RecruiterDashboard() {
                 <h5 className="text-[10px] font-bold text-red-700 uppercase tracking-wider">Events on this day</h5>
                 {selectedDayEvents.length > 0 ? (
                   selectedDayEvents.map((evt: any, idx: number) => (
-                    <p key={idx} className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                    <p key={idx} className="text-xs font-semibold text-brand-text-secondary flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0" />
                       <span>{evt.title}</span>
                     </p>
                   ))
                 ) : (
-                  <p className="text-xs text-slate-500 font-medium italic">No events or application deadlines scheduled.</p>
+                  <p className="text-xs text-brand-text-muted font-medium italic">No events or application deadlines scheduled.</p>
                 )}
               </motion.div>
             )}
@@ -775,14 +775,14 @@ export default function RecruiterDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-[#013CF1] to-blue-700 rounded-3xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden text-white"
+          className="bg-gradient-to-r from-[#B63106] to-blue-700 rounded-3xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden text-white"
         >
           {/* Subtle circle illustration backdrops */}
-          <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-blue-600/30 rounded-full pointer-events-none" />
-          <div className="absolute right-24 -top-12 w-32 h-32 bg-white/10 rounded-full pointer-events-none" />
+          <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-brand/30 rounded-full pointer-events-none" />
+          <div className="absolute right-24 -top-12 w-32 h-32 bg-brand-card/10 rounded-full pointer-events-none" />
 
           <div className="relative z-10 space-y-2">
-            <span className="text-[10px] bg-white/10 text-white/95 font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-sm">
+            <span className="text-[10px] bg-brand-card/10 text-white/95 font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-sm">
               Recruiter Hub
             </span>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight font-poppins">
@@ -794,7 +794,7 @@ export default function RecruiterDashboard() {
 
             {/* Profile completion restrictions warnings */}
             {!isProfileCompleteEnough && (
-              <div className="mt-4 bg-white/10 backdrop-blur-md border border-white/20 text-white px-3 py-2 rounded-xl text-[11px] font-bold flex items-center gap-2 max-w-sm">
+              <div className="mt-4 bg-brand-card/10 backdrop-blur-md border border-white/20 text-white px-3 py-2 rounded-xl text-[11px] font-bold flex items-center gap-2 max-w-sm">
                 <Lock size={14} className="flex-shrink-0 text-white/90" />
                 <span>Verify company details to enable job posting. (Min 50%)</span>
               </div>
@@ -804,8 +804,8 @@ export default function RecruiterDashboard() {
           <Link
             href={isProfileCompleteEnough ? "/dashboard/recruiter/post-job" : "/dashboard/recruiter/profile"}
             className={`px-5 py-3 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap self-start sm:self-center select-none ${isProfileCompleteEnough
-              ? "bg-[#FFFFFF] hover:bg-[#FFFFFF] text-[#013CF1] border border-white shadow-xl"
-              : "bg-white/20 text-white/60 border border-white/10 cursor-not-allowed"
+              ? "bg-[#FFFFFF] hover:bg-[#FFFFFF] text-[#B63106] border border-white shadow-xl"
+              : "bg-brand-card/20 text-white/60 border border-white/10 cursor-not-allowed"
               }`}
             onClick={(e) => {
               if (!isProfileCompleteEnough) {
@@ -822,69 +822,69 @@ export default function RecruiterDashboard() {
         {/* Dynamic Metric cards grid */}
         <section className="space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest font-poppins">Dashboard Overview</h3>
-            <span className="text-[10px] bg-slate-50 border border-slate-100 text-slate-400 font-bold px-2 py-0.5 rounded">Real-time stats</span>
+            <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest font-poppins">Dashboard Overview</h3>
+            <span className="text-[10px] bg-brand-bg border border-brand-border text-brand-text-muted font-bold px-2 py-0.5 rounded">Real-time stats</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {/* Active Jobs */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Jobs</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{activeJobsCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Active Jobs</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{activeJobsCount}</span>
             </div>
 
             {/* Total Applicants */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Applicants</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{applicantsCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Applicants</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{applicantsCount}</span>
             </div>
 
             {/* Candidate Views */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Candidate Views</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{viewsCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Candidate Views</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{viewsCount}</span>
             </div>
 
             {/* New Applications Today */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">New Today</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{newAppsTodayCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">New Today</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{newAppsTodayCount}</span>
             </div>
 
             {/* Shortlisted Candidates */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Shortlisted</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{shortlistedCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Shortlisted</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{shortlistedCount}</span>
             </div>
 
             {/* Interviews Scheduled */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Interviews</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{interviewsCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Interviews</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{interviewsCount}</span>
             </div>
 
             {/* Pending Reviews */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Review</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{pendingReviewsCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Pending Review</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{pendingReviewsCount}</span>
             </div>
 
             {/* Offers Sent */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Offers Sent</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{offersSentCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Offers Sent</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{offersSentCount}</span>
             </div>
 
             {/* Hires */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hires</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">{hiresCount}</span>
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Hires</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">{hiresCount}</span>
             </div>
 
             {/* Average Time to Hire */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Time to Hire</span>
-              <span className="text-2xl font-bold text-slate-800 mt-1 font-poppins">
+            <div className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300">
+              <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Time to Hire</span>
+              <span className="text-2xl font-bold text-brand-text mt-1 font-poppins">
                 {hiresCount > 0 ? "12 days" : "0"}
               </span>
             </div>
@@ -892,18 +892,18 @@ export default function RecruiterDashboard() {
         </section>
 
         {/* Recruitment Pipeline Status Grid */}
-        <section className="bg-white border border-slate-100 rounded-3xl shadow-sm p-6 space-y-4">
+        <section className="bg-brand-card border border-brand-border rounded-3xl shadow-sm p-6 space-y-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-base font-bold text-slate-800 font-poppins">Recruitment Funnel Progress</h3>
-              <p className="text-[10px] text-slate-400 font-bold mt-0.5">Pipeline status mapping across candidate pools.</p>
+              <h3 className="text-base font-bold text-brand-text font-poppins">Recruitment Funnel Progress</h3>
+              <p className="text-[10px] text-brand-text-muted font-bold mt-0.5">Pipeline status mapping across candidate pools.</p>
             </div>
-            <span className="text-[10px] font-bold bg-blue-50 text-[#013CF1] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-poppins">Pipeline</span>
+            <span className="text-[10px] font-bold bg-brand/10 text-[#B63106] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-poppins">Pipeline</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             {[
-              { label: "Applied", count: pipelineCounts.applied, key: "applied", color: "bg-blue-600" },
+              { label: "Applied", count: pipelineCounts.applied, key: "applied", color: "bg-brand" },
               { label: "Screening", count: pipelineCounts.screening, key: "screening", color: "bg-indigo-600" },
               { label: "Shortlisted", count: pipelineCounts.shortlisted, key: "shortlisted", color: "bg-emerald-600" },
               { label: "Interview", count: pipelineCounts.interview, key: "interview", color: "bg-amber-600" },
@@ -916,11 +916,11 @@ export default function RecruiterDashboard() {
               const percentage = Math.round((stage.count / total) * 100);
               return (
                 <div key={stage.key} className="space-y-1">
-                  <div className="flex justify-between text-xs font-bold text-slate-600">
+                  <div className="flex justify-between text-xs font-bold text-brand-text-secondary">
                     <span>{stage.label}</span>
-                    <span>{stage.count} <span className="text-[10px] text-slate-400 font-semibold">({applicantsCount > 0 ? percentage : 0}%)</span></span>
+                    <span>{stage.count} <span className="text-[10px] text-brand-text-muted font-semibold">({applicantsCount > 0 ? percentage : 0}%)</span></span>
                   </div>
-                  <div className="w-full bg-slate-50 border border-slate-100 h-2 rounded-full overflow-hidden flex">
+                  <div className="w-full bg-brand-bg border border-brand-border h-2 rounded-full overflow-hidden flex">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${applicantsCount > 0 ? percentage : 0}%` }}
@@ -943,7 +943,7 @@ export default function RecruiterDashboard() {
             </h4>
             <div className="space-y-2">
               {notifications.map((msg, i) => (
-                <p key={i} className="text-xs text-slate-600 font-semibold flex items-center gap-2">
+                <p key={i} className="text-xs text-brand-text-secondary font-semibold flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-amber-500 rounded-full flex-shrink-0" />
                   <span>{msg}</span>
                 </p>
@@ -953,11 +953,11 @@ export default function RecruiterDashboard() {
         )}
 
         {/* Active Jobs Control Center Table */}
-        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 space-y-6">
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 className="text-base font-bold text-slate-800 font-poppins">Jobs Management</h3>
-              <p className="text-[10px] text-slate-400 font-bold mt-0.5">Control panel to duplicate, edit, archive, or delete listings.</p>
+              <h3 className="text-base font-bold text-brand-text font-poppins">Jobs Management</h3>
+              <p className="text-[10px] text-brand-text-muted font-bold mt-0.5">Control panel to duplicate, edit, archive, or delete listings.</p>
             </div>
 
             {/* Filter buttons */}
@@ -965,7 +965,7 @@ export default function RecruiterDashboard() {
               <select
                 value={jobsStatusFilter}
                 onChange={(e) => { setJobsStatusFilter(e.target.value); setJobsPage(1); }}
-                className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-bold text-slate-600 outline-none"
+                className="px-2.5 py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none"
               >
                 <option value="">All Statuses</option>
                 <option value="Published">Published</option>
@@ -977,7 +977,7 @@ export default function RecruiterDashboard() {
               <select
                 value={jobsTypeFilter}
                 onChange={(e) => { setJobsTypeFilter(e.target.value); setJobsPage(1); }}
-                className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-bold text-slate-600 outline-none"
+                className="px-2.5 py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none"
               >
                 <option value="">All Types</option>
                 <option value="Full Time">Full Time</option>
@@ -995,7 +995,7 @@ export default function RecruiterDashboard() {
                     setJobsModeFilter("");
                     setJobsPage(1);
                   }}
-                  className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg"
+                  className="p-1.5 bg-brand-bg hover:bg-slate-200 text-brand-text-secondary rounded-lg"
                   title="Clear Active Filters"
                 >
                   <X size={12} />
@@ -1011,16 +1011,16 @@ export default function RecruiterDashboard() {
               placeholder="Filter listed jobs..."
               value={jobsSearchQuery}
               onChange={(e) => { setJobsSearchQuery(e.target.value); setJobsPage(1); }}
-              className="w-full pl-8 pr-4 py-2 border border-slate-200 rounded-xl outline-none focus:border-[#013CF1] text-xs bg-slate-50/50"
+              className="w-full pl-8 pr-4 py-2 border border-brand-border rounded-xl outline-none focus:border-[#B63106] text-xs bg-brand-bg/50"
             />
-            <Search size={12} className="text-slate-400 absolute left-2.5 top-2.5 select-none" />
+            <Search size={12} className="text-brand-text-muted absolute left-2.5 top-2.5 select-none" />
           </div>
 
           {paginatedJobs.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
+                  <tr className="border-b border-brand-border text-brand-text-muted font-bold uppercase tracking-wider">
                     <th className="py-2.5 px-2">Job Details</th>
                     <th className="py-2.5 px-2">Type / Mode</th>
                     <th className="py-2.5 px-2">Applications</th>
@@ -1034,26 +1034,26 @@ export default function RecruiterDashboard() {
                     const jobAppsCount = applications.filter(a => String(a.jobId) === String(job.id)).length;
                     const statusColors: Record<string, string> = {
                       Published: "bg-emerald-50 text-emerald-700 border-emerald-100",
-                      Draft: "bg-slate-50 text-slate-600 border-slate-100",
+                      Draft: "bg-brand-bg text-brand-text-secondary border-brand-border",
                       Closed: "bg-red-50 text-red-700 border-red-100",
                       Archived: "bg-amber-50 text-amber-700 border-amber-100"
                     };
-                    const badgeClass = statusColors[job.job_status] || "bg-slate-50 text-slate-600";
+                    const badgeClass = statusColors[job.job_status] || "bg-brand-bg text-brand-text-secondary";
 
                     return (
-                      <tr key={job.id} className="border-b border-slate-50 hover:bg-slate-50/30 transition-all">
+                      <tr key={job.id} className="border-b border-slate-50 hover:bg-brand-bg/30 transition-all">
                         <td className="py-3.5 px-2">
-                          <span className="font-bold text-slate-800 block text-xs hover:text-[#013CF1] cursor-pointer">
+                          <span className="font-bold text-brand-text block text-xs hover:text-[#B63106] cursor-pointer">
                             {job.title}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium block mt-0.5">{job.location || "Remote"}</span>
+                          <span className="text-[10px] text-brand-text-muted font-medium block mt-0.5">{job.location || "Remote"}</span>
                         </td>
                         <td className="py-3.5 px-2">
-                          <span className="font-semibold text-slate-700 block">{job.employment_type}</span>
-                          <span className="text-[10px] text-slate-400 font-semibold block">{job.work_mode}</span>
+                          <span className="font-semibold text-brand-text-secondary block">{job.employment_type}</span>
+                          <span className="text-[10px] text-brand-text-muted font-semibold block">{job.work_mode}</span>
                         </td>
                         <td className="py-3.5 px-2">
-                          <span className="font-black text-slate-800 bg-slate-50 border border-slate-150 px-2 py-0.5 rounded-lg">
+                          <span className="font-black text-brand-text bg-brand-bg border border-slate-150 px-2 py-0.5 rounded-lg">
                             {jobAppsCount}
                           </span>
                         </td>
@@ -1068,7 +1068,7 @@ export default function RecruiterDashboard() {
                             <button
                               onClick={() => handleDuplicateJob(job)}
                               disabled={actionLoading === `dup-${job.id}`}
-                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer transition-colors"
+                              className="p-1.5 text-brand-text-muted hover:text-brand hover:bg-brand/10 rounded-lg cursor-pointer transition-colors"
                               title="Duplicate job listing"
                             >
                               {actionLoading === `dup-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Copy size={12} />}
@@ -1079,7 +1079,7 @@ export default function RecruiterDashboard() {
                               <button
                                 onClick={() => handleArchiveJob(job.id)}
                                 disabled={actionLoading === `arch-${job.id}`}
-                                className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg cursor-pointer transition-colors"
+                                className="p-1.5 text-brand-text-muted hover:text-amber-600 hover:bg-amber-50 rounded-lg cursor-pointer transition-colors"
                                 title="Archive job"
                               >
                                 {actionLoading === `arch-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Archive size={12} />}
@@ -1090,7 +1090,7 @@ export default function RecruiterDashboard() {
                             <button
                               onClick={() => handleDeleteJob(job.id)}
                               disabled={actionLoading === `del-${job.id}`}
-                              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
+                              className="p-1.5 text-brand-text-muted hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
                               title="Delete listing"
                             >
                               {actionLoading === `del-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
@@ -1098,7 +1098,7 @@ export default function RecruiterDashboard() {
 
                             <Link
                               href="/dashboard/recruiter/jobs"
-                              className="text-[10px] font-bold text-slate-600 hover:text-[#013CF1] px-2.5 py-1 border border-slate-200 rounded-lg hover:border-[#013CF1] transition-all ml-1 bg-white whitespace-nowrap"
+                              className="text-[10px] font-bold text-brand-text-secondary hover:text-[#B63106] px-2.5 py-1 border border-brand-border rounded-lg hover:border-[#B63106] transition-all ml-1 bg-brand-card whitespace-nowrap"
                             >
                               Manage
                             </Link>
@@ -1111,10 +1111,10 @@ export default function RecruiterDashboard() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center space-y-2">
+            <div className="text-center py-8 bg-brand-bg border border-dashed border-brand-border rounded-2xl flex flex-col items-center justify-center space-y-2">
               <Inbox className="text-slate-300 w-10 h-10" />
-              <p className="text-xs font-semibold text-slate-500">No active job listings found.</p>
-              <p className="text-[10px] text-slate-400 max-w-xs leading-relaxed">
+              <p className="text-xs font-semibold text-brand-text-muted">No active job listings found.</p>
+              <p className="text-[10px] text-brand-text-muted max-w-xs leading-relaxed">
                 Clear filters or post a new job opening to begin candidate acquisitions.
               </p>
             </div>
@@ -1123,19 +1123,19 @@ export default function RecruiterDashboard() {
           {/* Pagination */}
           {totalJobsPages > 1 && (
             <div className="flex justify-between items-center border-t border-slate-50 pt-4">
-              <span className="text-[10px] font-bold text-slate-400">Page {jobsPage} of {totalJobsPages}</span>
+              <span className="text-[10px] font-bold text-brand-text-muted">Page {jobsPage} of {totalJobsPages}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setJobsPage(prev => Math.max(prev - 1, 1))}
                   disabled={jobsPage === 1}
-                  className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-lg text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed text-slate-600"
+                  className="px-2.5 py-1 bg-brand-bg hover:bg-brand-bg border border-brand-border/50 rounded-lg text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed text-brand-text-secondary"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setJobsPage(prev => Math.min(prev + 1, totalJobsPages))}
                   disabled={jobsPage === totalJobsPages}
-                  className="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-lg text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed text-slate-600"
+                  className="px-2.5 py-1 bg-brand-bg hover:bg-brand-bg border border-brand-border/50 rounded-lg text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed text-brand-text-secondary"
                 >
                   Next
                 </button>
@@ -1146,16 +1146,16 @@ export default function RecruiterDashboard() {
 
 
         {/* Recent Applications Listing Redesign */}
-        <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-base font-bold text-slate-800 font-poppins">Recent Applicant Submissions</h3>
-              <p className="text-[10px] text-slate-400 font-bold mt-0.5">Live reviews and shortlist pipeline triggers.</p>
+              <h3 className="text-base font-bold text-brand-text font-poppins">Recent Applicant Submissions</h3>
+              <p className="text-[10px] text-brand-text-muted font-bold mt-0.5">Live reviews and shortlist pipeline triggers.</p>
             </div>
             {filteredApplications.length > 0 && (
               <Link
                 href="/dashboard/recruiter/jobs"
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-0.5"
+                className="text-xs font-bold text-brand hover:text-brand-hover transition-colors flex items-center gap-0.5"
               >
                 Manage Openings <ArrowRight size={14} />
               </Link>
@@ -1166,19 +1166,19 @@ export default function RecruiterDashboard() {
             <div className="space-y-4">
               {filteredApplications.slice(0, 5).map((app) => {
                 const colorsMap: Record<string, string> = {
-                  applied: "bg-blue-50 text-blue-700 border-blue-100",
+                  applied: "bg-brand/10 text-brand-hover border-blue-100",
                   screening: "bg-indigo-50 text-indigo-700 border-indigo-100",
                   shortlisted: "bg-emerald-50 text-emerald-700 border-emerald-100",
                   interview: "bg-amber-50 text-amber-700 border-amber-100",
                   hired: "bg-teal-50 text-teal-700 border-teal-100",
                   rejected: "bg-red-50 text-red-700 border-red-100"
                 };
-                const statusBadge = colorsMap[app.status] || "bg-slate-50 text-slate-600 border-slate-150";
+                const statusBadge = colorsMap[app.status] || "bg-brand-bg text-brand-text-secondary border-slate-150";
 
                 return (
                   <div
                     key={app.id}
-                    className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
+                    className="p-4 bg-brand-card border border-brand-border rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
                   >
                     {/* Left details */}
                     <div className="flex items-start gap-4">
@@ -1189,14 +1189,14 @@ export default function RecruiterDashboard() {
                           className="w-10 h-10 rounded-xl object-cover shadow-sm ring-2 ring-slate-100"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 font-black flex items-center justify-center text-sm shadow-sm ring-2 ring-slate-100">
+                        <div className="w-10 h-10 rounded-xl bg-brand/10 text-brand font-black flex items-center justify-center text-sm shadow-sm ring-2 ring-slate-100">
                           {app.candidateName?.charAt(0).toUpperCase() || "C"}
                         </div>
                       )}
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-slate-800 text-xs leading-none hover:text-[#013CF1]">
+                          <span className="font-bold text-brand-text text-xs leading-none hover:text-[#B63106]">
                             {app.candidateName}
                           </span>
                           <span className={`text-[9px] font-bold px-2 py-0.5 border rounded-full uppercase tracking-wider ${statusBadge}`}>
@@ -1204,10 +1204,10 @@ export default function RecruiterDashboard() {
                           </span>
                         </div>
 
-                        <p className="text-[10px] text-slate-400 font-bold leading-none">{app.university}</p>
+                        <p className="text-[10px] text-brand-text-muted font-bold leading-none">{app.university}</p>
 
-                        <div className="flex items-center gap-x-2.5 gap-y-0.5 flex-wrap text-[10px] text-slate-400 font-medium pt-0.5">
-                          <span>Applied: <strong className="text-slate-500 font-semibold">{app.jobTitle}</strong></span>
+                        <div className="flex items-center gap-x-2.5 gap-y-0.5 flex-wrap text-[10px] text-brand-text-muted font-medium pt-0.5">
+                          <span>Applied: <strong className="text-brand-text-muted font-semibold">{app.jobTitle}</strong></span>
                           <span>•</span>
                           <span>{formatRelativeDate(app.appliedAt) || "Recently"}</span>
                           <span>•</span>
@@ -1241,16 +1241,16 @@ export default function RecruiterDashboard() {
                       {app.candidateId ? (
                         <Link
                           href={`/candidate/${app.candidateId}`}
-                          className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-[10px] font-bold transition-all shadow-sm"
+                          className="px-2.5 py-1.5 bg-brand-bg hover:bg-brand-bg text-brand-text-secondary border border-brand-border rounded-xl text-[10px] font-bold transition-all shadow-sm"
                         >
                           View Profile
                         </Link>
                       ) : (
-                        <span className="text-slate-400 italic text-[10px]">No Profile</span>
+                        <span className="text-brand-text-muted italic text-[10px]">No Profile</span>
                       )}
                       <Link
                         href={app.candidateId ? `/dashboard/messages?chat=${app.candidateId}` : "/dashboard/messages"}
-                        className="p-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 rounded-xl transition-all"
+                        className="p-1.5 bg-brand-bg hover:bg-brand-bg border border-brand-border text-brand-text-muted hover:text-brand-text-secondary rounded-xl transition-all"
                         title="Direct Message Candidate"
                       >
                         <MessageSquare size={12} />
@@ -1261,10 +1261,10 @@ export default function RecruiterDashboard() {
               })}
             </div>
           ) : (
-            <div className="text-center py-8 bg-slate-50/50 border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center space-y-2">
+            <div className="text-center py-8 bg-brand-bg/50 border border-dashed border-brand-border rounded-2xl flex flex-col items-center justify-center space-y-2">
               <Users className="text-slate-300 w-10 h-10" />
-              <p className="text-xs font-semibold text-slate-500">No applicant submissions received.</p>
-              <p className="text-[10px] text-slate-400 max-w-xs leading-relaxed">
+              <p className="text-xs font-semibold text-brand-text-muted">No applicant submissions received.</p>
+              <p className="text-[10px] text-brand-text-muted max-w-xs leading-relaxed">
                 Active submissions will appear here once candidates apply to your published job listings.
               </p>
             </div>
@@ -1273,12 +1273,12 @@ export default function RecruiterDashboard() {
 
         {/* Quick Nav actions panel */}
         <section className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest font-poppins">Recruiter Quick Actions</h3>
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest font-poppins">Recruiter Quick Actions</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
             <Link
               href={isProfileCompleteEnough ? "/dashboard/recruiter/post-job" : "/dashboard/recruiter/profile"}
-              className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
+              className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
               onClick={(e) => {
                 if (!isProfileCompleteEnough) {
                   e.preventDefault();
@@ -1286,40 +1286,40 @@ export default function RecruiterDashboard() {
                 }
               }}
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#013CF1] flex items-center justify-center group-hover:bg-[#013CF1] group-hover:text-white transition-all">
+              <div className="w-8 h-8 rounded-lg bg-brand/10 text-[#B63106] flex items-center justify-center group-hover:bg-[#B63106] group-hover:text-white transition-all">
                 <PlusCircle size={16} />
               </div>
-              <span className="text-xs font-bold text-slate-800">Post Opportunity</span>
+              <span className="text-xs font-bold text-brand-text">Post Opportunity</span>
             </Link>
 
             <Link
               href="/dashboard/recruiter/jobs"
-              className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
+              className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
             >
               <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
                 <Briefcase size={16} />
               </div>
-              <span className="text-xs font-bold text-slate-800">Manage Jobs</span>
+              <span className="text-xs font-bold text-brand-text">Manage Jobs</span>
             </Link>
 
             <Link
               href="/dashboard/recruiter/search"
-              className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
+              className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
             >
               <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all">
                 <Search size={16} />
               </div>
-              <span className="text-xs font-bold text-slate-800">Browse Candidates</span>
+              <span className="text-xs font-bold text-brand-text">Browse Candidates</span>
             </Link>
 
             <Link
               href="/dashboard/messages"
-              className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
+              className="bg-brand-card p-4 rounded-2xl border border-brand-border shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all flex flex-col justify-between h-28 group"
             >
               <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all">
                 <MessageSquare size={16} />
               </div>
-              <span className="text-xs font-bold text-slate-800">Messages Inbox</span>
+              <span className="text-xs font-bold text-brand-text">Messages Inbox</span>
             </Link>
 
           </div>

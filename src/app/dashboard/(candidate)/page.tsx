@@ -326,9 +326,9 @@ export default function CandidateDashboardPage() {
   };
 
   const getCompanyBgColor = (name: string): string => {
-    if (!name) return "bg-blue-100 text-[#013CF1]";
+    if (!name) return "bg-blue-100 text-[#B63106]";
     const colors = [
-      "bg-blue-100 text-blue-700",
+      "bg-blue-100 text-brand-hover",
       "bg-amber-100 text-amber-700",
       "bg-emerald-100 text-emerald-700",
       "bg-purple-100 text-purple-700",
@@ -406,7 +406,7 @@ export default function CandidateDashboardPage() {
 
   const statusColors: Record<string, string> = {
     "Ready to Interview": "bg-emerald-500",
-    "Open to Opportunities": "bg-blue-500",
+    "Open to Opportunities": "bg-brand/100",
     "Not Looking": "bg-slate-400"
   };
 
@@ -415,13 +415,13 @@ export default function CandidateDashboardPage() {
   if (loading) {
     return (
       <div className="space-y-8 animate-pulse font-poppins">
-        <div className="h-24 bg-slate-100 rounded-3xl" />
-        <div className="h-48 bg-slate-100 rounded-3xl" />
+        <div className="h-24 bg-brand-bg rounded-3xl" />
+        <div className="h-48 bg-brand-bg rounded-3xl" />
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="h-28 bg-slate-100 rounded-2xl" />
-          <div className="h-28 bg-slate-100 rounded-2xl" />
-          <div className="h-28 bg-slate-100 rounded-2xl" />
-          <div className="h-28 bg-slate-100 rounded-2xl" />
+          <div className="h-28 bg-brand-bg rounded-2xl" />
+          <div className="h-28 bg-brand-bg rounded-2xl" />
+          <div className="h-28 bg-brand-bg rounded-2xl" />
+          <div className="h-28 bg-brand-bg rounded-2xl" />
         </div>
       </div>
     );
@@ -431,21 +431,21 @@ export default function CandidateDashboardPage() {
     <div className="space-y-8 font-poppins">
       
       {/* 1. Profile Completion Banner */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="w-full bg-slate-100 h-1.5 flex">
-          <div className="bg-[#013CF1] h-full transition-all duration-500" style={{ width: `${strengthScore}%` }} />
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm overflow-hidden">
+        <div className="w-full bg-brand-bg h-1.5 flex">
+          <div className="bg-[#B63106] h-full transition-all duration-500" style={{ width: `${strengthScore}%` }} />
         </div>
         
         <div className="p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-[#013CF1]">
+            <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center flex-shrink-0 text-[#B63106]">
               <Sparkles size={18} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800">
+              <h4 className="text-sm font-bold text-brand-text">
                 Your profile is {strengthScore}% completed ({strengthLabel})
               </h4>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
+              <p className="text-xs text-brand-text-muted font-medium mt-0.5">
                 {checklist.filter(item => !item.completed).length} details remaining to increase your recruiter matching score.
               </p>
             </div>
@@ -453,7 +453,7 @@ export default function CandidateDashboardPage() {
           
           <Link
             href="/dashboard/profile"
-            className="text-xs font-bold text-white bg-[#013CF1] hover:bg-[#012cc4] px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 self-start sm:self-center shadow-md shadow-blue-500/10"
+            className="text-xs font-bold text-white bg-[#B63106] hover:bg-[#932604] px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 self-start sm:self-center shadow-md shadow-blue-500/10"
           >
             Complete Profile <ChevronRight size={14} />
           </Link>
@@ -461,32 +461,32 @@ export default function CandidateDashboardPage() {
       </section>
 
       {/* 2. User Summary Card */}
-      <section className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+      <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
         <div className="flex items-center gap-5">
           {profile?.profile_photo_url ? (
             <img 
               src={profile.profile_photo_url} 
               alt={profile.full_name} 
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-slate-100 shadow-sm"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-brand-border shadow-sm"
             />
           ) : (
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#013CF1]/10 to-blue-200/30 rounded-2xl flex items-center justify-center font-bold text-2xl text-[#013CF1] border border-blue-100">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#B63106]/10 to-blue-200/30 rounded-2xl flex items-center justify-center font-bold text-2xl text-[#B63106] border border-blue-100">
               {profile?.full_name?.charAt(0).toUpperCase() || "C"}
             </div>
           )}
           
           <div className="space-y-1.5">
-            <h2 className="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-black text-brand-text tracking-tight">
               {profile?.full_name}
             </h2>
-            <p className="text-xs text-slate-400 font-bold flex items-center gap-1 select-none">
-              <MapPin size={12} className="text-slate-400" />
+            <p className="text-xs text-brand-text-muted font-bold flex items-center gap-1 select-none">
+              <MapPin size={12} className="text-brand-text-muted" />
               {profile?.city && profile?.state ? `${profile.city}, ${profile.state}` : profile?.company_name || "Location Not Added"}
             </p>
             
             <div className="flex items-center gap-2 mt-2">
               <span className={`w-2.5 h-2.5 rounded-full ${activeStatusColor}`} />
-              <span className="text-xs font-bold text-slate-600 capitalize">
+              <span className="text-xs font-bold text-brand-text-secondary capitalize">
                 {searchStatus}
               </span>
             </div>
@@ -496,7 +496,7 @@ export default function CandidateDashboardPage() {
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto border-t md:border-t-0 border-slate-50 pt-4 md:pt-0">
           <Link
             href={`/candidate/${profile?.id}`}
-            className="flex-grow md:flex-grow-0 text-center text-xs font-bold text-[#013CF1] hover:text-[#012cc4] bg-blue-50/50 hover:bg-blue-50 px-5 py-3 rounded-xl transition-all"
+            className="flex-grow md:flex-grow-0 text-center text-xs font-bold text-[#B63106] hover:text-[#932604] bg-brand/10/50 hover:bg-brand/10 px-5 py-3 rounded-xl transition-all"
           >
             View Public Profile
           </Link>
@@ -511,13 +511,13 @@ export default function CandidateDashboardPage() {
 
       {/* 3. IN-APP PERSISTENT NOTIFICATIONS FEED */}
       {notifications.length > 0 && (
-        <section className="bg-blue-50/40 border border-blue-100/50 rounded-3xl p-5 space-y-3.5">
+        <section className="bg-brand/10/40 border border-blue-100/50 rounded-3xl p-5 space-y-3.5">
           <div className="flex justify-between items-center">
             <h3 className="text-xs font-bold text-blue-900 uppercase tracking-widest flex items-center gap-1.5">
-              <Bell size={14} className="text-[#013CF1]" />
+              <Bell size={14} className="text-[#B63106]" />
               <span>In-App Notifications</span>
             </h3>
-            <span className="text-[9px] font-bold bg-blue-100 text-[#013CF1] px-2 py-0.5 rounded-full uppercase">
+            <span className="text-[9px] font-bold bg-blue-100 text-[#B63106] px-2 py-0.5 rounded-full uppercase">
               {notifications.length} Unread
             </span>
           </div>
@@ -525,15 +525,15 @@ export default function CandidateDashboardPage() {
             {notifications.map((n) => (
               <div 
                 key={n.id} 
-                className="flex items-start justify-between gap-4 p-3 bg-white rounded-2xl border border-blue-50 shadow-sm"
+                className="flex items-start justify-between gap-4 p-3 bg-brand-card rounded-2xl border border-blue-50 shadow-sm"
               >
                 <div className="space-y-0.5">
-                  <h5 className="text-xs font-bold text-slate-800 leading-tight">{n.title}</h5>
-                  <p className="text-[11px] text-slate-500 font-medium leading-relaxed">{n.content}</p>
+                  <h5 className="text-xs font-bold text-brand-text leading-tight">{n.title}</h5>
+                  <p className="text-[11px] text-brand-text-muted font-medium leading-relaxed">{n.content}</p>
                 </div>
                 <button
                   onClick={() => handleClearNotification(n.id)}
-                  className="p-1 text-slate-400 hover:text-[#013CF1] rounded-lg hover:bg-blue-50 transition-all cursor-pointer"
+                  className="p-1 text-brand-text-muted hover:text-[#B63106] rounded-lg hover:bg-brand/10 transition-all cursor-pointer"
                   title="Dismiss notification"
                 >
                   <Check size={13} />
@@ -547,26 +547,26 @@ export default function CandidateDashboardPage() {
       {/* 4. PENDING INTERVIEW INVITATIONS */}
       {interviews.length > 0 && (
         <section className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Interview Rounds Invitations</h3>
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Interview Rounds Invitations</h3>
           <div className="grid grid-cols-1 gap-4">
             {interviews.map((i) => (
               <div 
                 key={i.id}
-                className="bg-white border border-amber-100 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6"
+                className="bg-brand-card border border-amber-100 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6"
               >
                 <div className="space-y-2 flex-grow">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[9px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-150 px-2.5 py-0.5 rounded-full">
                       Interview Scheduled
                     </span>
-                    <h4 className="text-base font-extrabold text-slate-800">{i.title}</h4>
+                    <h4 className="text-base font-extrabold text-brand-text">{i.title}</h4>
                   </div>
                   
-                  <p className="text-xs text-slate-500 font-bold">
-                    For position at: <span className="text-slate-800 font-black">{i.company}</span>
+                  <p className="text-xs text-brand-text-muted font-bold">
+                    For position at: <span className="text-brand-text font-black">{i.company}</span>
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-400 font-semibold pt-1">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-brand-text-muted font-semibold pt-1">
                     <div className="flex items-center gap-1">
                       <Calendar size={13} />
                       <span>{new Date(i.scheduled_at).toLocaleDateString()}</span>
@@ -583,23 +583,23 @@ export default function CandidateDashboardPage() {
 
                   {i.meeting_link && (
                     <div className="text-xs pt-1">
-                      <span className="text-slate-400 font-bold block">Meeting Link:</span>
-                      <a href={i.meeting_link} target="_blank" rel="noreferrer" className="text-blue-600 font-bold hover:underline">
+                      <span className="text-brand-text-muted font-bold block">Meeting Link:</span>
+                      <a href={i.meeting_link} target="_blank" rel="noreferrer" className="text-brand font-bold hover:underline">
                         {i.meeting_link}
                       </a>
                     </div>
                   )}
 
                   {i.location && (
-                    <div className="text-xs pt-1 text-slate-500 font-medium">
-                      <span className="text-slate-400 font-bold block">Office Location:</span>
+                    <div className="text-xs pt-1 text-brand-text-muted font-medium">
+                      <span className="text-brand-text-muted font-bold block">Office Location:</span>
                       <span>{i.location}</span>
                     </div>
                   )}
 
                   {i.notes && (
-                    <div className="bg-slate-50 border border-slate-100 p-3 rounded-2xl mt-2 text-xs text-slate-500 font-medium leading-relaxed">
-                      <strong className="text-slate-700 font-bold block mb-0.5">Recruiter Notes:</strong>
+                    <div className="bg-brand-bg border border-brand-border p-3 rounded-2xl mt-2 text-xs text-brand-text-muted font-medium leading-relaxed">
+                      <strong className="text-brand-text-secondary font-bold block mb-0.5">Recruiter Notes:</strong>
                       {i.notes}
                     </div>
                   )}
@@ -634,43 +634,43 @@ export default function CandidateDashboardPage() {
       {/* 5. PENDING JOB OFFERS */}
       {offers.length > 0 && (
         <section className="space-y-4">
-          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest">Pending Job Offer Letters</h3>
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Pending Job Offer Letters</h3>
           <div className="grid grid-cols-1 gap-4">
             {offers.map((o) => (
               <div 
                 key={o.id}
                 className="bg-gradient-to-r from-blue-50/50 to-indigo-50/30 border border-blue-150 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6"
               >
-                <div className="space-y-2.5 flex-grow text-xs font-semibold text-slate-500">
+                <div className="space-y-2.5 flex-grow text-xs font-semibold text-brand-text-muted">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[9px] font-black uppercase tracking-wider bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[9px] font-black uppercase tracking-wider bg-blue-100 text-brand-hover px-2.5 py-0.5 rounded-full">
                       Offer Extended 🎉
                     </span>
-                    <h4 className="text-base font-extrabold text-slate-800">{o.position} Offer</h4>
+                    <h4 className="text-base font-extrabold text-brand-text">{o.position} Offer</h4>
                   </div>
                   
-                  <p className="text-xs text-slate-500 font-bold">
-                    Offered by: <span className="text-slate-800 font-black">{o.company}</span>
+                  <p className="text-xs text-brand-text-muted font-bold">
+                    Offered by: <span className="text-brand-text font-black">{o.company}</span>
                   </p>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-1">
                     <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Offered Salary</span>
-                      <span className="text-sm font-black text-slate-800 block mt-0.5">{o.salary}</span>
+                      <span className="text-[10px] text-brand-text-muted font-bold uppercase tracking-wider block">Offered Salary</span>
+                      <span className="text-sm font-black text-brand-text block mt-0.5">{o.salary}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Joining Date</span>
-                      <span className="text-sm font-black text-slate-800 block mt-0.5">{new Date(o.joining_date).toLocaleDateString()}</span>
+                      <span className="text-[10px] text-brand-text-muted font-bold uppercase tracking-wider block">Joining Date</span>
+                      <span className="text-sm font-black text-brand-text block mt-0.5">{new Date(o.joining_date).toLocaleDateString()}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Employment Type</span>
-                      <span className="text-sm font-black text-slate-800 block mt-0.5 capitalize">{o.employment_type}</span>
+                      <span className="text-[10px] text-brand-text-muted font-bold uppercase tracking-wider block">Employment Type</span>
+                      <span className="text-sm font-black text-brand-text block mt-0.5 capitalize">{o.employment_type}</span>
                     </div>
                   </div>
 
                   {o.notes && (
-                    <div className="bg-white/80 border border-slate-100 p-3 rounded-2xl text-slate-500 leading-relaxed mt-2 font-medium">
-                      <strong className="text-slate-700 font-bold block mb-0.5 font-poppins">Offer Terms & Notes:</strong>
+                    <div className="bg-brand-card/80 border border-brand-border p-3 rounded-2xl text-brand-text-muted leading-relaxed mt-2 font-medium">
+                      <strong className="text-brand-text-secondary font-bold block mb-0.5 font-poppins">Offer Terms & Notes:</strong>
                       {o.notes}
                     </div>
                   )}
@@ -701,14 +701,14 @@ export default function CandidateDashboardPage() {
         
         {/* Career Insights Analytics */}
         <section className="space-y-4">
-          <h3 className="text-lg font-extrabold text-slate-800 font-poppins">Career Insights</h3>
+          <h3 className="text-lg font-extrabold text-brand-text font-poppins">Career Insights</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <StatsCard 
               label="Profile Strength" 
               value={`${strengthScore}%`} 
               icon={Award}
-              iconBgColor="bg-blue-50"
-              iconColor="text-[#013CF1]"
+              iconBgColor="bg-brand/10"
+              iconColor="text-[#B63106]"
               description={strengthLabel}
             />
             <StatsCard 
@@ -742,14 +742,14 @@ export default function CandidateDashboardPage() {
         <section className="space-y-4">
           <div className="flex justify-between items-end">
             <div>
-              <h3 className="text-lg font-extrabold text-slate-800 font-poppins">Recommended Jobs</h3>
-              <p className="text-xs text-slate-400 font-semibold mt-0.5">
+              <h3 className="text-lg font-extrabold text-brand-text font-poppins">Recommended Jobs</h3>
+              <p className="text-xs text-brand-text-muted font-semibold mt-0.5">
                 Legal positions curated based on your preferences
               </p>
             </div>
             <Link 
               href="/dashboard/jobs" 
-              className="text-xs font-bold text-[#013CF1] hover:text-[#012cc4] transition-colors flex items-center gap-0.5"
+              className="text-xs font-bold text-[#B63106] hover:text-[#932604] transition-colors flex items-center gap-0.5"
             >
               All Jobs <ArrowUpRight size={14} />
             </Link>
@@ -780,13 +780,13 @@ export default function CandidateDashboardPage() {
                 );
               })
             ) : (
-              <div className="bg-white rounded-3xl border border-slate-100 p-8 text-center flex flex-col items-center justify-center space-y-3 max-w-lg mx-auto shadow-sm">
-                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+              <div className="bg-brand-card rounded-3xl border border-brand-border p-8 text-center flex flex-col items-center justify-center space-y-3 max-w-lg mx-auto shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-text-muted">
                   <Briefcase size={22} />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-slate-700 font-poppins">No legal opportunities yet</h4>
-                  <p className="text-xs text-slate-400 font-semibold max-w-sm leading-relaxed mx-auto">
+                  <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No legal opportunities yet</h4>
+                  <p className="text-xs text-brand-text-muted font-semibold max-w-sm leading-relaxed mx-auto">
                     No legal opportunities have been posted yet. Recruiters will appear here once they publish their openings.
                   </p>
                 </div>
@@ -797,10 +797,10 @@ export default function CandidateDashboardPage() {
 
         {/* Recent Activity */}
         <section className="space-y-4">
-          <h3 className="text-lg font-extrabold text-slate-800 font-poppins">Recent Activity</h3>
+          <h3 className="text-lg font-extrabold text-brand-text font-poppins">Recent Activity</h3>
           
           {recentApplications.length > 0 ? (
-            <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-sm">
+            <div className="bg-brand-card rounded-3xl border border-brand-border p-6 space-y-4 shadow-sm">
               {recentApplications.slice(0, 3).map((app) => (
                 <div key={app.id} className="flex justify-between items-center text-xs border-b border-slate-50 pb-3 last:border-b-0 last:pb-0">
                   <div className="flex items-center gap-3">
@@ -808,25 +808,25 @@ export default function CandidateDashboardPage() {
                       ✓
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">Submitted application for {app.title}</p>
-                      <p className="text-[10px] text-slate-400 font-medium">Under recruiter review at {app.company}</p>
+                      <p className="font-bold text-brand-text">Submitted application for {app.title}</p>
+                      <p className="text-[10px] text-brand-text-muted font-medium">Under recruiter review at {app.company}</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400">
+                  <span className="text-[10px] font-bold text-brand-text-muted">
                     {formatPostedAt(app.appliedAt)}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 text-center flex flex-col items-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+            <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-8 text-center flex flex-col items-center space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-text-muted">
                 <Compass size={22} />
               </div>
               
               <div className="space-y-1">
-                <h4 className="text-sm font-bold text-slate-700 font-poppins">No recent activity yet</h4>
-                <p className="text-xs text-slate-400 font-semibold max-w-xs mx-auto leading-relaxed">
+                <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No recent activity yet</h4>
+                <p className="text-xs text-brand-text-muted font-semibold max-w-xs mx-auto leading-relaxed">
                   Start searching for internships and legal associate positions to build your application track record.
                 </p>
               </div>

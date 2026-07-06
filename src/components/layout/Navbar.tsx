@@ -15,6 +15,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -33,6 +34,7 @@ export default function Navbar() {
 
   // Close mobile menu on path changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
@@ -163,9 +165,9 @@ export default function Navbar() {
                     </div>
                     <div>
                       <span className="block text-sm font-bold text-white group-hover:text-[#B63106] transition-colors leading-tight">
-                        I'm looking for opportunities
+                        I&apos;m looking for opportunities
                       </span>
-                      <span className="block text-xs text-slate-400 mt-1">
+                      <span className="block text-xs text-brand-text-muted mt-1">
                         Find jobs, internships, & clerkships
                       </span>
                     </div>
@@ -181,9 +183,9 @@ export default function Navbar() {
                     </div>
                     <div>
                       <span className="block text-sm font-bold text-white group-hover:text-[#B63106] transition-colors leading-tight">
-                        I'm hiring legal talent
+                        I&apos;m hiring legal talent
                       </span>
-                      <span className="block text-xs text-slate-400 mt-1">
+                      <span className="block text-xs text-brand-text-muted mt-1">
                         Post opportunities & recruit professionals
                       </span>
                     </div>
@@ -240,7 +242,7 @@ export default function Navbar() {
                   Log In
                 </Link>
                 <div className="space-y-2.5">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">
+                  <span className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest block">
                     Register HAQJobs Account
                   </span>
                   <div className="grid grid-cols-2 gap-3">

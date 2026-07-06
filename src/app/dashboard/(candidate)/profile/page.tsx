@@ -662,8 +662,8 @@ function CandidateProfileContent() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500">Loading your profile portfolio...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted">Loading your profile portfolio...</p>
       </div>
     );
   }
@@ -683,8 +683,8 @@ function CandidateProfileContent() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-800 font-poppins">Manage Profile</h1>
-        <p className="text-xs text-slate-400 font-semibold mt-1">
+        <h1 className="text-2xl font-extrabold text-brand-text font-poppins">Manage Profile</h1>
+        <p className="text-xs text-brand-text-muted font-semibold mt-1">
           Complete, verify, and present your credentials to prospective law firms and recruiters.
         </p>
       </div>
@@ -705,7 +705,7 @@ function CandidateProfileContent() {
         <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
 
           {/* Summary Card */}
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col items-center text-center">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 flex flex-col items-center text-center">
 
             {/* Profile photo container */}
             <div className="relative group mb-4">
@@ -713,35 +713,35 @@ function CandidateProfileContent() {
                 <img
                   src={profile.profile_photo_url}
                   alt={fullName}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border border-slate-100 shadow-sm"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border border-brand-border shadow-sm"
                 />
               ) : (
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-50 rounded-2xl flex items-center justify-center text-[#013CF1] font-bold text-2xl border border-blue-100 select-none">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-brand/10 rounded-2xl flex items-center justify-center text-[#B63106] font-bold text-2xl border border-blue-100 select-none">
                   {fullName?.charAt(0).toUpperCase() || "C"}
                 </div>
               )}
             </div>
 
-            <h3 className="font-extrabold text-slate-800 text-sm font-poppins">{fullName || "User Name"}</h3>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Candidate Profile</p>
+            <h3 className="font-extrabold text-brand-text text-sm font-poppins">{fullName || "User Name"}</h3>
+            <p className="text-[10px] text-brand-text-muted font-bold uppercase tracking-wider mt-0.5">Candidate Profile</p>
 
             {/* Profile Strength Block */}
             <div className="w-full mt-6 space-y-2 border-t border-slate-50 pt-4">
               <div className="flex justify-between items-center text-[10px] font-bold">
-                <span className="text-slate-400">Strength Rating</span>
-                <span className="text-[#013CF1]">{strengthScore}%</span>
+                <span className="text-brand-text-muted">Strength Rating</span>
+                <span className="text-[#B63106]">{strengthScore}%</span>
               </div>
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#013CF1] h-full transition-all duration-300" style={{ width: `${strengthScore}%` }} />
+              <div className="w-full bg-brand-bg h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[#B63106] h-full transition-all duration-300" style={{ width: `${strengthScore}%` }} />
               </div>
-              <p className="text-[9px] text-[#013CF1] font-extrabold text-left leading-none uppercase tracking-wide">
+              <p className="text-[9px] text-[#B63106] font-extrabold text-left leading-none uppercase tracking-wide">
                 {strengthLabel}
               </p>
             </div>
           </div>
 
           {/* Vertical Navigation Tabs */}
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden py-3">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm overflow-hidden py-3">
             <nav className="space-y-1 px-3">
               {navigationItems.map(item => {
                 const Icon = item.icon;
@@ -751,11 +751,11 @@ function CandidateProfileContent() {
                     key={item.key}
                     onClick={() => setActiveTab(item.key)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left ${isActive
-                      ? "bg-blue-50 text-[#013CF1]"
-                      : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
+                      ? "bg-brand/10 text-[#B63106]"
+                      : "text-brand-text-muted hover:text-brand-text hover:bg-brand-bg"
                       }`}
                   >
-                    <Icon size={14} className={isActive ? "text-[#013CF1]" : "text-slate-400"} />
+                    <Icon size={14} className={isActive ? "text-[#B63106]" : "text-brand-text-muted"} />
                     {item.label}
                   </button>
                 );
@@ -766,20 +766,20 @@ function CandidateProfileContent() {
         </div>
 
         {/* RIGHT COLUMN: Tab Panel Forms */}
-        <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8">
+        <div className="lg:col-span-8 bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8">
 
           {/* TAB 1: Personal Information */}
           {activeTab === "personal" && (
             <form onSubmit={handlePersonalSave} className="space-y-6">
               <div>
-                <h3 className="text-base font-extrabold text-slate-800 font-poppins">Personal Details</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Basic contact information and biography settings.</p>
+                <h3 className="text-base font-extrabold text-brand-text font-poppins">Personal Details</h3>
+                <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Basic contact information and biography settings.</p>
               </div>
 
               {/* Avatar Upload field */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-6 border-b border-slate-50 pb-6">
                 {photoFile ? (
-                  <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-dashed border-slate-300">
+                  <div className="w-16 h-16 rounded-2xl bg-brand-bg flex items-center justify-center text-xs font-bold text-brand-text-muted border border-dashed border-slate-300">
                     Selected
                   </div>
                 ) : profile?.profile_photo_url ? (
@@ -789,7 +789,7 @@ function CandidateProfileContent() {
                     className="w-16 h-16 rounded-2xl object-cover"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-2xl bg-blue-50 text-[#013CF1] font-bold flex items-center justify-center text-lg">
+                  <div className="w-16 h-16 rounded-2xl bg-brand/10 text-[#B63106] font-bold flex items-center justify-center text-lg">
                     {fullName?.charAt(0).toUpperCase() || "C"}
                   </div>
                 )}
@@ -807,9 +807,9 @@ function CandidateProfileContent() {
                       }}
                     />
                   </label>
-                  <p className="mt-2 text-xs text-slate-500">Accepted formats: PNG, JPG, JPEG (Max 2 MB)</p>
+                  <p className="mt-2 text-xs text-brand-text-muted">Accepted formats: PNG, JPG, JPEG (Max 2 MB)</p>
                   {photoFile && (
-                    <span className="text-[10px] text-slate-600 font-bold block">
+                    <span className="text-[10px] text-brand-text-secondary font-bold block">
                       📁 Selected: {photoFile.name} ({(photoFile.size / 1024 / 1024).toFixed(2)} MB)
                     </span>
                   )}
@@ -818,105 +818,105 @@ function CandidateProfileContent() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Name</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Full Name</label>
                   <div className="relative">
                     <input
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
-                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-white"
+                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-brand-card"
                     />
-                    <User size={14} className="text-slate-400 absolute left-3 top-3.5" />
+                    <User size={14} className="text-brand-text-muted absolute left-3 top-3.5" />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact Number</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Contact Number</label>
                   <div className="relative">
                     <input
                       type="tel"
                       value={contactNumber}
                       onChange={(e) => setContactNumber(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-white"
+                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-brand-card"
                       placeholder="e.g. +91 98765 43210"
                     />
-                    <Phone size={14} className="text-slate-400 absolute left-3 top-3.5" />
+                    <Phone size={14} className="text-brand-text-muted absolute left-3 top-3.5" />
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">City</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">City</label>
                   <div className="relative">
                     <input
                       type="text"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-white"
+                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-brand-card"
                       placeholder="e.g. New Delhi"
                     />
-                    <MapPin size={14} className="text-slate-400 absolute left-3 top-3.5" />
+                    <MapPin size={14} className="text-brand-text-muted absolute left-3 top-3.5" />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">State</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">State</label>
                   <div className="relative">
                     <input
                       type="text"
                       value={state}
                       onChange={(e) => setState(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-white"
+                      className="w-full pl-9 pr-4 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-brand-card"
                       placeholder="e.g. Delhi"
                     />
-                    <MapPin size={14} className="text-slate-400 absolute left-3 top-3.5" />
+                    <MapPin size={14} className="text-brand-text-muted absolute left-3 top-3.5" />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Email Address (Read-only)</label>
+                <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Email Address (Read-only)</label>
                 <div className="relative">
                   <input
                     type="email"
                     value={profile?.email || ""}
                     disabled
-                    className="w-full pl-9 pr-4 py-2.5 text-xs border border-slate-200 bg-slate-50 rounded-xl text-slate-500 cursor-not-allowed font-medium"
+                    className="w-full pl-9 pr-4 py-2.5 text-xs border border-brand-border bg-brand-bg rounded-xl text-brand-text-muted cursor-not-allowed font-medium"
                   />
-                  <Mail size={14} className="text-slate-400 absolute left-3 top-3.5" />
+                  <Mail size={14} className="text-brand-text-muted absolute left-3 top-3.5" />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Bio / About Yourself</label>
+                <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Bio / About Yourself</label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={4}
                   placeholder="Share a brief overview of your legal background, special interests, and career accomplishments..."
-                  className="w-full px-4 py-3 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-white leading-relaxed"
+                  className="w-full px-4 py-3 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 bg-brand-card leading-relaxed"
                 />
               </div>
 
               {/* Visibility Setting Section */}
               <div className="space-y-2 border-t border-slate-50 pt-6">
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Profile Privacy Settings</label>
+                <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Profile Privacy Settings</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <button
                     type="button"
                     onClick={() => setVisibility("public")}
                     className={`p-4 rounded-2xl border text-left space-y-1 transition-all ${visibility === "public"
-                      ? "border-[#013CF1] bg-blue-50/20"
-                      : "border-slate-200 hover:border-slate-300"
+                      ? "border-[#B63106] bg-brand/10/20"
+                      : "border-brand-border hover:border-slate-300"
                       }`}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Globe size={14} className={visibility === "public" ? "text-[#013CF1]" : "text-slate-400"} />
-                      <span className="text-xs font-bold text-slate-800">Public</span>
+                      <Globe size={14} className={visibility === "public" ? "text-[#B63106]" : "text-brand-text-muted"} />
+                      <span className="text-xs font-bold text-brand-text">Public</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-tight">Visible to all registered users and recruiters.</p>
+                    <p className="text-[10px] text-brand-text-muted leading-tight">Visible to all registered users and recruiters.</p>
                   </button>
 
                   <button
@@ -924,29 +924,29 @@ function CandidateProfileContent() {
                     onClick={() => setVisibility("recruiters_only")}
                     className={`p-4 rounded-2xl border text-left space-y-1 transition-all ${visibility === "recruiters_only"
                       ? "border-amber-500 bg-amber-50/10"
-                      : "border-slate-200 hover:border-slate-300"
+                      : "border-brand-border hover:border-slate-300"
                       }`}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Eye size={14} className={visibility === "recruiters_only" ? "text-amber-500" : "text-slate-400"} />
-                      <span className="text-xs font-bold text-slate-800">Recruiters Only</span>
+                      <Eye size={14} className={visibility === "recruiters_only" ? "text-amber-500" : "text-brand-text-muted"} />
+                      <span className="text-xs font-bold text-brand-text">Recruiters Only</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-tight">Visible strictly to verified employer recruiters.</p>
+                    <p className="text-[10px] text-brand-text-muted leading-tight">Visible strictly to verified employer recruiters.</p>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setVisibility("private")}
                     className={`p-4 rounded-2xl border text-left space-y-1 transition-all ${visibility === "private"
-                      ? "border-slate-800 bg-slate-50"
-                      : "border-slate-200 hover:border-slate-300"
+                      ? "border-slate-800 bg-brand-bg"
+                      : "border-brand-border hover:border-slate-300"
                       }`}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Lock size={14} className={visibility === "private" ? "text-slate-800" : "text-slate-400"} />
-                      <span className="text-xs font-bold text-slate-800">Private</span>
+                      <Lock size={14} className={visibility === "private" ? "text-brand-text" : "text-brand-text-muted"} />
+                      <span className="text-xs font-bold text-brand-text">Private</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-tight">Hidden from recruiter searches completely.</p>
+                    <p className="text-[10px] text-brand-text-muted leading-tight">Hidden from recruiter searches completely.</p>
                   </button>
                 </div>
               </div>
@@ -955,7 +955,7 @@ function CandidateProfileContent() {
                 <button
                   type="submit"
                   disabled={saving === "personal"}
-                  className="px-5 py-3 bg-[#013CF1] hover:bg-[#012cc4] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/15"
+                  className="px-5 py-3 bg-[#B63106] hover:bg-[#932604] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/15"
                 >
                   {saving === "personal" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={14} />}
                   Save Changes
@@ -968,13 +968,13 @@ function CandidateProfileContent() {
           {activeTab === "preferences" && (
             <div className="space-y-8">
               <div>
-                <h3 className="text-base font-extrabold text-slate-800 font-poppins">Career Preferences & Domains</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Toggle job types and legal fields you want to match against.</p>
+                <h3 className="text-base font-extrabold text-brand-text font-poppins">Career Preferences & Domains</h3>
+                <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Toggle job types and legal fields you want to match against.</p>
               </div>
 
               {/* Job Preferences Selection */}
               <div className="space-y-3">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Desired Job Types</h4>
+                <h4 className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Desired Job Types</h4>
                 <div className="flex flex-wrap gap-2">
                   {["Internship", "Full-Time Job", "Freelance", "Contract", "Part-Time"].map(pref => {
                     const selected = careerPrefs.includes(pref);
@@ -984,8 +984,8 @@ function CandidateProfileContent() {
                         type="button"
                         onClick={() => handleTogglePref(pref)}
                         className={`px-4 py-2 text-xs font-bold border rounded-xl transition-all ${selected
-                          ? "bg-[#013CF1] border-[#013CF1] text-white"
-                          : "bg-white border-slate-200 text-slate-500 hover:border-slate-300"
+                          ? "bg-[#B63106] border-[#B63106] text-white"
+                          : "bg-brand-card border-brand-border text-brand-text-muted hover:border-slate-300"
                           }`}
                       >
                         {pref}
@@ -997,7 +997,7 @@ function CandidateProfileContent() {
 
               {/* Legal domains multi-select list */}
               <div className="space-y-3">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Legal Domains & Specialization</h4>
+                <h4 className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Legal Domains & Specialization</h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {LEGAL_DOMAINS.map(domain => {
                     const selected = specializations.includes(domain);
@@ -1007,12 +1007,12 @@ function CandidateProfileContent() {
                         type="button"
                         onClick={() => handleToggleSpec(domain)}
                         className={`p-3 text-left text-xs font-bold border rounded-xl transition-all flex items-center justify-between ${selected
-                          ? "bg-blue-50/50 border-[#013CF1] text-[#013CF1]"
-                          : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                          ? "bg-brand/10/50 border-[#B63106] text-[#B63106]"
+                          : "bg-brand-card border-brand-border text-brand-text-secondary hover:border-slate-300"
                           }`}
                       >
                         <span>{domain}</span>
-                        {selected && <span className="text-[#013CF1] text-sm">✓</span>}
+                        {selected && <span className="text-[#B63106] text-sm">✓</span>}
                       </button>
                     );
                   })}
@@ -1023,7 +1023,7 @@ function CandidateProfileContent() {
                 <button
                   onClick={handlePreferencesSave}
                   disabled={saving === "preferences"}
-                  className="px-5 py-3 bg-[#013CF1] hover:bg-[#012cc4] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                  className="px-5 py-3 bg-[#B63106] hover:bg-[#932604] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
                 >
                   {saving === "preferences" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={14} />}
                   Save Preferences
@@ -1037,8 +1037,8 @@ function CandidateProfileContent() {
             <div className="space-y-6">
               <div className="flex justify-between items-center border-b border-slate-50 pb-4">
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-800 font-poppins">Work History</h3>
-                  <p className="text-xs text-slate-400 font-semibold mt-0.5">Manage your legal internships and associate positions.</p>
+                  <h3 className="text-base font-extrabold text-brand-text font-poppins">Work History</h3>
+                  <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Manage your legal internships and associate positions.</p>
                 </div>
                 {!showExpForm && (
                   <button
@@ -1064,17 +1064,17 @@ function CandidateProfileContent() {
                 <div className="space-y-4 pt-2">
                   {experiences.length > 0 ? (
                     experiences.map((exp: any) => (
-                      <div key={exp.id} className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl flex justify-between items-start gap-4 hover:border-slate-200 transition-all">
+                      <div key={exp.id} className="p-4 bg-brand-bg/50 border border-brand-border rounded-2xl flex justify-between items-start gap-4 hover:border-brand-border transition-all">
                         <div className="space-y-1">
-                          <h4 className="text-xs font-black text-slate-800">{exp.position}</h4>
-                          <p className="text-xs font-bold text-[#013CF1]">{exp.firm_name}</p>
-                          <p className="text-[10px] font-bold text-slate-400">
+                          <h4 className="text-xs font-black text-brand-text">{exp.position}</h4>
+                          <p className="text-xs font-bold text-[#B63106]">{exp.firm_name}</p>
+                          <p className="text-[10px] font-bold text-brand-text-muted">
                             {formatDateString(exp.start_date)} - {
                               exp.currently_working ? "Present" : exp.end_date ? formatDateString(exp.end_date) : "N/A"
                             }
                           </p>
                           {exp.description && (
-                            <p className="text-xs text-slate-500 font-semibold pt-1.5 line-clamp-3 leading-relaxed whitespace-pre-wrap">
+                            <p className="text-xs text-brand-text-muted font-semibold pt-1.5 line-clamp-3 leading-relaxed whitespace-pre-wrap">
                               {exp.description}
                             </p>
                           )}
@@ -1082,14 +1082,14 @@ function CandidateProfileContent() {
                         <div className="flex gap-1.5 flex-shrink-0">
                           <button
                             onClick={() => handleEditExpClick(exp)}
-                            className="p-1.5 text-slate-400 hover:text-slate-600 bg-white border border-slate-200 rounded-lg shadow-sm"
+                            className="p-1.5 text-brand-text-muted hover:text-brand-text-secondary bg-brand-card border border-brand-border rounded-lg shadow-sm"
                             title="Edit"
                           >
                             <Edit size={12} />
                           </button>
                           <button
                             onClick={() => handleDeleteExp(exp.id)}
-                            className="p-1.5 text-slate-400 hover:text-red-600 bg-white border border-slate-200 rounded-lg shadow-sm"
+                            className="p-1.5 text-brand-text-muted hover:text-red-600 bg-brand-card border border-brand-border rounded-lg shadow-sm"
                             title="Delete"
                           >
                             <Trash2 size={12} />
@@ -1098,39 +1098,39 @@ function CandidateProfileContent() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-8 text-slate-400 italic text-xs">
+                    <div className="text-center py-8 text-brand-text-muted italic text-xs">
                       No experiences added yet. Click "Add Experience" to list your law internships or roles.
                     </div>
                   )}
                 </div>
               ) : (
                 /* Experience subform editing */
-                <form onSubmit={handleAddOrEditExperience} className="space-y-4 bg-slate-50/30 p-5 rounded-2xl border border-slate-100">
-                  <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                <form onSubmit={handleAddOrEditExperience} className="space-y-4 bg-brand-bg/30 p-5 rounded-2xl border border-brand-border">
+                  <h4 className="text-xs font-black text-brand-text uppercase tracking-wider">
                     {editingExpId ? "Edit Experience Details" : "Add New Experience Record"}
                   </h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Law Firm / Company Name</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Law Firm / Company Name</label>
                       <input
                         type="text"
                         value={expFirmName}
                         onChange={(e) => setExpFirmName(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="Smith & Partners"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Position / Role</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Position / Role</label>
                       <input
                         type="text"
                         value={expPosition}
                         onChange={(e) => setExpPosition(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="Legal Research Intern"
                       />
                     </div>
@@ -1138,25 +1138,25 @@ function CandidateProfileContent() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Start Date</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Start Date</label>
                       <input
                         type="date"
                         value={expStartDate}
                         onChange={(e) => setExpStartDate(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-white text-slate-700"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none bg-brand-card text-brand-text-secondary"
                       />
                     </div>
 
                     {!expCurrentlyWorking && (
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">End Date</label>
+                        <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">End Date</label>
                         <input
                           type="date"
                           value={expEndDate}
                           onChange={(e) => setExpEndDate(e.target.value)}
                           required={!expCurrentlyWorking}
-                          className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none bg-white text-slate-700"
+                          className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none bg-brand-card text-brand-text-secondary"
                         />
                       </div>
                     )}
@@ -1168,36 +1168,36 @@ function CandidateProfileContent() {
                       id="currentlyWorking"
                       checked={expCurrentlyWorking}
                       onChange={(e) => setExpCurrentlyWorking(e.target.checked)}
-                      className="w-3.5 h-3.5 text-blue-600 border-slate-200 rounded"
+                      className="w-3.5 h-3.5 text-brand border-brand-border rounded"
                     />
-                    <label htmlFor="currentlyWorking" className="text-xs font-bold text-slate-600 select-none">
+                    <label htmlFor="currentlyWorking" className="text-xs font-bold text-brand-text-secondary select-none">
                       I am currently working in this role
                     </label>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Description / Responsibilities</label>
+                    <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Description / Responsibilities</label>
                     <textarea
                       value={expDescription}
                       onChange={(e) => setExpDescription(e.target.value)}
                       rows={3}
                       placeholder="Conducted legal research, prepared briefs for trials, drafted summaries for contract compliance..."
-                      className="w-full px-3 py-2.5 text-xs border border-slate-200 rounded-xl outline-none bg-white leading-relaxed"
+                      className="w-full px-3 py-2.5 text-xs border border-brand-border rounded-xl outline-none bg-brand-card leading-relaxed"
                     />
                   </div>
 
-                  <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                  <div className="flex justify-end gap-2 pt-2 border-t border-brand-border">
                     <button
                       type="button"
                       onClick={() => setShowExpForm(false)}
-                      className="px-4 py-2 border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-slate-50"
+                      className="px-4 py-2 border border-brand-border text-brand-text-muted text-xs font-bold rounded-xl hover:bg-brand-bg"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={saving === "experience"}
-                      className="px-4 py-2 bg-[#013CF1] hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow"
+                      className="px-4 py-2 bg-[#B63106] hover:bg-brand-hover text-white text-xs font-bold rounded-xl shadow"
                     >
                       {saving === "experience" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save Record"}
                     </button>
@@ -1212,8 +1212,8 @@ function CandidateProfileContent() {
             <div className="space-y-6">
               <div className="flex justify-between items-center border-b border-slate-50 pb-4">
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-800 font-poppins">Education History</h3>
-                  <p className="text-xs text-slate-400 font-semibold mt-0.5">List colleges, universities, and upload certificates.</p>
+                  <h3 className="text-base font-extrabold text-brand-text font-poppins">Education History</h3>
+                  <p className="text-xs text-brand-text-muted font-semibold mt-0.5">List colleges, universities, and upload certificates.</p>
                 </div>
                 {!showEduForm && (
                   <button
@@ -1239,14 +1239,14 @@ function CandidateProfileContent() {
                 <div className="space-y-4 pt-2">
                   {educations.length > 0 ? (
                     educations.map((edu: any) => (
-                      <div key={edu.id} className="p-4 bg-slate-50/50 border border-slate-100 rounded-2xl flex justify-between items-start gap-4 hover:border-slate-200 transition-all">
+                      <div key={edu.id} className="p-4 bg-brand-bg/50 border border-brand-border rounded-2xl flex justify-between items-start gap-4 hover:border-brand-border transition-all">
                         <div className="space-y-1 w-full">
-                          <h4 className="text-xs font-black text-slate-800">{edu.degree}</h4>
+                          <h4 className="text-xs font-black text-brand-text">{edu.degree}</h4>
                           {edu.specialization && (
-                            <p className="text-xs font-semibold text-slate-500">{edu.specialization}</p>
+                            <p className="text-xs font-semibold text-brand-text-muted">{edu.specialization}</p>
                           )}
-                          <p className="text-xs font-bold text-[#013CF1]">{edu.university_name}</p>
-                          <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-[10px] font-bold text-slate-400">
+                          <p className="text-xs font-bold text-[#B63106]">{edu.university_name}</p>
+                          <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-[10px] font-bold text-brand-text-muted">
                             <span>Passing Year: {edu.passing_year}</span>
                             {edu.cgpa_percentage && <span>CGPA/Score: {edu.cgpa_percentage}</span>}
                             {edu.certificate_url && (
@@ -1254,7 +1254,7 @@ function CandidateProfileContent() {
                                 href={edu.certificate_url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-[#013CF1] hover:underline"
+                                className="text-[#B63106] hover:underline"
                               >
                                 View Certificate ↗
                               </a>
@@ -1264,13 +1264,13 @@ function CandidateProfileContent() {
                         <div className="flex gap-1.5 flex-shrink-0">
                           <button
                             onClick={() => handleEditEduClick(edu)}
-                            className="p-1.5 text-slate-400 hover:text-slate-600 bg-white border border-slate-200 rounded-lg shadow-sm"
+                            className="p-1.5 text-brand-text-muted hover:text-brand-text-secondary bg-brand-card border border-brand-border rounded-lg shadow-sm"
                           >
                             <Edit size={12} />
                           </button>
                           <button
                             onClick={() => handleDeleteEdu(edu)}
-                            className="p-1.5 text-slate-400 hover:text-red-600 bg-white border border-slate-200 rounded-lg shadow-sm"
+                            className="p-1.5 text-brand-text-muted hover:text-red-600 bg-brand-card border border-brand-border rounded-lg shadow-sm"
                           >
                             <Trash2 size={12} />
                           </button>
@@ -1278,39 +1278,39 @@ function CandidateProfileContent() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-8 text-slate-400 italic text-xs">
+                    <div className="text-center py-8 text-brand-text-muted italic text-xs">
                       No educational records added yet. Click "Add Education" to list certificates.
                     </div>
                   )}
                 </div>
               ) : (
                 /* Education subform editing */
-                <form onSubmit={handleAddOrEditEducation} className="space-y-4 bg-slate-50/30 p-5 rounded-2xl border border-slate-100">
-                  <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                <form onSubmit={handleAddOrEditEducation} className="space-y-4 bg-brand-bg/30 p-5 rounded-2xl border border-brand-border">
+                  <h4 className="text-xs font-black text-brand-text uppercase tracking-wider">
                     {editingEduId ? "Edit Education Record" : "Add New Education Record"}
                   </h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">University / College Name</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">University / College Name</label>
                       <input
                         type="text"
                         value={eduUniversity}
                         onChange={(e) => setEduUniversity(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="National Law School of India University"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Degree</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Degree</label>
                       <input
                         type="text"
                         value={eduDegree}
                         onChange={(e) => setEduDegree(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="B.A. LL.B (Hons.)"
                       />
                     </div>
@@ -1318,45 +1318,45 @@ function CandidateProfileContent() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Branch / Specialization</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Branch / Specialization</label>
                       <input
                         type="text"
                         value={eduSpecialization}
                         onChange={(e) => setEduSpecialization(e.target.value)}
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="Business Law"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Passing Year</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Passing Year</label>
                       <input
                         type="number"
                         value={eduPassingYear}
                         onChange={(e) => setEduPassingYear(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="2025"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">CGPA / Percentage</label>
+                      <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">CGPA / Percentage</label>
                       <input
                         type="text"
                         value={eduCgpa}
                         onChange={(e) => setEduCgpa(e.target.value)}
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                        className="w-full px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                         placeholder="e.g. 8.4 CGPA or 84%"
                       />
                     </div>
                   </div>
 
                   {/* Certificate Upload Field */}
-                  <div className="space-y-2 border-t border-slate-100 pt-4">
-                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Certificate Document Upload</label>
+                  <div className="space-y-2 border-t border-brand-border pt-4">
+                    <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Certificate Document Upload</label>
                     <div className="flex items-center gap-3">
-                      <label className="cursor-pointer text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 hover:bg-slate-200 px-4 py-2 rounded-xl transition-all select-none">
+                      <label className="cursor-pointer text-xs font-bold text-brand-text-secondary bg-brand-bg border border-brand-border hover:bg-slate-200 px-4 py-2 rounded-xl transition-all select-none">
                         Choose Document File
                         <input
                           type="file"
@@ -1369,32 +1369,32 @@ function CandidateProfileContent() {
                           }}
                         />
                       </label>
-                      <span className="text-[9px] text-slate-400 font-semibold">Accepted formats: PDF, PNG, JPG (Max 5 MB)</span>
+                      <span className="text-[9px] text-brand-text-muted font-semibold">Accepted formats: PDF, PNG, JPG (Max 5 MB)</span>
                     </div>
                     {eduCertFile && (
-                      <p className="text-[10px] text-slate-700 font-bold">
+                      <p className="text-[10px] text-brand-text-secondary font-bold">
                         📁 Selected File: {eduCertFile.name} ({(eduCertFile.size / 1024 / 1024).toFixed(2)} MB)
                       </p>
                     )}
                     {eduCertUrl && !eduCertFile && (
-                      <p className="text-[10px] text-slate-400 font-semibold">
-                        Existing document uploaded: <a href={eduCertUrl} target="_blank" rel="noreferrer" className="text-[#013CF1] underline">View Certificate</a>
+                      <p className="text-[10px] text-brand-text-muted font-semibold">
+                        Existing document uploaded: <a href={eduCertUrl} target="_blank" rel="noreferrer" className="text-[#B63106] underline">View Certificate</a>
                       </p>
                     )}
                   </div>
 
-                  <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                  <div className="flex justify-end gap-2 pt-2 border-t border-brand-border">
                     <button
                       type="button"
                       onClick={() => setShowEduForm(false)}
-                      className="px-4 py-2 border border-slate-200 text-slate-500 text-xs font-bold rounded-xl hover:bg-slate-50"
+                      className="px-4 py-2 border border-brand-border text-brand-text-muted text-xs font-bold rounded-xl hover:bg-brand-bg"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={saving === "education"}
-                      className="px-4 py-2 bg-[#013CF1] hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow"
+                      className="px-4 py-2 bg-[#B63106] hover:bg-brand-hover text-white text-xs font-bold rounded-xl shadow"
                     >
                       {saving === "education" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save Record"}
                     </button>
@@ -1408,8 +1408,8 @@ function CandidateProfileContent() {
           {activeTab === "skills" && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-base font-extrabold text-slate-800 font-poppins">Skills & Expertise</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Add skills keywords that recruiters look up in search queries.</p>
+                <h3 className="text-base font-extrabold text-brand-text font-poppins">Skills & Expertise</h3>
+                <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Add skills keywords that recruiters look up in search queries.</p>
               </div>
 
               {/* Skill Input Form */}
@@ -1419,7 +1419,7 @@ function CandidateProfileContent() {
                   value={newSkillText}
                   onChange={(e) => setNewSkillText(e.target.value)}
                   placeholder="e.g. Legal Drafting, Litigation support..."
-                  className="flex-grow px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white"
+                  className="flex-grow px-3 py-2 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card"
                 />
                 <button
                   type="submit"
@@ -1431,33 +1431,33 @@ function CandidateProfileContent() {
 
               {/* Skills Tags List */}
               <div className="space-y-2">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Added Skills</h4>
+                <h4 className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Added Skills</h4>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {skills.length > 0 ? (
                     skills.map((s: any) => (
                       <span
                         key={s.id}
-                        className="text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl flex items-center gap-1.5 group/chip"
+                        className="text-xs font-bold text-brand-text-secondary bg-brand-bg border border-brand-border px-3.5 py-2 rounded-xl flex items-center gap-1.5 group/chip"
                       >
                         <span>{s.skill}</span>
                         <button
                           type="button"
                           onClick={() => handleRemoveSkill(s.id)}
-                          className="text-slate-400 hover:text-red-500 transition-colors select-none"
+                          className="text-brand-text-muted hover:text-red-500 transition-colors select-none"
                         >
                           <X size={10} />
                         </button>
                       </span>
                     ))
                   ) : (
-                    <div className="text-slate-400 italic text-xs py-2">No skills tags specified yet.</div>
+                    <div className="text-brand-text-muted italic text-xs py-2">No skills tags specified yet.</div>
                   )}
                 </div>
               </div>
 
               {/* Suggestions Quick Add */}
               <div className="space-y-2 border-t border-slate-50 pt-4">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Suggested Legal Skills</h4>
+                <h4 className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Suggested Legal Skills</h4>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {["Legal Drafting", "Legal Research", "Negotiation", "Contract Review", "Litigation", "Corporate Compliance"].map(suggested => {
                     // Check if already added
@@ -1478,7 +1478,7 @@ function CandidateProfileContent() {
                             flashMessage(mapSupabaseError(err, "Failed to add skill."), "error");
                           }
                         }}
-                        className="text-[10px] font-bold text-[#013CF1] bg-blue-50 border border-blue-100 hover:bg-[#013CF1] hover:text-white px-3 py-1.5 rounded-xl transition-all"
+                        className="text-[10px] font-bold text-[#B63106] bg-brand/10 border border-blue-100 hover:bg-[#B63106] hover:text-white px-3 py-1.5 rounded-xl transition-all"
                       >
                         + {suggested}
                       </button>
@@ -1493,14 +1493,14 @@ function CandidateProfileContent() {
           {activeTab === "documents" && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-base font-extrabold text-slate-800 font-poppins">Professional Documents</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Upload resumes and portfolios visible to prospective employers.</p>
+                <h3 className="text-base font-extrabold text-brand-text font-poppins">Professional Documents</h3>
+                <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Upload resumes and portfolios visible to prospective employers.</p>
               </div>
 
-              <form onSubmit={handleResumeUpload} className="space-y-5 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
+              <form onSubmit={handleResumeUpload} className="space-y-5 bg-brand-bg/50 p-6 rounded-2xl border border-brand-border">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-700">Resume / CV File</label>
-                  <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">
+                  <label className="block text-xs font-bold text-brand-text-secondary">Resume / CV File</label>
+                  <p className="text-[10px] text-brand-text-muted font-semibold leading-relaxed">
                     Upload your latest CV in PDF format. Relational index mapping automatically replaces any existing resume in storage folder.
                   </p>
                 </div>
@@ -1519,37 +1519,37 @@ function CandidateProfileContent() {
                       }}
                     />
                   </label>
-                  <span className="text-[9px] text-slate-400 font-semibold">Accepted formats: PDF only (Max 5 MB)</span>
+                  <span className="text-[9px] text-brand-text-muted font-semibold">Accepted formats: PDF only (Max 5 MB)</span>
                 </div>
 
                 {resumeFile && (
-                  <p className="text-[10px] text-slate-800 font-bold">
+                  <p className="text-[10px] text-brand-text font-bold">
                     📁 Selected File: {resumeFile.name} ({(resumeFile.size / 1024 / 1024).toFixed(2)} MB)
                   </p>
                 )}
 
                 {profile?.resume_url && !resumeFile && (
-                  <div className="flex items-center justify-between p-3 bg-white border border-slate-150 rounded-xl mt-4">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                      <FileText size={14} className="text-[#013CF1]" />
+                  <div className="flex items-center justify-between p-3 bg-brand-card border border-slate-150 rounded-xl mt-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-brand-text-secondary">
+                      <FileText size={14} className="text-[#B63106]" />
                       <span>Current CV / Resume</span>
                     </div>
                     <a
                       href={profile.resume_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs font-bold text-[#013CF1] hover:underline"
+                      className="text-xs font-bold text-[#B63106] hover:underline"
                     >
                       View Uploaded Resume ↗
                     </a>
                   </div>
                 )}
 
-                <div className="flex justify-end pt-2 border-t border-slate-100">
+                <div className="flex justify-end pt-2 border-t border-brand-border">
                   <button
                     type="submit"
                     disabled={saving === "documents" || !resumeFile}
-                    className="px-5 py-2.5 bg-[#013CF1] hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-5 py-2.5 bg-[#B63106] hover:bg-brand-hover text-white text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {saving === "documents" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Upload Document"}
                   </button>
@@ -1563,8 +1563,8 @@ function CandidateProfileContent() {
             <form onSubmit={handleBarVerificationSave} className="space-y-6">
               <div className="flex justify-between items-start border-b border-slate-50 pb-4">
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-800 font-poppins">Professional Verification</h3>
-                  <p className="text-xs text-slate-400 font-semibold mt-0.5">Add Bar council enrollment info. Verification status defaults to Pending.</p>
+                  <h3 className="text-base font-extrabold text-brand-text font-poppins">Professional Verification</h3>
+                  <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Add Bar council enrollment info. Verification status defaults to Pending.</p>
                 </div>
                 <span className="text-[10px] font-extrabold bg-amber-50 text-amber-600 border border-amber-100 px-3 py-1 rounded-full uppercase tracking-wider select-none">
                   Verification: Pending
@@ -1573,23 +1573,23 @@ function CandidateProfileContent() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Bar Council Enrollment Number</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Bar Council Enrollment Number</label>
                   <input
                     type="text"
                     value={barNumber}
                     onChange={(e) => setBarNumber(e.target.value)}
-                    className="w-full px-3 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white font-medium"
+                    className="w-full px-3 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card font-medium"
                     placeholder="e.g. MAH/1234/2025"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">State Bar Council</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">State Bar Council</label>
                   <input
                     type="text"
                     value={barCouncil}
                     onChange={(e) => setBarCouncil(e.target.value)}
-                    className="w-full px-3 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white font-medium"
+                    className="w-full px-3 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card font-medium"
                     placeholder="e.g. Bar Council of Maharashtra & Goa"
                   />
                 </div>
@@ -1597,23 +1597,23 @@ function CandidateProfileContent() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Enrollment Year</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Enrollment Year</label>
                   <input
                     type="number"
                     value={barYear}
                     onChange={(e) => setBarYear(e.target.value)}
-                    className="w-full px-3 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white font-medium"
+                    className="w-full px-3 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card font-medium"
                     placeholder="e.g. 2025"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Tribunal / Court Details</label>
+                  <label className="block text-[10px] font-black text-brand-text-muted uppercase tracking-widest">Tribunal / Court Details</label>
                   <input
                     type="text"
                     value={tribunal}
                     onChange={(e) => setTribunal(e.target.value)}
-                    className="w-full px-3 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-white font-medium"
+                    className="w-full px-3 py-2.5 text-xs border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-blue-500/10 bg-brand-card font-medium"
                     placeholder="e.g. Bombay High Court"
                   />
                 </div>
@@ -1623,7 +1623,7 @@ function CandidateProfileContent() {
                 <button
                   type="submit"
                   disabled={saving === "verification"}
-                  className="px-5 py-3 bg-[#013CF1] hover:bg-[#012cc4] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                  className="px-5 py-3 bg-[#B63106] hover:bg-[#932604] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
                 >
                   {saving === "verification" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={14} />}
                   Save Verification
@@ -1636,20 +1636,20 @@ function CandidateProfileContent() {
           {activeTab === "reviews" && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-base font-extrabold text-slate-800 font-poppins">Reviews & Recommendations</h3>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Feedback and approvals verified by clients or partners.</p>
+                <h3 className="text-base font-extrabold text-brand-text font-poppins">Reviews & Recommendations</h3>
+                <p className="text-xs text-brand-text-muted font-semibold mt-0.5">Feedback and approvals verified by clients or partners.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center py-4">
-                <div className="p-6 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-1">
+                <div className="p-6 bg-brand-bg/50 rounded-2xl border border-brand-border space-y-1">
                   <Star className="text-amber-500 mx-auto w-6 h-6" />
-                  <h4 className="text-xs font-black text-slate-700">Client Reviews</h4>
-                  <p className="text-xs text-slate-400 font-semibold">No Reviews Yet</p>
+                  <h4 className="text-xs font-black text-brand-text-secondary">Client Reviews</h4>
+                  <p className="text-xs text-brand-text-muted font-semibold">No Reviews Yet</p>
                 </div>
-                <div className="p-6 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-1">
+                <div className="p-6 bg-brand-bg/50 rounded-2xl border border-brand-border space-y-1">
                   <Star className="text-amber-500 mx-auto w-6 h-6" />
-                  <h4 className="text-xs font-black text-slate-700">Peer Recommendations</h4>
-                  <p className="text-xs text-slate-400 font-semibold">No Recommendations Yet</p>
+                  <h4 className="text-xs font-black text-brand-text-secondary">Peer Recommendations</h4>
+                  <p className="text-xs text-brand-text-muted font-semibold">No Recommendations Yet</p>
                 </div>
               </div>
             </div>
@@ -1666,8 +1666,8 @@ export default function CandidateProfilePage() {
   return (
     <Suspense fallback={
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500">Loading your profile portfolio...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted">Loading your profile portfolio...</p>
       </div>
     }>
       <CandidateProfileContent />

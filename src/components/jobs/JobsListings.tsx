@@ -95,12 +95,12 @@ const mockJobs: JobData[] = [
 
 export default function JobsListings() {
   return (
-    <section className="py-20 bg-[#F7F8FC] border-t border-[#E2E8F0]">
+    <section className="py-20 bg-[#F7F8FC] border-t border-brand-border">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#191D20] tracking-tight mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-brand-text tracking-tight mb-2">
             12,000+ Legal Opportunities
           </h2>
           <p className="text-[#64748B] text-[16px]">

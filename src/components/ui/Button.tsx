@@ -15,14 +15,14 @@ export function Button({ children, href, variant = "primary", className = "", on
   const sizeClasses = "px-6 py-3 md:px-8 md:py-4 text-sm md:text-base";
   
   const variants = {
-    primary: "bg-[#013CF1] text-white hover:bg-[#013CF1]/90 shadow-sm shadow-[#013CF1]/20 hover:shadow-md hover:shadow-[#013CF1]/30",
-    secondary: "bg-gray-100 text-black hover:bg-gray-200 border border-transparent",
-    outline: "bg-transparent text-black border border-gray-200 hover:border-gray-300 hover:bg-gray-50",
+    primary: "bg-brand text-white hover:bg-brand-hover shadow-sm shadow-brand/20 hover:shadow-md hover:shadow-brand/35",
+    secondary: "bg-brand-card text-brand border border-brand hover:bg-brand/10",
+    outline: "bg-transparent text-brand-text border border-brand-border hover:border-brand hover:bg-brand-card",
   };
 
   const appliedClasses = `${baseClasses} ${sizeClasses} ${variants[variant]} ${className}`;
 
-  const Inner = () => (
+  const innerElement = (
     <motion.span 
       whileTap={{ scale: 0.98 }}
       className={appliedClasses}
@@ -35,10 +35,10 @@ export function Button({ children, href, variant = "primary", className = "", on
   if (href) {
     return (
       <Link href={href} className="inline-block">
-        <Inner />
+        {innerElement}
       </Link>
     );
   }
 
-  return <button type="button" className="inline-block"><Inner /></button>;
+  return <button type="button" className="inline-block">{innerElement}</button>;
 }

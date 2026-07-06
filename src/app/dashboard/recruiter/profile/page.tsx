@@ -408,7 +408,7 @@ function RecruiterProfileContent() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold text-slate-500">Loading recruiter profile editor...</p>
+        <p className="text-xs font-semibold text-brand-text-muted">Loading recruiter profile editor...</p>
       </div>
     );
   }
@@ -428,25 +428,25 @@ function RecruiterProfileContent() {
       )}
 
       {/* Page Header Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-800 font-poppins tracking-tight">Recruiter Profile</h1>
-          <p className="text-xs text-slate-400 font-semibold mt-1">
+          <h1 className="text-2xl font-black text-brand-text font-poppins tracking-tight">Recruiter Profile</h1>
+          <p className="text-xs text-brand-text-muted font-semibold mt-1">
             Configure your recruiter identity and company branding parameters.
           </p>
         </div>
 
         {/* Profile completion tracking */}
-        <div className="bg-white px-4 py-3 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+        <div className="bg-brand-card px-4 py-3 rounded-2xl border border-brand-border shadow-sm flex items-center gap-4">
           <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
             <Award size={20} />
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500">Branding Strength</span>
+              <span className="text-xs font-bold text-brand-text-muted">Branding Strength</span>
               <span className="text-xs font-black text-amber-600">{strengthScore}%</span>
             </div>
-            <div className="w-32 bg-slate-100 h-1.5 rounded-full overflow-hidden flex">
+            <div className="w-32 bg-brand-bg h-1.5 rounded-full overflow-hidden flex">
               <div className="bg-amber-500 h-full" style={{ width: `${strengthScore}%` }} />
             </div>
           </div>
@@ -457,13 +457,13 @@ function RecruiterProfileContent() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         
         {/* Navigation Sidebar */}
-        <div className="md:col-span-3 flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-3 md:pb-0 border-b md:border-b-0 border-slate-100">
+        <div className="md:col-span-3 flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-3 md:pb-0 border-b md:border-b-0 border-brand-border">
           <button
             onClick={() => handleTabChange("personal")}
             className={`px-4 py-3 text-left rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
               activeTab === "personal" 
                 ? "bg-amber-50 text-amber-700 shadow-sm border border-amber-100/30" 
-                : "text-slate-500 hover:bg-slate-50"
+                : "text-brand-text-muted hover:bg-brand-bg"
             }`}
           >
             <User size={14} /> Personal details
@@ -473,7 +473,7 @@ function RecruiterProfileContent() {
             className={`px-4 py-3 text-left rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
               activeTab === "company" 
                 ? "bg-amber-50 text-amber-700 shadow-sm border border-amber-100/30" 
-                : "text-slate-500 hover:bg-slate-50"
+                : "text-brand-text-muted hover:bg-brand-bg"
             }`}
           >
             <Building2 size={14} /> Company Profile
@@ -483,7 +483,7 @@ function RecruiterProfileContent() {
             className={`px-4 py-3 text-left rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
               activeTab === "verification" 
                 ? "bg-amber-50 text-amber-700 shadow-sm border border-amber-100/30" 
-                : "text-slate-500 hover:bg-slate-50"
+                : "text-brand-text-muted hover:bg-brand-bg"
             }`}
           >
             <ShieldCheck size={14} /> Identity Verification
@@ -495,18 +495,18 @@ function RecruiterProfileContent() {
           
           {/* TAB 1: PERSONAL */}
           {activeTab === "personal" && (
-            <form onSubmit={handlePersonalSave} className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-2">
+            <form onSubmit={handlePersonalSave} className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
+              <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest border-b border-slate-50 pb-2">
                 Personal details
               </h3>
 
               {/* Photo Upload area */}
-              <div className="flex flex-col sm:flex-row items-center gap-5 bg-slate-50/50 p-4 border border-slate-100 rounded-2xl">
+              <div className="flex flex-col sm:flex-row items-center gap-5 bg-brand-bg/50 p-4 border border-brand-border rounded-2xl">
                 {profile?.profile_photo_url ? (
                   <img 
                     src={profile.profile_photo_url} 
                     alt="Recruiter Photo" 
-                    className="w-16 h-16 rounded-xl object-cover border border-slate-200"
+                    className="w-16 h-16 rounded-xl object-cover border border-brand-border"
                   />
                 ) : (
                   <div className="w-16 h-16 rounded-xl bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">
@@ -515,8 +515,8 @@ function RecruiterProfileContent() {
                 )}
                 
                 <div className="space-y-1 text-center sm:text-left flex-grow">
-                  <h4 className="text-xs font-bold text-slate-800">Recruiter Photo</h4>
-                  <p className="text-[10px] text-slate-400 font-medium">JPEG, PNG formats only. Max size 2MB.</p>
+                  <h4 className="text-xs font-bold text-brand-text">Recruiter Photo</h4>
+                  <p className="text-[10px] text-brand-text-muted font-medium">JPEG, PNG formats only. Max size 2MB.</p>
                   
                   <div className="pt-2">
                     <label className="text-[10px] font-black text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-100 px-3.5 py-2 rounded-xl transition-all cursor-pointer inline-flex items-center gap-1">
@@ -544,43 +544,43 @@ function RecruiterProfileContent() {
               {/* Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Recruiter Name</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Recruiter Name</label>
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Designation</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Designation</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Talent Acquisition Lead"
                     value={designation}
                     onChange={(e) => setDesignation(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Contact Number</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Contact Number</label>
                   <input
                     type="tel"
                     placeholder="e.g. +91 98765 43210"
                     value={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Registered Email (Read Only)</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Registered Email (Read Only)</label>
                   <input
                     type="email"
                     disabled
                     value={email}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl text-xs text-slate-400 bg-slate-50 cursor-not-allowed"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl text-xs text-brand-text-muted bg-brand-bg cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -607,18 +607,18 @@ function RecruiterProfileContent() {
 
           {/* TAB 2: COMPANY PROFILE */}
           {activeTab === "company" && (
-            <form onSubmit={handleCompanySave} className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-2">
+            <form onSubmit={handleCompanySave} className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
+              <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest border-b border-slate-50 pb-2">
                 Company Details
               </h3>
 
               {/* Logo Upload area */}
-              <div className="flex flex-col sm:flex-row items-center gap-5 bg-slate-50/50 p-4 border border-slate-100 rounded-2xl">
+              <div className="flex flex-col sm:flex-row items-center gap-5 bg-brand-bg/50 p-4 border border-brand-border rounded-2xl">
                 {profile?.firm_logo_url ? (
                   <img 
                     src={profile.firm_logo_url} 
                     alt="Firm Logo" 
-                    className="w-16 h-16 rounded-xl object-cover border border-slate-200"
+                    className="w-16 h-16 rounded-xl object-cover border border-brand-border"
                   />
                 ) : (
                   <div className="w-16 h-16 rounded-xl bg-amber-100 text-amber-600 font-bold flex items-center justify-center text-xl">
@@ -627,8 +627,8 @@ function RecruiterProfileContent() {
                 )}
                 
                 <div className="space-y-1 text-center sm:text-left flex-grow">
-                  <h4 className="text-xs font-bold text-slate-800">Firm Logo / Brand Display Image</h4>
-                  <p className="text-[10px] text-slate-400 font-medium">JPEG, PNG formats only. Max size 2MB.</p>
+                  <h4 className="text-xs font-bold text-brand-text">Firm Logo / Brand Display Image</h4>
+                  <p className="text-[10px] text-brand-text-muted font-medium">JPEG, PNG formats only. Max size 2MB.</p>
                   
                   <div className="pt-2">
                     <label className="text-[10px] font-black text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-100 px-3.5 py-2 rounded-xl transition-all cursor-pointer inline-flex items-center gap-1">
@@ -656,54 +656,54 @@ function RecruiterProfileContent() {
               {/* Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Firm / Company Name</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Firm / Company Name</label>
                   <input
                     type="text"
                     required
                     value={firmName}
                     onChange={(e) => setFirmName(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Company Website URL</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Company Website URL</label>
                   <div className="relative">
                     <input
                       type="text"
                       placeholder="e.g. www.haqjobs.com"
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
-                      className="w-full pl-8 pr-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                      className="w-full pl-8 pr-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                     />
-                    <Globe size={13} className="text-slate-400 absolute left-3 top-3.5" />
+                    <Globe size={13} className="text-brand-text-muted absolute left-3 top-3.5" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">LinkedIn Company Page</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">LinkedIn Company Page</label>
                   <input
                     type="text"
                     placeholder="e.g. linkedin.com/company/firmname"
                     value={linkedin}
                     onChange={(e) => setLinkedin(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Founded Year</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Founded Year</label>
                   <input
                     type="number"
                     placeholder="e.g. 2018"
                     value={foundedYear}
                     onChange={(e) => setFoundedYear(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Team Size</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Team Size</label>
                   <select
                     value={teamSize}
                     onChange={(e) => setTeamSize(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   >
                     <option value="">Select Team Size</option>
                     <option value="1-10">1-10 Employees</option>
@@ -714,53 +714,53 @@ function RecruiterProfileContent() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Country</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Country</label>
                   <input
                     type="text"
                     placeholder="e.g. India"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">City</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">City</label>
                   <input
                     type="text"
                     placeholder="e.g. Mumbai"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">State</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">State</label>
                   <input
                     type="text"
                     placeholder="e.g. Maharashtra"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Office Address</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Office Address</label>
                   <textarea
                     rows={2}
                     placeholder="e.g. Suite 501, Maker Chambers, Nariman Point"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white resize-none"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card resize-none"
                   />
                 </div>
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">About Company</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">About Company</label>
                   <textarea
                     rows={4}
                     placeholder="Describe your firm's practice areas, legacy, and corporate values..."
                     value={aboutCompany}
                     onChange={(e) => setAboutCompany(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white resize-y min-h-[100px]"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card resize-y min-h-[100px]"
                   />
                 </div>
               </div>
@@ -787,12 +787,12 @@ function RecruiterProfileContent() {
 
           {/* TAB 3: VERIFICATION */}
           {activeTab === "verification" && (
-            <form onSubmit={handleVerificationSave} className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 space-y-6">
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-2">
+            <form onSubmit={handleVerificationSave} className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 sm:p-8 space-y-6">
+              <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest border-b border-slate-50 pb-2">
                 Identity & Company Verification
               </h3>
 
-              <div className="p-4 bg-amber-50/50 border border-amber-100 text-slate-600 rounded-2xl text-xs space-y-1">
+              <div className="p-4 bg-amber-50/50 border border-amber-100 text-brand-text-secondary rounded-2xl text-xs space-y-1">
                 <p className="font-bold text-amber-800">Verification Policy</p>
                 <p className="text-[11px] leading-relaxed font-semibold">
                   Providing a Company Registration number, GST details, or verifying your official corporate email domain will increase your brand status to "Verified Recruiter" and build candidate trust.
@@ -802,35 +802,35 @@ function RecruiterProfileContent() {
               {/* Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Company Registration Number (Optional)</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Company Registration Number (Optional)</label>
                   <input
                     type="text"
                     placeholder="e.g. U12345MH2018PTC123456"
                     value={regNumber}
                     onChange={(e) => setRegNumber(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">GSTIN details (Optional)</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">GSTIN details (Optional)</label>
                   <input
                     type="text"
                     placeholder="e.g. 27AAAAA1111A1Z1"
                     value={gstNumber}
                     onChange={(e) => setGstNumber(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
                 </div>
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Official corporate Email Domain (Optional)</label>
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Official corporate Email Domain (Optional)</label>
                   <input
                     type="text"
                     placeholder="e.g. firmname.com (exclude @ prefix)"
                     value={emailDomain}
                     onChange={(e) => setEmailDomain(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-slate-800 bg-white"
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-amber-500/10 focus:border-amber-500 text-xs text-brand-text bg-brand-card"
                   />
-                  <p className="text-[10px] text-slate-400 font-medium">Used to automatically whitelist recruiters joining from the same firm.</p>
+                  <p className="text-[10px] text-brand-text-muted font-medium">Used to automatically whitelist recruiters joining from the same firm.</p>
                 </div>
               </div>
 
@@ -867,7 +867,7 @@ export default function RecruiterProfilePage() {
     <Suspense fallback={
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-        <p className="text-xs font-semibold text-slate-500">Loading your profile editor...</p>
+        <p className="text-xs font-semibold text-brand-text-muted">Loading your profile editor...</p>
       </div>
     }>
       <RecruiterProfileContent />

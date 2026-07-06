@@ -1,15 +1,30 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #B63106;
+  --color-brand-hover: #932604;
+  --color-brand-bg: #0B0B0B;
+  --color-brand-surface: #0C0C0E;
+  --color-brand-card: #121212;
+  --color-brand-border: #222224;
+  --color-brand-text: #F8FAFC;
+  --color-brand-text-secondary: #CBD5E1;
+  --color-brand-text-muted: #94A3B8;
+  --color-brand-success: #10B981;
+  --color-brand-warning: #F59E0B;
+  --color-brand-error: #EF4444;
+}
+
 @layer base {
   :root {
     --primary: #B63106;
     --primary-hover: #932604;
     --dark: #FFFFFF;
     --light-bg: #121212;
-    --white: #000000;
+    --white: #0B0B0B;
     --text-main: #F8FAFC;
     --text-muted: #94A3B8;
-    --border-color: #27272A;
+    --border-color: #222224;
     
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;

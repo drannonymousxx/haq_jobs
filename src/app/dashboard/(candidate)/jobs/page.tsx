@@ -44,9 +44,9 @@ const getCompanyInitials = (name: string): string => {
 };
 
 const getCompanyBgColor = (name: string): string => {
-  if (!name) return "bg-blue-100 text-[#013CF1]";
+  if (!name) return "bg-blue-100 text-[#B63106]";
   const colors = [
-    "bg-blue-100 text-blue-700",
+    "bg-blue-100 text-brand-hover",
     "bg-amber-100 text-amber-700",
     "bg-emerald-100 text-emerald-700",
     "bg-purple-100 text-purple-700",
@@ -419,8 +419,8 @@ function CandidateJobsContent() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500">Searching active opportunities...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted">Searching active opportunities...</p>
       </div>
     );
   }
@@ -429,8 +429,8 @@ function CandidateJobsContent() {
     return (
       <div className="bg-red-50/50 border border-red-100 rounded-3xl p-6 text-center max-w-md mx-auto space-y-4">
         <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
-        <h4 className="text-sm font-bold text-slate-800 font-poppins">Load Failure</h4>
-        <p className="text-xs text-slate-500 font-medium leading-relaxed">{error}</p>
+        <h4 className="text-sm font-bold text-brand-text font-poppins">Load Failure</h4>
+        <p className="text-xs text-brand-text-muted font-medium leading-relaxed">{error}</p>
         <button 
           onClick={() => window.location.reload()}
           className="text-xs font-bold bg-black text-white px-4 py-2 rounded-xl"
@@ -447,8 +447,8 @@ function CandidateJobsContent() {
       {/* 1. Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-800 font-poppins">Explore Jobs</h1>
-          <p className="text-xs text-slate-400 font-semibold mt-1">
+          <h1 className="text-2xl font-extrabold text-brand-text font-poppins">Explore Jobs</h1>
+          <p className="text-xs text-brand-text-muted font-semibold mt-1">
             Search clerkships, litigation opportunities, and legal counsel associate roles.
           </p>
         </div>
@@ -462,9 +462,9 @@ function CandidateJobsContent() {
               placeholder="Search title, skills or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#013CF1]/10 focus:border-[#013CF1] text-xs bg-white"
+              className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-xl outline-none focus:ring-2 focus:ring-[#B63106]/10 focus:border-[#B63106] text-xs bg-brand-card"
             />
-            <Search size={14} className="text-slate-400 absolute left-3 top-3 select-none" />
+            <Search size={14} className="text-brand-text-muted absolute left-3 top-3 select-none" />
           </div>
 
           {/* Toggle Filter Button */}
@@ -472,8 +472,8 @@ function CandidateJobsContent() {
             onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
             className={`p-2.5 rounded-xl border flex items-center justify-center gap-1.5 transition-all text-xs font-bold cursor-pointer select-none ${
               isFilterPanelOpen 
-                ? "bg-[#013CF1] text-white border-[#013CF1]" 
-                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                ? "bg-[#B63106] text-white border-[#B63106]" 
+                : "bg-brand-card text-brand-text-secondary border-brand-border hover:border-slate-300"
             }`}
           >
             <SlidersHorizontal size={14} />
@@ -492,7 +492,7 @@ function CandidateJobsContent() {
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="bg-slate-50 border border-slate-100 rounded-3xl p-5 sm:p-6 space-y-6">
+            <div className="bg-brand-bg border border-brand-border rounded-3xl p-5 sm:p-6 space-y-6">
               
               {/* Grid Layout of Advanced Fields */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -500,11 +500,11 @@ function CandidateJobsContent() {
                 {/* Column 1: Locations and Companies */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2 font-poppins">Location</label>
+                    <label className="block text-xs font-bold text-brand-text-secondary mb-2 font-poppins">Location</label>
                     <select
                       value={selectedLocation}
                       onChange={(e) => setSelectedLocation(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-[#013CF1]"
+                      className="w-full px-3 py-2 bg-brand-card border border-brand-border rounded-xl text-xs outline-none focus:border-[#B63106]"
                     >
                       <option value="">Any Location</option>
                       {dynamicLocations.map(loc => (
@@ -514,11 +514,11 @@ function CandidateJobsContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2 font-poppins">Company / Law Firm</label>
+                    <label className="block text-xs font-bold text-brand-text-secondary mb-2 font-poppins">Company / Law Firm</label>
                     <select
                       value={selectedCompany}
                       onChange={(e) => setSelectedCompany(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-[#013CF1]"
+                      className="w-full px-3 py-2 bg-brand-card border border-brand-border rounded-xl text-xs outline-none focus:border-[#B63106]"
                     >
                       <option value="">Any Organization</option>
                       {dynamicCompanies.map(comp => (
@@ -531,11 +531,11 @@ function CandidateJobsContent() {
                 {/* Column 2: Practice Area & Experience */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2 font-poppins">Practice Area</label>
+                    <label className="block text-xs font-bold text-brand-text-secondary mb-2 font-poppins">Practice Area</label>
                     <select
                       value={selectedPracticeArea}
                       onChange={(e) => setSelectedPracticeArea(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-[#013CF1]"
+                      className="w-full px-3 py-2 bg-brand-card border border-brand-border rounded-xl text-xs outline-none focus:border-[#B63106]"
                     >
                       <option value="">Any Practice Area</option>
                       {practiceAreas.map(area => (
@@ -545,11 +545,11 @@ function CandidateJobsContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2 font-poppins">Experience Level</label>
+                    <label className="block text-xs font-bold text-brand-text-secondary mb-2 font-poppins">Experience Level</label>
                     <select
                       value={selectedExperienceLevel}
                       onChange={(e) => setSelectedExperienceLevel(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-[#013CF1]"
+                      className="w-full px-3 py-2 bg-brand-card border border-brand-border rounded-xl text-xs outline-none focus:border-[#B63106]"
                     >
                       <option value="">Any Experience</option>
                       {experienceLevels.map(exp => (
@@ -562,11 +562,11 @@ function CandidateJobsContent() {
                 {/* Column 3: Work Mode, Time, and Salary */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2 font-poppins">Posted Within</label>
+                    <label className="block text-xs font-bold text-brand-text-secondary mb-2 font-poppins">Posted Within</label>
                     <select
                       value={postedWithin}
                       onChange={(e) => setPostedWithin(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-[#013CF1]"
+                      className="w-full px-3 py-2 bg-brand-card border border-brand-border rounded-xl text-xs outline-none focus:border-[#B63106]"
                     >
                       <option value="">Any Time</option>
                       <option value="24h">Last 24 hours</option>
@@ -578,8 +578,8 @@ function CandidateJobsContent() {
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <label className="text-xs font-bold text-slate-700 font-poppins">Max Annual Salary (INR)</label>
-                      <span className="text-[10px] font-bold text-[#013CF1] bg-blue-50 px-2 py-0.5 rounded">
+                      <label className="text-xs font-bold text-brand-text-secondary font-poppins">Max Annual Salary (INR)</label>
+                      <span className="text-[10px] font-bold text-[#B63106] bg-brand/10 px-2 py-0.5 rounded">
                         {maxSalary >= 5000000 ? "Any Salary" : `₹${(maxSalary / 100000).toFixed(1)} Lakhs`}
                       </span>
                     </div>
@@ -590,7 +590,7 @@ function CandidateJobsContent() {
                       step={50000}
                       value={maxSalary}
                       onChange={(e) => setMaxSalary(Number(e.target.value))}
-                      className="w-full accent-[#013CF1] h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      className="w-full accent-[#B63106] h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
                     />
                   </div>
                 </div>
@@ -598,13 +598,13 @@ function CandidateJobsContent() {
               </div>
 
               {/* Pill Selectors Grid */}
-              <div className="border-t border-slate-200/50 pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="border-t border-brand-border/50 pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 
                 {/* Combined Pills for Employment Type & Workplace */}
                 <div className="flex flex-wrap gap-4">
                   {/* Workplace options */}
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-poppins">Workplace Mode</span>
+                    <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider font-poppins">Workplace Mode</span>
                     <div className="flex gap-2">
                       {["Remote", "Hybrid", "On Site"].map((mode) => {
                         const active = selectedWorkModes.includes(mode);
@@ -618,8 +618,8 @@ function CandidateJobsContent() {
                             }}
                             className={`px-3 py-1.5 rounded-xl border text-[11px] font-bold cursor-pointer transition-all select-none ${
                               active
-                                ? "bg-[#013CF1] text-white border-[#013CF1]"
-                                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                                ? "bg-[#B63106] text-white border-[#B63106]"
+                                : "bg-brand-card text-brand-text-secondary border-brand-border hover:border-slate-300"
                             }`}
                           >
                             {mode}
@@ -631,7 +631,7 @@ function CandidateJobsContent() {
 
                   {/* Employment type options */}
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-poppins">Employment Type</span>
+                    <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider font-poppins">Employment Type</span>
                     <div className="flex gap-2">
                       {["Internship", "Full Time", "Part Time", "Contract", "Freelance"].map((type) => {
                         const active = selectedEmploymentTypes.includes(type);
@@ -645,8 +645,8 @@ function CandidateJobsContent() {
                             }}
                             className={`px-3 py-1.5 rounded-xl border text-[11px] font-bold cursor-pointer transition-all select-none ${
                               active
-                                ? "bg-[#013CF1] text-white border-[#013CF1]"
-                                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                                ? "bg-[#B63106] text-white border-[#B63106]"
+                                : "bg-brand-card text-brand-text-secondary border-brand-border hover:border-slate-300"
                             }`}
                           >
                             {type}
@@ -662,7 +662,7 @@ function CandidateJobsContent() {
                   {hasActiveFilters && (
                     <button
                       onClick={resetFilters}
-                      className="px-4 py-2 bg-slate-200/50 hover:bg-slate-200 text-slate-600 hover:text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                      className="px-4 py-2 bg-slate-200/50 hover:bg-slate-200 text-brand-text-secondary hover:text-brand-text rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
                     >
                       <RotateCcw size={12} />
                       <span>Reset Filters</span>
@@ -670,7 +670,7 @@ function CandidateJobsContent() {
                   )}
                   <button
                     onClick={() => setIsFilterPanelOpen(false)}
-                    className="p-2 bg-slate-200/50 hover:bg-slate-200 text-slate-600 rounded-xl cursor-pointer"
+                    className="p-2 bg-slate-200/50 hover:bg-slate-200 text-brand-text-secondary rounded-xl cursor-pointer"
                     title="Collapse Filters"
                   >
                     <X size={14} />
@@ -687,13 +687,13 @@ function CandidateJobsContent() {
       {/* 3. Listings Grid or Empty States */}
       <div className="space-y-4">
         {rawJobs.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-text-muted">
               <Briefcase size={22} />
             </div>
             <div className="space-y-1">
-              <h4 className="text-sm font-bold text-slate-700 font-poppins">No legal opportunities yet</h4>
-              <p className="text-xs text-slate-400 font-semibold max-w-xs mx-auto leading-relaxed">
+              <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No legal opportunities yet</h4>
+              <p className="text-xs text-brand-text-muted font-semibold max-w-xs mx-auto leading-relaxed">
                 No legal opportunities have been posted yet. Recruiters will appear here once they publish their openings.
               </p>
             </div>
@@ -772,13 +772,13 @@ function CandidateJobsContent() {
           </div>
         ) : (
           /* Empty Search results state */
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-text-muted">
               <Compass size={22} />
             </div>
             <div className="space-y-1">
-              <h4 className="text-sm font-bold text-slate-700 font-poppins">No matching opportunities</h4>
-              <p className="text-xs text-slate-400 font-semibold max-w-xs mx-auto leading-relaxed">
+              <h4 className="text-sm font-bold text-brand-text-secondary font-poppins">No matching opportunities</h4>
+              <p className="text-xs text-brand-text-muted font-semibold max-w-xs mx-auto leading-relaxed">
                 No opportunities match your current filters. Clear filters or adjust your requirements.
               </p>
             </div>
@@ -801,8 +801,8 @@ export default function CandidateJobsPage() {
   return (
     <Suspense fallback={
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-[#013CF1]" />
-        <p className="text-xs font-semibold text-slate-500">Prerendering explore jobs...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-[#B63106]" />
+        <p className="text-xs font-semibold text-brand-text-muted">Prerendering explore jobs...</p>
       </div>
     }>
       <CandidateJobsContent />

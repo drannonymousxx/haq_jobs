@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "test_login_and_search.js",
+    "verify_workflow.js",
   ]),
 ]);
 

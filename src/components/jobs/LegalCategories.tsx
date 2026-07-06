@@ -35,13 +35,13 @@ export default function LegalCategories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05, duration: 0.4 }}
-              whileHover={{ y: -4, boxShadow: "0 12px 25px -5px rgba(1,60,241,0.12)" }}
-              className="bg-white border border-[rgba(1,60,241,0.06)] rounded-2xl flex flex-col items-center justify-center p-5 w-[140px] h-[130px] cursor-pointer shadow-[0_4px_15px_-5px_rgba(1,60,241,0.04)] transition-all duration-300 group"
+              whileHover={{ y: -4, boxShadow: "0 12px 25px -5px rgba(182, 49, 6,0.12)" }}
+              className="bg-brand-card border border-[rgba(182, 49, 6,0.06)] rounded-2xl flex flex-col items-center justify-center p-5 w-[140px] h-[130px] cursor-pointer shadow-[0_4px_15px_-5px_rgba(182, 49, 6,0.04)] transition-all duration-300 group"
             >
-              <div className="text-[#013CF1] mb-4 bg-[rgba(1,60,241,0.04)] group-hover:bg-[#EEF2FF] transition-colors duration-300 p-3 rounded-[14px]">
+              <div className="text-[#B63106] mb-4 bg-[rgba(182, 49, 6,0.04)] group-hover:bg-[#EEF2FF] transition-colors duration-300 p-3 rounded-[14px]">
                 <Icon size={26} strokeWidth={2} />
               </div>
-              <span className="text-[13px] font-semibold text-[#191D20] text-center leading-tight">
+              <span className="text-[13px] font-semibold text-brand-text text-center leading-tight">
                 {cat.name}
               </span>
             </motion.div>

@@ -19,14 +19,14 @@ export default function SocialProof() {
             <div 
               key={i} 
               className={`w-12 h-12 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-white font-medium text-xs
-                ${i === 1 ? 'bg-blue-400' : i === 2 ? 'bg-indigo-400' : i === 3 ? 'bg-[#013CF1]' : i === 4 ? 'bg-purple-400' : 'bg-slate-400'}
+                ${i === 1 ? 'bg-blue-400' : i === 2 ? 'bg-indigo-400' : i === 3 ? 'bg-[#B63106]' : i === 4 ? 'bg-purple-400' : 'bg-slate-400'}
               `}
               style={{ zIndex: 10 - i }}
             >
               {String.fromCharCode(64 + i)}
             </div>
           ))}
-          <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm bg-[#F0F0F0] flex items-center justify-center text-[#191D20]/60 font-medium text-xs z-0">
+          <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm bg-[#F0F0F0] flex items-center justify-center text-brand-text/60 font-medium text-xs z-0">
             +1k
           </div>
         </motion.div>
@@ -36,7 +36,7 @@ export default function SocialProof() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-lg font-medium text-[#191D20]"
+          className="text-lg font-medium text-brand-text"
         >
           “1,000+ Students & Lawyers growing with HAQJobs”
         </motion.p>
@@ -52,7 +52,7 @@ export default function SocialProof() {
           <div className="text-xl font-bold font-serif tracking-tighter">GLOBAL LAW</div>
           <div className="text-xl font-bold tracking-widest uppercase">Apex Partners</div>
           <div className="text-xl font-medium tracking-tight">Lex<span className="font-light">Group</span></div>
-          <div className="text-xl font-extrabold italic">TECH<span className="text-blue-600">COUNSEL</span></div>
+          <div className="text-xl font-extrabold italic">TECH<span className="text-brand">COUNSEL</span></div>
         </motion.div>
 
       </div>
