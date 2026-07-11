@@ -124,15 +124,17 @@ export default function InteractiveCTA() {
               </div>
             </motion.div>
 
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-6 px-8 py-3.5 bg-[#0F172A] text-white rounded-xl font-medium hover:bg-black transition-colors"
-            >
-              Get started
-            </motion.button>
+            <Link href="/signup" className="inline-block">
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mt-6 px-8 py-3.5 bg-[#0F172A] text-white rounded-xl font-bold hover:bg-black transition-colors cursor-pointer"
+              >
+                Get started
+              </motion.button>
+            </Link>
           </div>
         </div>
 

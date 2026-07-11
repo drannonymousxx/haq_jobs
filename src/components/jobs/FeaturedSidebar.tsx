@@ -23,12 +23,12 @@ const featuredJobs = [
 
 export default function FeaturedSidebar() {
   return (
-    <div className="bg-brand-card rounded-[1.5rem] border border-brand-border shadow-[0_10px_30px_-15px_rgba(182, 49, 6,0.05)] overflow-hidden flex flex-col h-[calc(100vh-140px)] max-h-[900px] min-h-[500px]">
-      <div className="p-5 border-b border-[#F1F5F9] bg-[#F8FAFC]">
+    <div className="bg-brand-card rounded-[1.5rem] border border-brand-border shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[calc(100vh-140px)] max-h-[900px] min-h-[500px] select-none">
+      <div className="p-5 border-b border-brand-border bg-brand-surface">
         <h3 className="font-bold text-brand-text text-[16px] tracking-tight">Featured</h3>
       </div>
       
-      <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[#E2E8F0] [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[#CBD5E1]">
+      <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-brand-border [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-brand/35">
         <div className="flex flex-col">
           {featuredJobs.map((job, index) => (
             <Link 
@@ -36,18 +36,18 @@ export default function FeaturedSidebar() {
               href={`/job-seekers/jobs/${job.slug}`}
               className="group block"
             >
-              <div className={`p-4 flex gap-3.5 items-start transition-colors duration-200 hover:bg-[#EEF2FF] ${index !== featuredJobs.length - 1 ? 'border-b border-[#F1F5F9]' : ''}`}>
-                <div className="w-10 h-10 rounded-xl bg-brand-card border border-[rgba(182, 49, 6,0.08)] shadow-[0_2px_8px_-2px_rgba(182, 49, 6,0.05)] flex items-center justify-center flex-shrink-0 text-[#B63106] font-bold text-[14px]">
+              <div className={`p-4 flex gap-3.5 items-start transition-colors duration-200 hover:bg-brand-surface/70 ${index !== featuredJobs.length - 1 ? 'border-b border-brand-border' : ''}`}>
+                <div className="w-10 h-10 rounded-xl bg-brand/10 border border-brand/20 shadow-[0_2px_8px_rgba(0,0,0,0.3)] flex items-center justify-center flex-shrink-0 text-brand font-bold text-[14px]">
                   {job.company.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-bold text-brand-text group-hover:text-[#B63106] transition-colors leading-tight mb-1.5 pr-2">
+                  <h4 className="text-[14px] font-bold text-brand-text group-hover:text-brand transition-colors leading-tight mb-1.5 pr-2">
                     {job.title}
                   </h4>
-                  <div className="flex items-center gap-1.5 text-[12px] text-[#64748B]">
+                  <div className="flex items-center gap-1.5 text-[12px] text-brand-text-muted">
                     <span className="font-medium truncate max-w-[120px]">{job.company}</span>
-                    <div className="w-1 h-1 rounded-full bg-[#CBD5E1]"></div>
-                    <span className="text-[#94A3B8] whitespace-nowrap">{job.type}</span>
+                    <div className="w-1 h-1 rounded-full bg-brand-border"></div>
+                    <span className="text-brand-text-muted whitespace-nowrap">{job.type}</span>
                   </div>
                 </div>
               </div>

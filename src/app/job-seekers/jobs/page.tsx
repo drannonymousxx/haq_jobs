@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 
 export default function JobsPage() {
   return (
-    <main className="min-h-screen bg-[#F7F8FC]">
+    <main className="min-h-screen bg-brand-bg text-brand-text">
       <JobsHero />
       
       {/* Premium Minimal Divider */}
-      <div className="w-full bg-[#F7F8FC] py-8">
+      <div className="w-full bg-brand-bg py-8">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(182, 49, 6,0.15)] to-transparent"></div>
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#B63106]/20 to-transparent"></div>
         </div>
       </div>
 

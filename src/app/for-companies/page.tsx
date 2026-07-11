@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ForCompaniesPage() {
   return (
-    <main className="min-h-screen bg-brand-card">
+    <main className="min-h-screen bg-brand-bg">
       <CompaniesHero />
       <CompaniesStats />
       <CompaniesHiringForm />

@@ -50,7 +50,7 @@ function AnimatedStat({ endValue, suffix, label, delay }: StatItemProps) {
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.6, delay: delay + 0.3 }}
-        className="text-[17px] font-bold text-brand-text tracking-wide"
+        className="text-[13px] tracking-[0.15em] uppercase font-bold text-brand-text-secondary mt-1"
       >
         {label}
       </motion.span>
@@ -60,15 +60,15 @@ function AnimatedStat({ endValue, suffix, label, delay }: StatItemProps) {
 
 export default function CompaniesStats() {
   return (
-    <section className="bg-brand-card border-b border-brand-border relative z-20">
+    <section className="bg-brand-card border-b border-brand-border relative z-20 select-none">
       <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between divide-y md:divide-y-0 md:divide-x divide-[#E2E8F0]">
+        <div className="flex flex-col md:flex-row items-center justify-between divide-y md:divide-y-0 md:divide-x divide-brand-border">
 
           <div className="flex-1 w-full">
             <AnimatedStat
               endValue={50}
               suffix="k+"
-              label="legal professionals"
+              label="Legal Professionals"
               delay={0.1}
             />
           </div>
@@ -77,7 +77,7 @@ export default function CompaniesStats() {
             <AnimatedStat
               endValue={5}
               suffix="k+"
-              label="Companies hiring"
+              label="Companies Hiring"
               delay={0.2}
             />
           </div>
@@ -86,7 +86,7 @@ export default function CompaniesStats() {
             <AnimatedStat
               endValue={20}
               suffix="k+"
-              label="Hires made"
+              label="Hires Made"
               delay={0.3}
             />
           </div>

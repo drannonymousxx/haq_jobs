@@ -48,7 +48,7 @@ export default function Navbar() {
   }
 
   const isJobSeekers = pathname.startsWith('/job-seekers');
-  const isCompanies = pathname.startsWith('/for-companies') || pathname.startsWith('/customers') || pathname.startsWith('/pricing');
+  const isCompanies = pathname.startsWith('/for-companies') || pathname.startsWith('/customers') || pathname.startsWith('/pricing') || pathname.startsWith('/post-job');
 
   const defaultNav = [
     { name: 'Discover', href: '/discover' },

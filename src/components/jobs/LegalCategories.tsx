@@ -35,13 +35,13 @@ export default function LegalCategories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05, duration: 0.4 }}
-              whileHover={{ y: -4, boxShadow: "0 12px 25px -5px rgba(182, 49, 6,0.12)" }}
-              className="bg-brand-card border border-[rgba(182, 49, 6,0.06)] rounded-2xl flex flex-col items-center justify-center p-5 w-[140px] h-[130px] cursor-pointer shadow-[0_4px_15px_-5px_rgba(182, 49, 6,0.04)] transition-all duration-300 group"
+              whileHover={{ y: -4, borderColor: "rgba(182, 49, 6, 0.4)", boxShadow: "0 12px 30px rgba(0,0,0,0.6)" }}
+              className="bg-brand-card border border-brand-border rounded-2xl flex flex-col items-center justify-center p-5 w-[140px] h-[130px] cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-all duration-300 group select-none"
             >
-              <div className="text-[#B63106] mb-4 bg-[rgba(182, 49, 6,0.04)] group-hover:bg-[#EEF2FF] transition-colors duration-300 p-3 rounded-[14px]">
+              <div className="text-brand mb-4 bg-brand/5 group-hover:bg-brand/20 transition-colors duration-300 p-3 rounded-[14px]">
                 <Icon size={26} strokeWidth={2} />
               </div>
-              <span className="text-[13px] font-semibold text-brand-text text-center leading-tight">
+              <span className="text-[13px] font-bold text-brand-text text-center leading-tight">
                 {cat.name}
               </span>
             </motion.div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function JobSeekerHero() {
   return (
@@ -37,12 +38,16 @@ export default function JobSeekerHero() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         className="flex flex-row items-center justify-center gap-4 md:gap-5 w-full"
       >
-        <button className="px-6 md:px-7 py-3 min-w-[180px] bg-[#B63106] text-white rounded-xl font-medium text-[15px] md:text-[16px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center">
-          Create Your Profile
-        </button>
-        <button className="px-6 md:px-7 py-3 min-w-[180px] bg-brand-card border border-brand-border text-brand-text rounded-xl font-medium text-[15px] md:text-[16px] hover:border-[#191D20] hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center">
-          Browse Jobs
-        </button>
+        <Link href="/signup">
+          <button className="px-6 md:px-7 py-3 min-w-[180px] bg-[#B63106] text-white rounded-xl font-medium text-[15px] md:text-[16px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center cursor-pointer">
+            Create Your Profile
+          </button>
+        </Link>
+        <Link href="/job-seekers/jobs">
+          <button className="px-6 md:px-7 py-3 min-w-[180px] bg-brand-card border border-brand-border text-brand-text rounded-xl font-medium text-[15px] md:text-[16px] hover:border-[#191D20] hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center cursor-pointer">
+            Browse Jobs
+          </button>
+        </Link>
       </motion.div>
 
     </section>

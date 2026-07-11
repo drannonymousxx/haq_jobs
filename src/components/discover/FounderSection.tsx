@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '@/styles/discover/Discover.module.css';
 
 export default function FounderSection() {
@@ -7,7 +8,9 @@ export default function FounderSection() {
       <div className={styles.ctaLeft}>
         <h3>Not all opportunities are visible. The right ones are.</h3>
         <p>Gain access to exclusive roles and build a premium network designed for top-tier legal professionals.</p>
-        <button className={styles.joinBtn}>Get Started</button>
+        <Link href="/signup">
+          <button className={styles.joinBtn}>Get Started</button>
+        </Link>
       </div>
       <div className={styles.ctaRight}>
         <div className={styles.ctaPlaceholder}></div>
