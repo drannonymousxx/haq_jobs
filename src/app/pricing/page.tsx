@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <main className="bg-brand-card overflow-hidden">
+    <main className="bg-brand-bg overflow-hidden">
       <PricingHero />
       <AttractTalent />
       <FindTalent />

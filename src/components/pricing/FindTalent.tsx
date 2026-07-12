@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import PricingCard from "@/components/pricing/PricingCard";
 
 export default function FindTalent() {
   return (
-    <section className="w-full bg-brand-card py-12 md:py-16">
+    <section className="w-full bg-brand-bg py-12 md:py-16">
       <div className="max-w-[1080px] mx-auto px-6 lg:px-8">
         
         {/* Section Header */}
@@ -24,156 +24,73 @@ export default function FindTalent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-[17px] md:text-[19px] leading-relaxed text-[#475569] max-w-[800px]"
+            className="text-[17px] md:text-[19px] leading-relaxed text-brand-text-secondary max-w-[800px]"
           >
             Discover top legal talent with advanced search, smart filtering, and recruiter-focused sourcing tools.
           </motion.p>
         </div>
 
         {/* Pricing Cards Layout */}
-        <div className="flex flex-col lg:flex-row rounded-[32px] border border-brand-border shadow-[0_12px_40px_rgb(0,0,0,0.04)] overflow-hidden bg-brand-card">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Card 1: Access */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-full lg:w-1/3 flex flex-col p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-brand-border"
-          >
-            <div className="mb-8">
-              <span className="text-[19px] font-bold text-brand-text block mb-6">Access</span>
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-[40px] md:text-[48px] font-bold text-brand-text leading-none tracking-tight">Free</span>
-              </div>
-              <span className="text-[15px] text-[#475569]">Basic sourcing access</span>
-            </div>
-
-            <div className="flex-1 border-t border-brand-border pt-8 mb-10">
-              <ul className="space-y-4">
-                {[
-                  "Candidate browsing",
-                  "ATS integration",
-                  "Basic outreach tools"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-brand-text shrink-0 mt-[2px]" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-[15px] text-brand-text leading-tight">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link href="/signup" className="flex-1 block text-center bg-[#191D20] hover:bg-black text-white rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                Sign Up
-              </Link>
-              <Link href="/pricing/details" className="flex-1 block text-center bg-brand-card border border-brand-border hover:bg-[#F8FAFC] text-brand-text rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                Learn More
-              </Link>
-            </div>
-          </motion.div>
+          <PricingCard
+            name="Access"
+            price="Free"
+            description="Basic sourcing access"
+            features={[
+              "Candidate browsing",
+              "ATS integration",
+              "Basic outreach tools"
+            ]}
+            actions={[
+              { label: "Sign Up", href: "/signup", variant: "primary" },
+              { label: "Learn More", href: "/pricing/details", variant: "outline" }
+            ]}
+          />
 
           {/* Card 2: Recruit Pro */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="w-full lg:w-1/3 flex flex-col p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-brand-border bg-[#F8FAFC]"
-          >
-            <div className="mb-8">
-              <span className="text-[19px] font-bold text-brand-text block mb-6">Recruit Pro</span>
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-[40px] md:text-[48px] font-bold text-brand-text leading-none tracking-tight">₹9,999</span>
-                <span className="text-[15px] font-medium text-[#475569]">/mo</span>
-              </div>
-              <span className="text-[15px] text-[#475569]">Advanced hiring and sourcing tools</span>
-            </div>
-
-            <div className="flex-1 border-t border-brand-border pt-8 mb-10">
-              <ul className="space-y-4">
-                {[
-                  "Advanced candidate filters",
-                  "Personalized outreach",
-                  "Resume access",
-                  "Instant scheduling",
-                  "Unlimited messaging",
-                  "Legal-specific discovery tools"
-                ].map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-brand-text shrink-0 mt-[2px]" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-[15px] text-brand-text leading-tight">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Link href="/signup" className="flex-1 block text-center bg-[#191D20] hover:bg-black text-white rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                Sign Up
-              </Link>
-              <Link href="/pricing/details" className="flex-1 block text-center bg-brand-card border border-brand-border hover:bg-brand-bg text-brand-text rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                Learn More
-              </Link>
-            </div>
-          </motion.div>
+          <PricingCard
+            name="Recruit Pro"
+            price="₹9,999"
+            priceSuffix="/mo"
+            description="Advanced hiring and sourcing tools"
+            features={[
+              "Advanced candidate filters",
+              "Personalized outreach",
+              "Resume access",
+              "Instant scheduling",
+              "Unlimited messaging",
+              "Legal-specific discovery tools"
+            ]}
+            actions={[
+              { label: "Sign Up", href: "/signup", variant: "primary" },
+              { label: "Learn More", href: "/pricing/details", variant: "outline" }
+            ]}
+            badge="Popular"
+            badgeStyle="coral"
+            isFeatured={true}
+          />
 
           {/* Card 3: Elite Hiring */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full lg:w-1/3 flex flex-col bg-brand-card"
-          >
-            {/* Top Strip */}
-            <div className="bg-[#FDE68A] text-center py-2 text-[13px] font-bold text-brand-text">
-              Best Value
-            </div>
-            
-            <div className="flex flex-col flex-1 p-8 md:p-10 pt-6 md:pt-8">
-              <div className="mb-8">
-                <span className="text-[19px] font-bold text-brand-text block mb-6">Elite Hiring</span>
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-[40px] md:text-[48px] font-bold text-brand-text leading-none tracking-tight">Custom</span>
-                </div>
-                <span className="text-[15px] text-[#475569]">Dedicated recruitment support for growing firms</span>
-              </div>
-
-              <div className="flex-1 border-t border-brand-border pt-8 mb-10">
-                <ul className="space-y-4">
-                  {[
-                    "Dedicated hiring specialist",
-                    "Curated weekly candidate pipeline",
-                    "Priority candidate access",
-                    "Custom sourcing strategy",
-                    "Assisted interview coordination"
-                  ].map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-brand-text shrink-0 mt-[2px]" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span className="text-[15px] text-brand-text leading-tight">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center gap-3">
-                <Link href="/contact" className="w-full sm:flex-1 lg:w-full xl:flex-1 block text-center bg-[#191D20] hover:bg-black text-white rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                  Schedule a Call
-                </Link>
-                <Link href="/pricing/details" className="w-full sm:flex-1 lg:w-full xl:flex-1 block text-center bg-brand-card border border-brand-border hover:bg-[#F8FAFC] text-brand-text rounded-xl py-3.5 text-[15px] font-bold transition-colors">
-                  Learn More
-                </Link>
-              </div>
-            </div>
-          </motion.div>
+          <PricingCard
+            name="Elite Hiring"
+            price="Custom"
+            description="Dedicated recruitment support for growing firms"
+            features={[
+              "Dedicated hiring specialist",
+              "Curated weekly candidate pipeline",
+              "Priority candidate access",
+              "Custom sourcing strategy",
+              "Assisted interview coordination"
+            ]}
+            actions={[
+              { label: "Schedule a Call", href: "/for-companies?plan=elite-hiring&source=pricing-page#consultation", variant: "primary" },
+              { label: "Learn More", href: "/pricing/details", variant: "outline" }
+            ]}
+            badge="Best Value"
+            badgeStyle="gold"
+          />
 
         </div>
 

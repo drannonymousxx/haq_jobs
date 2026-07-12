@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { convertRecruiterLead } from "@/lib/leadService";
 import { 
   Loader2, 
   Eye, 
@@ -103,6 +104,13 @@ export default function RecruiterSignupPage() {
         if (profileError) {
           // If insert fails, log it and redirect to recruiter dashboard.
           console.error("Profile db insert failed:", profileError.message);
+        }
+
+        // 3. Convert and link any pre-existing lead for this email
+        try {
+          await convertRecruiterLead(email, data.user.id);
+        } catch (leadErr) {
+          console.error("Failed to link recruiter lead during signup:", leadErr);
         }
 
         setSuccess("Recruiter account created successfully! Redirecting...");

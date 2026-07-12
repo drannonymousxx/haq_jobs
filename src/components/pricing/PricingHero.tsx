@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function PricingHero() {
   return (
-    <section className="relative w-full bg-brand-card overflow-hidden pt-12 pb-12 md:pt-16 md:pb-16 flex items-center justify-center">
+    <section className="relative w-full bg-brand-bg overflow-hidden pt-12 pb-12 md:pt-16 md:pb-16 flex items-center justify-center">
       {/* Abstract Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -65,7 +65,7 @@ export default function PricingHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-          className="text-lg md:text-[21px] leading-[1.6] text-[#475569] max-w-[720px] mx-auto"
+          className="text-lg md:text-[21px] leading-[1.6] text-brand-text-secondary max-w-[720px] mx-auto"
         >
           Expand your reach with verified legal job listings, discover top candidates faster, and simplify hiring with solutions built for modern legal teams.
         </motion.p>

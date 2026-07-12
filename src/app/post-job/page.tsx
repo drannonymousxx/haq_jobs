@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/post-job/HeroSection";
+import { LogoCloud } from "@/components/post-job/LogoCloud";
 import { VisibilitySection } from "@/components/post-job/VisibilitySection";
 import { CompanyProfileSection } from "@/components/post-job/CompanyProfileSection";
 import { GlobalHiringSection } from "@/components/post-job/GlobalHiringSection";
@@ -11,8 +12,9 @@ export const metadata = {
 
 export default function PostJobPage() {
   return (
-    <main className="bg-brand-card min-h-screen selection:bg-[#B63106]/20 selection:text-black">
+    <main className="bg-brand-bg min-h-screen selection:bg-[#B63106]/20">
       <HeroSection />
+      <LogoCloud />
       <VisibilitySection />
       <CompanyProfileSection />
       <GlobalHiringSection />

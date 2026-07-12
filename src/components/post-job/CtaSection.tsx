@@ -13,7 +13,7 @@ export function CtaSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-black mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-brand-text mb-6 font-poppins">
             Your next great hire is already here.
           </h2>
           <p className="text-lg md:text-xl text-brand-text-muted mb-10 max-w-2xl mx-auto">

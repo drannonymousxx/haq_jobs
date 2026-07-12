@@ -1,35 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Menu, User, Briefcase } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
-  const [showSignupDropdown, setShowSignupDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-  }, []);
-
-  // Close dropdown on click outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowSignupDropdown(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   // Close mobile menu on path changes
@@ -129,72 +114,8 @@ export default function Navbar() {
           </AnimatePresence>
         </nav>
 
-        {/* RIGHT: Auth Buttons */}
-        <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-shrink-0">
-          <Link 
-            href="/login" 
-            className="text-[15px] font-semibold text-white px-3 py-2 hover:text-[#B63106] transition-colors duration-300 ease-in-out whitespace-nowrap"
-          >
-            Log In
-          </Link>
-          <div className="relative" ref={dropdownRef}>
-            <button 
-              onClick={() => setShowSignupDropdown(!showSignupDropdown)}
-              className="text-[15px] font-bold bg-[#B63106] text-white px-6 py-2.5 rounded-xl hover:shadow-[0_0_15px_rgba(182,49,6,0.35)] hover:-translate-y-[1px] hover:bg-[#932604] transition-all duration-300 whitespace-nowrap flex items-center justify-center gap-1.5 cursor-pointer min-w-[100px]"
-            >
-              Sign Up
-              <ChevronDown size={14} className={`transition-transform duration-200 ${showSignupDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            
-            <AnimatePresence>
-              {showSignupDropdown && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-3 w-80 bg-[#121212] rounded-2xl border border-zinc-800 shadow-2xl py-3 z-50 overflow-hidden"
-                >
-                  <Link 
-                    href="/signup/candidate"
-                    onClick={() => setShowSignupDropdown(false)}
-                    className="flex items-start gap-3 px-5 py-3.5 hover:bg-zinc-800/40 transition-colors group"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-[#B63106]/15 transition-colors">
-                      <User size={18} className="text-[#B63106]" />
-                    </div>
-                    <div>
-                      <span className="block text-sm font-bold text-white group-hover:text-[#B63106] transition-colors leading-tight">
-                        I&apos;m looking for opportunities
-                      </span>
-                      <span className="block text-xs text-brand-text-muted mt-1">
-                        Find jobs, internships, & clerkships
-                      </span>
-                    </div>
-                  </Link>
-                  <div className="border-t border-zinc-800 my-1"></div>
-                  <Link 
-                    href="/signup/recruiter"
-                    onClick={() => setShowSignupDropdown(false)}
-                    className="flex items-start gap-3 px-5 py-3.5 hover:bg-zinc-800/40 transition-colors group"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-[#B63106]/15 transition-colors">
-                      <Briefcase size={18} className="text-[#B63106]" />
-                    </div>
-                    <div>
-                      <span className="block text-sm font-bold text-white group-hover:text-[#B63106] transition-colors leading-tight">
-                        I&apos;m hiring legal talent
-                      </span>
-                      <span className="block text-xs text-brand-text-muted mt-1">
-                        Post opportunities & recruit professionals
-                      </span>
-                    </div>
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+        {/* RIGHT: Spacer to balance logo centering */}
+        <div className="hidden lg:block w-[160px] flex-shrink-0" />
 
         {/* Mobile Menu Toggle */}
         <button 

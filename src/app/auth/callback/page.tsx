@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { convertRecruiterLead } from "@/lib/leadService";
 import { Loader2 } from "lucide-react";
 
 function AuthCallbackComponent() {
@@ -96,6 +97,14 @@ function AuthCallbackComponent() {
             setStatus("Redirecting to dashboard...");
             router.push(getRedirectPath(targetRole));
           } else {
+            // Link existing lead if recruiter
+            if (targetRole === "recruiter" && user.email) {
+              try {
+                await convertRecruiterLead(user.email, user.id);
+              } catch (leadErr) {
+                console.error("Failed to link recruiter lead during OAuth callback:", leadErr);
+              }
+            }
             setStatus("Profile created! Redirecting...");
             router.push(getRedirectPath(targetRole));
           }

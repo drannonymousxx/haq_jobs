@@ -27,7 +27,7 @@ export function LogoCloud() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="text-lg md:text-xl font-bold text-brand-text-muted hover:text-black transition-colors select-none font-serif tracking-tight"
+              className="text-lg md:text-xl font-bold text-brand-text-muted hover:text-brand-text transition-colors select-none font-serif tracking-tight"
             >
               {logo}
             </motion.div>
