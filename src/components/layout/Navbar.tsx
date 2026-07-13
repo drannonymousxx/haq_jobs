@@ -64,18 +64,18 @@ export default function Navbar() {
     : "relative z-50 bg-[#0c0c0e]/80 backdrop-blur-lg border-b border-zinc-800 shadow-sm";
 
   return (
-    <header className={headerClass}>
+    <header className={`${headerClass} isolate`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8 h-[80px] flex items-center justify-between">
         
         {/* LEFT: Logo */}
-        <Link href="/" className="flex-shrink-0 flex items-center">
+        <Link href="/" className="flex-shrink-0 flex items-center relative z-10">
           <Image 
             src="/logofull.png" 
             alt="HAQJobs Logo" 
             width={160} 
             height={42} 
-            style={{ width: '160px', height: 'auto' }}
-            className="object-contain brightness-0 invert" // Monochrome white logo for dark theme
+            style={{ width: '160px', height: 'auto', filter: 'brightness(0) invert(1)' }}
+            className="object-contain"
             priority 
           />
         </Link>
