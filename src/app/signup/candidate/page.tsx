@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { getAuthCallbackUrl } from "@/lib/auth";
 import { 
   Loader2, 
   Eye, 
@@ -130,7 +131,7 @@ export default function CandidateSignupPage() {
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?role=candidate`,
+          redirectTo: getAuthCallbackUrl("candidate"),
         },
       });
 
