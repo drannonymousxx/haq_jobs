@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { getAuthCallbackUrl } from "@/lib/auth";
+import GoogleAuthButton from "@/components/common/GoogleAuthButton";
 import { convertRecruiterLead } from "@/lib/leadService";
 import { 
   Loader2, 
@@ -322,19 +323,11 @@ export default function RecruiterSignupPage() {
           )}
 
           {/* Google Button */}
-          <button
+          <GoogleAuthButton
+            label="Sign up with Google"
             onClick={handleGoogleSignup}
             disabled={loading}
-            type="button"
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-brand-card border border-brand-border rounded-xl hover:bg-brand-bg transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-              <g transform="matrix(1, 0, 0, 1, 0, 0)">
-                <path d="M21.35,11.1H12v2.7h5.38C16.88,16.03,14.77,17.4,12,17.4c-3.14,0-5.8-2.24-6.76-5.26a7.252,7.252,0,0,1,0-4.28C6.2,4.84,8.86,2.6,12,2.6c1.78,0,3.37.64,4.63,1.84l3.12-3.12A11.961,11.961,0,0,0,12,0,11.967,11.967,0,0,0,.76,6.88a11.854,11.854,0,0,0,0,10.24A11.967,11.967,0,0,0,12,24c3.24,0,5.97-1.08,7.96-2.92l-3.07-2.38c-.84.56-1.93.9-3.29.9-2.53,0-4.67-1.71-5.43-4.01a7.218,7.218,0,0,1,0-2.34C8.93,12.91,11.07,11.2,13.6,11.2A5.993,5.993,0,0,1,18.4,13.2l2.95-2.1Z" fill="#ea4335" className="group-hover:opacity-90 transition-opacity" />
-              </g>
-            </svg>
-            <span className="text-sm font-semibold text-brand-text-secondary">Sign up with Google</span>
-          </button>
+          />
 
           {/* Divider */}
           <div className="relative my-5 flex items-center justify-center">
