@@ -3,6 +3,7 @@ import PricingHero from '@/components/pricing/PricingHero';
 import AttractTalent from '@/components/pricing/AttractTalent';
 import FindTalent from '@/components/pricing/FindTalent';
 import ManageTalent from '@/components/pricing/ManageTalent';
+import PublicPageBackground from '@/components/common/PublicPageBackground';
 
 export const metadata: Metadata = {
   title: 'Pricing | HAQJobs',
@@ -11,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <main className="bg-brand-bg overflow-hidden">
+    <PublicPageBackground className="overflow-hidden">
       <PricingHero />
       <AttractTalent />
       <FindTalent />
       <ManageTalent />
-    </main>
+    </PublicPageBackground>
   );
 }

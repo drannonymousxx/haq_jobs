@@ -4,6 +4,7 @@ import { VisibilitySection } from "@/components/post-job/VisibilitySection";
 import { CompanyProfileSection } from "@/components/post-job/CompanyProfileSection";
 import { GlobalHiringSection } from "@/components/post-job/GlobalHiringSection";
 import { CtaSection } from "@/components/post-job/CtaSection";
+import PublicPageBackground from "@/components/common/PublicPageBackground";
 
 export const metadata = {
   title: 'Post a Job | HAQJobs',
@@ -12,13 +13,13 @@ export const metadata = {
 
 export default function PostJobPage() {
   return (
-    <main className="bg-brand-bg min-h-screen selection:bg-[#B63106]/20">
+    <PublicPageBackground className="selection:bg-[#B63106]/20">
       <HeroSection />
       <LogoCloud />
       <VisibilitySection />
       <CompanyProfileSection />
       <GlobalHiringSection />
       <CtaSection />
-    </main>
+    </PublicPageBackground>
   );
 }

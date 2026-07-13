@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import CompaniesHero from '@/components/companies/CompaniesHero';
 import CompaniesStats from '@/components/companies/CompaniesStats';
 import CompaniesHiringForm from '@/components/companies/CompaniesHiringForm';
+import PublicPageBackground from '@/components/common/PublicPageBackground';
 
 export const metadata: Metadata = {
   title: 'For Companies | HAQJobs',
@@ -10,10 +11,10 @@ export const metadata: Metadata = {
 
 export default function ForCompaniesPage() {
   return (
-    <main className="min-h-screen bg-brand-bg">
+    <PublicPageBackground>
       <CompaniesHero />
       <CompaniesStats />
       <CompaniesHiringForm />
-    </main>
+    </PublicPageBackground>
   );
 }

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import CustomersHero from '@/components/customers/CustomersHero';
 import FeaturedStories from '@/components/customers/FeaturedStories';
+import PublicPageBackground from '@/components/common/PublicPageBackground';
 
 export const metadata: Metadata = {
   title: 'Customer Stories | HAQJobs',
@@ -9,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function CustomersPage() {
   return (
-    <div className="min-h-screen bg-brand-card">
+    <PublicPageBackground>
       <CustomersHero />
       <FeaturedStories />
-    </div>
+    </PublicPageBackground>
   );
 }

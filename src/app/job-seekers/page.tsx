@@ -4,6 +4,7 @@ import StatsSection from "@/components/job-seekers/StatsSection";
 import FeatureSectionTwo from "@/components/job-seekers/FeatureSectionTwo";
 import InteractiveCTA from "@/components/job-seekers/InteractiveCTA";
 import TestimonialsSection from "@/components/overview/TestimonialsSection";
+import PublicPageBackground from "@/components/common/PublicPageBackground";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,13 +14,13 @@ export const metadata: Metadata = {
 
 export default function JobSeekersPage() {
   return (
-    <div className="min-h-screen bg-brand-card">
+    <PublicPageBackground>
       <JobSeekerHero />
       <FeatureSectionOne />
       <StatsSection />
       <FeatureSectionTwo />
       <InteractiveCTA />
       <TestimonialsSection />
-    </div>
+    </PublicPageBackground>
   );
 }

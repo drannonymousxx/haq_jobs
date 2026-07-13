@@ -9,6 +9,7 @@ import CompanyCard from '@/components/discover/CompanyCard';
 import DomainGrid from '@/components/discover/DomainGrid';
 import FounderSection from '@/components/discover/FounderSection';
 import FinalCtaSection from '@/components/discover/FinalCtaSection';
+import PublicPageBackground from '@/components/common/PublicPageBackground';
 import { articles as discoverArticles, discoverCompanies, discoverDomains } from '@/data/discoverData';
 
 export default function DiscoverPage() {
@@ -30,7 +31,7 @@ export default function DiscoverPage() {
   }
 
   return (
-    <>
+    <PublicPageBackground>
       <main className={styles.pageContainer}>
         <h1 className={styles.discoverTitle}>Discover</h1>
 
@@ -82,6 +83,6 @@ export default function DiscoverPage() {
           </>
         )}
       </main>
-    </>
+    </PublicPageBackground>
   );
 }
