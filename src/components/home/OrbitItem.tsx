@@ -33,8 +33,14 @@ export function OrbitItem({
 }: OrbitItemProps) {
   // Convert angle in degrees to x and y pixel offsets from center
   const rad = (angle * Math.PI) / 180;
-  const x = radius * Math.cos(rad);
-  const y = radius * Math.sin(rad);
+  const calculatedX = radius * Math.cos(rad);
+  const calculatedY = radius * Math.sin(rad);
+  const x = Math.round(calculatedX * 100) / 100;
+  const y = Math.round(calculatedY * 100) / 100;
+
+  // Construct positive/negative calc expressions to avoid double negatives
+  const translateX = x >= 0 ? `calc(-50% + ${x}px)` : `calc(-50% - ${Math.abs(x)}px)`;
+  const translateY = y >= 0 ? `calc(-50% + ${y}px)` : `calc(-50% - ${Math.abs(y)}px)`;
 
   // Entrance variants: fade, scale (0.3 -> 1), blur-to-sharp, premium easing
   const entranceVariants = {
@@ -68,7 +74,7 @@ export function OrbitItem({
     <div
       className="absolute top-1/2 left-1/2 z-30"
       style={{
-        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+        transform: `translate(${translateX}, ${translateY})`,
       }}
     >
       {/* 2. Entrance Scale, Fade, and Blur */}

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { WordsPullUp } from "./WordsPullUp";
-import { HeroDashboard } from "./HeroDashboard";
+
 import { EASE_OUT_EXPO } from "@/lib/animations";
 
 export function HeroSection() {
@@ -111,16 +111,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* ── Floating Dashboard (desktop only) ── */}
-        <motion.div
-          className="absolute top-8 right-8 w-[420px] xl:w-[480px] h-[calc(100%-64px-80px)] hidden xl:block z-20"
-          initial={{ opacity: 0, x: 30, scale: 0.97 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ delay: 0.4, duration: 1, ease: EASE_OUT_EXPO }}
-          aria-hidden="true"
-        >
-          <HeroDashboard />
-        </motion.div>
+
       </div>
     </section>
   );

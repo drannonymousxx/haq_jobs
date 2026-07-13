@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
 import HomeOrbitSection from "@/components/home/HomeOrbitSection";
+import InteractiveSplineSection from "@/components/home/InteractiveSplineSection";
 
 export const metadata = {
   title: "HAQJobs — Build Your Legal Career. Hire Better Legal Talent.",
@@ -27,6 +28,9 @@ export default function Home() {
 
       {/* Section 4 — Legal Hiring Ecosystem */}
       <HomeOrbitSection />
+
+      {/* Section 5 — 3D Interactive Showcase */}
+      <InteractiveSplineSection />
     </div>
   );
 }
