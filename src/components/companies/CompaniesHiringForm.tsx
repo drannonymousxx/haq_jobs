@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Check } from "lucide-react";
+import EditorialText from "@/components/ui/EditorialText";
 
 // Custom Radio Button Component
 function CustomRadio({ 
@@ -248,7 +249,7 @@ function CompaniesHiringFormInner() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-brand-text tracking-tight leading-[1.1] mb-8 max-w-3xl"
           >
-            Flexible hiring solutions for every stage of your legal growth
+            <EditorialText text="Flexible hiring solutions for every stage of your *legal growth*" />
           </motion.h2>
 
           <motion.div
@@ -292,7 +293,7 @@ function CompaniesHiringFormInner() {
             
             <div className="mt-auto md:mt-10 lg:mt-20">
               <h3 className="text-2xl font-bold text-brand-text mb-4 font-poppins">
-                Schedule a hiring consultation
+                <EditorialText text="Schedule a *hiring consultation*" />
               </h3>
               <p className="text-[15px] text-brand-text-muted leading-relaxed max-w-[280px]">
                 Tell us about your hiring needs and we’ll connect you with the right team.

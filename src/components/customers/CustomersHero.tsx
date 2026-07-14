@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function CustomersHero() {
   return (
@@ -16,9 +17,9 @@ export default function CustomersHero() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="text-[44px] md:text-5xl lg:text-[64px] font-bold text-brand-text tracking-tight leading-[1.05] mb-6"
+              className="text-[44px] md:text-5xl lg:text-[64px] font-bold text-brand-text tracking-tight leading-[1.05] mb-6 font-poppins"
             >
-              Customer Stories
+              <EditorialText text="Customer *Stories*" />
             </motion.h1>
 
             <motion.div

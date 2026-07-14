@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import { Shield, Settings } from "lucide-react";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function InteractiveCTA() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,9 +67,9 @@ export default function InteractiveCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[2.3rem] md:text-[3.2rem] font-bold text-brand-text leading-[1.05] tracking-tight mb-6"
+            className="text-[2.3rem] md:text-[3.2rem] font-bold text-brand-text leading-[1.05] tracking-tight mb-6 font-poppins"
           >
-            Let the opportunities come to you
+            <EditorialText text="Let the *opportunities* come to you" />
           </motion.h2>
 
           <motion.p

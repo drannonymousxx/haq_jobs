@@ -78,7 +78,7 @@ export default function HomeOrbitSection() {
             className="text-4xl sm:text-5xl lg:text-[2.85rem] xl:text-[3.25rem] font-bold text-white leading-[1.1] tracking-[-0.025em] mb-6 font-poppins"
           >
             One Platform.<br />
-            Every Legal <span className="text-[#D9480F]">Opportunity.</span>
+            Every Legal <span className="text-[#D9480F] italic font-bold">Opportunity.</span>
           </motion.h2>
 
           {/* Supporting Copy */}

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import PricingCard from "@/components/pricing/PricingCard";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function ManageTalent() {
   return (
@@ -15,9 +16,9 @@ export default function ManageTalent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-[32px] md:text-[40px] font-bold text-[#B63106] tracking-tight mb-4"
+            className="text-[32px] md:text-[40px] font-bold text-[#B63106] tracking-tight mb-4 font-poppins"
           >
-            Manage Talent
+            <EditorialText text="Manage *Talent*" />
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

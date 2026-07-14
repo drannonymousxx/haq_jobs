@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function PricingHero() {
   return (
@@ -56,9 +57,9 @@ export default function PricingHero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-6xl lg:text-[72px] font-bold text-brand-text tracking-tight leading-[1.1] mb-8"
+          className="text-5xl md:text-6xl lg:text-[72px] font-bold text-brand-text tracking-tight leading-[1.1] mb-8 font-poppins"
         >
-          Hire legal talent your way.
+          <EditorialText text="Hire *legal talent* your way." />
         </motion.h1>
 
         <motion.p

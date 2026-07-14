@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function CompaniesHero() {
   return (
@@ -28,9 +29,9 @@ export default function CompaniesHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-6xl lg:text-[76px] font-extrabold text-brand-text tracking-tight leading-[1.05] max-w-[1000px] mb-12"
+          className="text-5xl md:text-6xl lg:text-[76px] font-extrabold text-brand-text tracking-tight leading-[1.05] max-w-[1000px] mb-12 font-poppins"
         >
-          The complete platform to discover, hire & manage top legal talent
+          <EditorialText text="The complete platform to discover, hire & manage *top legal talent*" />
         </motion.h1>
 
         <motion.div

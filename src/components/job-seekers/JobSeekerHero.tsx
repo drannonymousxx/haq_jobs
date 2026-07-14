@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function JobSeekerHero() {
   return (
@@ -16,8 +17,8 @@ export default function JobSeekerHero() {
         <span className="text-sm md:text-sm font-semibold tracking-widest text-[#B63106] uppercase mb-4 block">
           Discover Your Next Opportunity
         </span>
-        <h1 className="text-[3rem] md:text-[5rem] font-bold tracking-tight text-brand-text leading-[1.05] mb-6">
-          Find Legal Jobs Built For You
+        <h1 className="text-[3rem] md:text-[5rem] font-bold tracking-tight text-brand-text leading-[1.05] mb-6 font-poppins">
+          <EditorialText text="Find *Legal Jobs* Built For You" />
         </h1>
       </motion.div>
 

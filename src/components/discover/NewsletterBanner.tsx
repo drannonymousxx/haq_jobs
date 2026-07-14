@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '@/styles/discover/Discover.module.css';
+import EditorialText from '@/components/ui/EditorialText';
 
 export default function NewsletterBanner() {
   return (
@@ -15,7 +16,9 @@ export default function NewsletterBanner() {
 
       {/* Center Text */}
       <div className={styles.newsletterCenter}>
-        <h2 className={styles.newsletterTitle}>Stay ahead in your legal career</h2>
+        <h2 className={styles.newsletterTitle}>
+          <EditorialText text="Stay ahead in your *legal career*" />
+        </h2>
         <p className={styles.newsletterSubtitle}>Discover opportunities, insights, and updates from top law firms</p>
       </div>
 

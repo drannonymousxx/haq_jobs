@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { CompanyProfileLayout } from "./company/CompanyProfileLayout";
 import { lexoraProfileData } from "./company/mockData";
+import EditorialText from "@/components/ui/EditorialText";
 
 export function CompanyProfileSection() {
   return (
@@ -20,7 +21,7 @@ export function CompanyProfileSection() {
           className="text-center mb-16 max-w-2xl mx-auto"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-brand-text mb-4 tracking-tight font-poppins leading-tight">
-            Tell your story with company profiles
+            <EditorialText text="Tell your story with *company profiles*" />
           </h2>
           <p className="text-brand-text-muted text-lg mb-6 font-medium">
             Designed to show what makes you different; it&apos;s branding at its best.

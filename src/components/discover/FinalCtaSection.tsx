@@ -1,12 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from '@/styles/discover/Discover.module.css';
+import EditorialText from '@/components/ui/EditorialText';
 
 export default function FinalCtaSection() {
   return (
     <div className={styles.ctaContainer}>
       <div className={styles.ctaLeft}>
-        <h3>Only a few roles are perfect for you</h3>
+        <h3>
+          <EditorialText text="Only a few roles are *perfect for you*" />
+        </h3>
         <p>We analyze your expertise and ambitions to match you with opportunities where you'll thrive.</p>
         <div className={styles.ctaButtons}>
           <Link href="/login">

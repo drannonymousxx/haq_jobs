@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
+import EditorialText from "@/components/ui/EditorialText";
 
 export function CtaSection() {
   return (
@@ -14,7 +15,7 @@ export function CtaSection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-brand-text mb-6 font-poppins">
-            Your next great hire is already here.
+            <EditorialText text="Your next *great hire* is already here." />
           </h2>
           <p className="text-lg md:text-xl text-brand-text-muted mb-10 max-w-2xl mx-auto">
             Join the thousands of top law firms and fast-growing startups finding their best talent on HAQJobs.

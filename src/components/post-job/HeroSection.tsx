@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
+import EditorialText from "@/components/ui/EditorialText";
 
 export function HeroSection() {
   return (
@@ -16,7 +17,7 @@ export function HeroSection() {
           className="flex flex-col gap-6 md:gap-8 max-w-xl mx-auto lg:mx-0 text-center lg:text-left z-10"
         >
           <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold tracking-tight text-brand-text leading-[1.05] font-poppins">
-            Find Legal Talent Built For You
+            <EditorialText text="Find *Legal Talent* Built For You" />
           </h1>
           
           <p className="text-lg md:text-xl text-brand-text-muted font-medium leading-relaxed max-w-lg mx-auto lg:mx-0">

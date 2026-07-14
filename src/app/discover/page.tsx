@@ -11,6 +11,7 @@ import FounderSection from '@/components/discover/FounderSection';
 import FinalCtaSection from '@/components/discover/FinalCtaSection';
 import PublicPageBackground from '@/components/common/PublicPageBackground';
 import { articles as discoverArticles, discoverCompanies, discoverDomains } from '@/data/discoverData';
+import EditorialText from '@/components/ui/EditorialText';
 
 export default function DiscoverPage() {
   const [activeTab, setActiveTab] = useState("All");
@@ -45,7 +46,13 @@ export default function DiscoverPage() {
         {showArticles && (
           <section>
             <h2 className={styles.sectionHeader}>
-              {activeTab === "Featured" ? "Featured Articles" : activeTab === "Blogs" ? "Latest Blogs" : "Latest Insights"}
+              {activeTab === "Featured" ? (
+                <EditorialText text="Featured *Articles*" />
+              ) : activeTab === "Blogs" ? (
+                <EditorialText text="Latest *Blogs*" />
+              ) : (
+                <EditorialText text="Latest *Insights*" />
+              )}
             </h2>
             <div className={styles.articleGrid}>
               {filteredArticles.map(article => (
@@ -58,7 +65,9 @@ export default function DiscoverPage() {
         {/* 4. Company Section (cards) */}
         {showCompanies && (
           <section>
-            <h2 className={styles.sectionHeader}>Actively Hiring</h2>
+            <h2 className={styles.sectionHeader}>
+              <EditorialText text="Actively *Hiring*" />
+            </h2>
             <div className={styles.companyList}>
               {discoverCompanies.map(company => (
                 <CompanyCard key={company.id} company={company} />
@@ -71,7 +80,9 @@ export default function DiscoverPage() {
         {showDomainsAndCTA && (
           <>
             <section className={styles.domainSection}>
-              <h2 className={styles.centerHeader}>Discover Domains</h2>
+              <h2 className={styles.centerHeader}>
+                <EditorialText text="Discover *Domains*" />
+              </h2>
               <DomainGrid domains={discoverDomains} />
             </section>
 

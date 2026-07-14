@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Maximize2, PlusCircle, Send, Check } from "lucide-react";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function FeatureSectionOne() {
   return (
@@ -15,9 +16,9 @@ export default function FeatureSectionOne() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[3rem] md:text-[4.5rem] font-bold text-brand-text leading-[1.02] mb-6 max-w-2xl tracking-tight"
+            className="text-[3rem] md:text-[4.5rem] font-bold text-brand-text leading-[1.02] mb-6 max-w-2xl tracking-tight font-poppins"
           >
-            Find work that works for you
+            <EditorialText text="Find work that *works for you*" />
           </motion.h2>
 
           <motion.p

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
+import EditorialText from "@/components/ui/EditorialText";
 
 export function GlobalHiringSection() {
   return (
@@ -75,7 +76,7 @@ export function GlobalHiringSection() {
         >
           <span className="text-[#B63106] text-sm font-bold tracking-widest uppercase">A Worldwide Workforce</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-brand-text leading-[1.1] font-poppins">
-            Go global. <br />
+            Go <span className="text-[#B63106] italic font-bold">global</span>. <br />
             <span className="text-brand-text-muted">Or hyper-local.</span>
           </h2>
           <p className="text-lg text-brand-text-muted leading-relaxed font-medium">

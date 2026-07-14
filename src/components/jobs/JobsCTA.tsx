@@ -3,11 +3,12 @@
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function JobsCTA() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-
+  
   // Smooth springs for mouse movement
   const springConfig = { damping: 25, stiffness: 150 };
   const smoothX = useSpring(mouseX, springConfig);
@@ -98,8 +99,8 @@ export default function JobsCTA() {
           <div className="md:w-7/12 p-10 md:p-16 lg:p-20 flex flex-col justify-center bg-brand-card relative">
             <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-bl from-brand/10 to-transparent opacity-60 rounded-bl-[100px] pointer-events-none" />
 
-            <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold text-brand-text mb-5 tracking-tight leading-[1.1]">
-              Start discovering better legal opportunities
+            <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold text-brand-text mb-5 tracking-tight leading-[1.1] font-poppins">
+              <EditorialText text="Start discovering *better legal opportunities*" />
             </h2>
             <p className="text-[16px] md:text-[18px] text-brand-text-secondary mb-10 leading-relaxed max-w-[500px]">
               Apply to verified jobs with one click, connect with founders, and increase your visibility with top legal recruiters searching for your skills.

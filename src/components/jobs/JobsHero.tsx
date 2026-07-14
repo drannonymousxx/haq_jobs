@@ -3,6 +3,7 @@
 import { useMotionValue } from "framer-motion";
 import { Search, MapPin } from "lucide-react";
 import FloatingElements from "./FloatingElements";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function JobsHero() {
   const mouseX = useMotionValue(0);
@@ -35,8 +36,8 @@ export default function JobsHero() {
         </span>
         
         {/* Main Heading */}
-        <h1 className="text-[46px] sm:text-[56px] md:text-[68px] lg:text-[76px] font-bold text-brand-text leading-[1.05] tracking-tight mb-14 lg:mb-16 select-none">
-          Find your next legal opportunity.
+        <h1 className="text-[46px] sm:text-[56px] md:text-[68px] lg:text-[76px] font-bold text-brand-text leading-[1.05] tracking-tight mb-14 lg:mb-16 select-none font-poppins">
+          <EditorialText text="Find your next *legal opportunity*." />
         </h1>
 
         {/* Search Bar Container */}

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star, MapPin, Lock } from "lucide-react";
+import EditorialText from "@/components/ui/EditorialText";
 
 export default function FeatureSectionTwo() {
   return (
@@ -58,9 +59,9 @@ export default function FeatureSectionTwo() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-[2.5rem] md:text-[3.5rem] font-bold text-brand-text leading-[1.1] mb-6"
+            className="text-[2.5rem] md:text-[3.5rem] font-bold text-brand-text leading-[1.1] mb-6 font-poppins"
           >
-            Brand yourself for new opportunities
+            <EditorialText text="Brand yourself for *new opportunities*" />
           </motion.h2>
           
           <motion.p 

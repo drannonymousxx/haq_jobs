@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import EditorialText from "@/components/ui/EditorialText";
 
 export function VisibilitySection() {
   return (
@@ -18,7 +19,7 @@ export function VisibilitySection() {
           <div className="text-sm font-bold text-[#B63106] tracking-widest uppercase">High Exposure</div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-brand-text leading-[1.1] font-poppins">
             Get posting. <br />
-            Get visibility. <br />
+            Get <span className="text-[#B63106] italic font-bold">visibility</span>. <br />
             Get ready to hire.
           </h2>
           <p className="text-lg text-brand-text-muted mt-2 max-w-md leading-relaxed font-medium">
