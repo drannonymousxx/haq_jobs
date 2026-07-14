@@ -43,7 +43,8 @@ export async function GET(req: NextRequest) {
         id,
         status,
         candidate_id,
-        recruiter_id
+        recruiter_id,
+        scheduled_at
       `)
       .eq("id", interviewId)
       .single();
@@ -60,9 +61,19 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Access Denied: Unauthorized participant" }, { status: 403 });
     }
 
-    // 3. Prevent rejoining completed rooms
+    // 3. Prevent rejoining completed rooms or joining too early
     if (interview.status === "completed") {
       return NextResponse.json({ error: "Access Denied: This interview session has already ended" }, { status: 403 });
+    }
+
+    const scheduledTime = new Date(interview.scheduled_at).getTime();
+    const now = Date.now();
+    const minsUntilStart = (scheduledTime - now) / (1000 * 60);
+
+    if (minsUntilStart > 15) {
+      return NextResponse.json({ 
+        error: `Access Denied: This interview is scheduled for ${new Date(interview.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}. You can only join up to 15 minutes before the start time.` 
+      }, { status: 403 });
     }
 
     // Check if configuration is missing
@@ -98,7 +109,28 @@ export async function GET(req: NextRequest) {
       canPublishData: true,
     });
 
-    const tokenJwt = await at.toJwt();
+    // Temporarily drift Date by 2 minutes in the past to prevent clock drift issues
+    // on LiveKit cloud where a token is rejected if the local system clock is ahead of LiveKit.
+    const OriginalDate = global.Date;
+    const offset = 2 * 60 * 1000;
+    class DriftedDate extends OriginalDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) {
+          super(OriginalDate.now() - offset);
+        } else {
+          // @ts-ignore
+          super(...args);
+        }
+      }
+    }
+
+    let tokenJwt;
+    try {
+      global.Date = DriftedDate as any;
+      tokenJwt = await at.toJwt();
+    } finally {
+      global.Date = OriginalDate;
+    }
 
     return NextResponse.json({ token: tokenJwt, url: livekitUrl });
   } catch (error: any) {

@@ -26,7 +26,8 @@ import {
   AlertCircle,
   ArrowLeft,
   Settings,
-  ShieldAlert
+  ShieldAlert,
+  Notebook
 } from "lucide-react";
 import Link from "next/link";
 import { triggerWorkflowEvent } from "@/lib/systemAccount";
@@ -184,7 +185,25 @@ export default function InterviewRoomPage() {
   const handleEndInterview = async () => {
     if (!window.confirm("Are you sure you want to end this interview? This will disconnect all participants and mark the session as Completed.")) return;
     try {
-      // Set interview status to completed in database
+      const { data: { session } } = await supabase.auth.getSession();
+
+      // 1. Terminate LiveKit room immediately
+      if (session) {
+        try {
+          await fetch("/api/livekit/delete-room", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({ interviewId })
+          });
+        } catch (roomErr) {
+          console.warn("Failed to delete LiveKit room server-side:", roomErr);
+        }
+      }
+
+      // 2. Set interview status to completed in database
       const { error } = await supabase
         .from("interviews")
         .update({ status: "completed" })
@@ -192,7 +211,7 @@ export default function InterviewRoomPage() {
 
       if (error) throw error;
 
-      // Update job application status to interview_completed or under_review
+      // 3. Update job application status to interview_completed
       if (interview?.application_id) {
         await supabase
           .from("job_applications")
@@ -200,7 +219,7 @@ export default function InterviewRoomPage() {
           .eq("id", interview.application_id);
       }
 
-      // Notify candidate
+      // 4. Notify candidate
       if (interview?.candidate_id) {
         await triggerWorkflowEvent({
           userId: interview.candidate_id,
@@ -212,7 +231,8 @@ export default function InterviewRoomPage() {
         });
       }
 
-      router.push("/dashboard");
+      // 5. Redirect recruiter to fill scorecard
+      router.push(`/interview/${interviewId}/scorecard`);
     } catch (e: any) {
       alert("Failed to mark interview as completed: " + e.message);
     }
@@ -382,11 +402,18 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
   const [screenOn, setScreenOn] = useState(false);
-  const [showDrawer, setShowDrawer] = useState(false);
+  const [drawerType, setDrawerType] = useState<"participants" | "notes" | null>(null);
+
+  // Private recruiter notes states
+  const [personalNotes, setPersonalNotes] = useState("");
+  const [notesSaving, setNotesSaving] = useState(false);
 
   // Call duration counter
   const [durationSecs, setDurationSecs] = useState(0);
 
+  const isRecruiter = sessionUser.id === interview.recruiter_id;
+
+  // Duration ticking
   useEffect(() => {
     const interval = setInterval(() => {
       setDurationSecs(prev => prev + 1);
@@ -407,6 +434,68 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
       setCamOn(localParticipant.isCameraEnabled);
     }
   }, [localParticipant]);
+
+  // Fetch initial private notes (recruiters only)
+  useEffect(() => {
+    if (isRecruiter) {
+      async function fetchNotes() {
+        try {
+          const { data } = await supabase
+            .from("private_interview_notes")
+            .select("notes")
+            .eq("interview_id", interview.id)
+            .eq("recruiter_id", sessionUser.id)
+            .maybeSingle();
+          if (data) {
+            setPersonalNotes(data.notes || "");
+          }
+        } catch (err) {
+          console.warn("Failed to fetch initial notes:", err);
+        }
+      }
+      fetchNotes();
+    }
+  }, [interview.id, sessionUser.id, isRecruiter]);
+
+  // Debounced Autosave for Private Notes
+  useEffect(() => {
+    if (!isRecruiter || personalNotes === "") return;
+
+    const delayDebounce = setTimeout(async () => {
+      setNotesSaving(true);
+      try {
+        const { data, error: selectErr } = await supabase
+          .from("private_interview_notes")
+          .select("id")
+          .eq("interview_id", interview.id)
+          .eq("recruiter_id", sessionUser.id)
+          .maybeSingle();
+
+        if (selectErr) throw selectErr;
+
+        if (data) {
+          await supabase
+            .from("private_interview_notes")
+            .update({ notes: personalNotes })
+            .eq("id", data.id);
+        } else {
+          await supabase
+            .from("private_interview_notes")
+            .insert({
+              interview_id: interview.id,
+              recruiter_id: sessionUser.id,
+              notes: personalNotes
+            });
+        }
+      } catch (err) {
+        console.error("Autosave notes failed:", err);
+      } finally {
+        setNotesSaving(false);
+      }
+    }, 1500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [personalNotes, interview.id, sessionUser.id, isRecruiter]);
 
   const toggleMic = async () => {
     const next = !micOn;
@@ -436,8 +525,6 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
     { source: Track.Source.Camera, withPlaceholder: true },
     { source: Track.Source.ScreenShare, withPlaceholder: false }
   ]);
-
-  const isRecruiter = sessionUser.id === interview.recruiter_id;
 
   return (
     <div className="flex-grow flex flex-col min-h-0 relative select-none">
@@ -513,32 +600,66 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
           })}
         </div>
 
-        {/* Side Panel Drawer (Participant list) */}
-        {showDrawer && (
-          <aside className="w-72 bg-zinc-900 border-l border-zinc-800 flex flex-col z-20 absolute sm:relative right-0 top-0 bottom-0 shadow-2xl sm:shadow-none animate-slide-in">
-            <header className="p-4 border-b border-zinc-800 flex justify-between items-center">
-              <h5 className="text-xs font-black uppercase tracking-wider text-zinc-400">Participants ({participants.length + 1})</h5>
-              <button 
-                onClick={() => setShowDrawer(false)}
-                className="text-zinc-500 hover:text-white text-xs font-bold hover:bg-zinc-800 px-2.5 py-1 rounded-lg"
-              >
-                Close
-              </button>
-            </header>
-            <div className="flex-grow overflow-y-auto p-4 space-y-3.5">
-              {/* Local user */}
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-white truncate">{localParticipant?.name || "You"} (You)</span>
-                <span className="text-[9px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded border border-zinc-700">Local</span>
-              </div>
-              {/* Remote users */}
-              {participants.map((p) => (
-                <div key={p.sid} className="flex items-center justify-between text-xs font-bold">
-                  <span className="text-zinc-300 truncate">{p.name || p.identity}</span>
-                  <span className="text-[9px] bg-[#B63106]/15 text-[#B63106] px-2 py-0.5 rounded border border-[#B63106]/20">Active</span>
+        {/* Side Panel Drawer (Participants list or private notes) */}
+        {drawerType && (
+          <aside className="w-80 bg-zinc-900 border-l border-zinc-800 flex flex-col z-20 absolute sm:relative right-0 top-0 bottom-0 shadow-2xl sm:shadow-none animate-slide-in">
+            {drawerType === "participants" ? (
+              <>
+                <header className="p-4 border-b border-zinc-800 flex justify-between items-center">
+                  <h5 className="text-xs font-black uppercase tracking-wider text-zinc-400">Participants ({participants.length + 1})</h5>
+                  <button 
+                    onClick={() => setDrawerType(null)}
+                    className="text-zinc-500 hover:text-white text-xs font-bold hover:bg-zinc-800 px-2.5 py-1 rounded-lg cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </header>
+                <div className="flex-grow overflow-y-auto p-4 space-y-3.5">
+                  {/* Local user */}
+                  <div className="flex items-center justify-between text-xs font-bold">
+                    <span className="text-white truncate">{localParticipant?.name || "You"} (You)</span>
+                    <span className="text-[9px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded border border-zinc-700">Local</span>
+                  </div>
+                  {/* Remote users */}
+                  {participants.map((p) => (
+                    <div key={p.sid} className="flex items-center justify-between text-xs font-bold">
+                      <span className="text-zinc-300 truncate">{p.name || p.identity}</span>
+                      <span className="text-[9px] bg-[#B63106]/15 text-[#B63106] px-2 py-0.5 rounded border border-[#B63106]/20">Active</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            ) : (
+              <>
+                <header className="p-4 border-b border-zinc-800 flex justify-between items-center">
+                  <h5 className="text-xs font-black uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                    <span>Personal Notes</span>
+                    {notesSaving ? (
+                      <span className="text-[9px] text-[#B63106] font-bold animate-pulse">Saving...</span>
+                    ) : (
+                      <span className="text-[9px] text-emerald-500 font-bold">Autosaved</span>
+                    )}
+                  </h5>
+                  <button 
+                    onClick={() => setDrawerType(null)}
+                    className="text-zinc-500 hover:text-white text-xs font-bold hover:bg-zinc-800 px-2.5 py-1 rounded-lg cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </header>
+                <div className="flex-grow flex flex-col p-4 space-y-3 min-h-0 bg-zinc-900">
+                  <textarea
+                    value={personalNotes}
+                    onChange={(e) => setPersonalNotes(e.target.value)}
+                    placeholder="Type personal recruiter notes here. These notes are private, visible only to you, and autosaved in real-time. They will be shown on your scorecard review screen..."
+                    className="flex-grow w-full p-3 bg-zinc-950 border border-zinc-850 rounded-2xl outline-none focus:border-[#B63106] text-xs font-medium text-white leading-relaxed resize-none"
+                  />
+                  <p className="text-[10px] text-zinc-500 leading-normal font-semibold">
+                    * Candidate cannot view these notes. They are fetched automatically on your scorecard review.
+                  </p>
+                </div>
+              </>
+            )}
           </aside>
         )}
       </div>
@@ -546,12 +667,12 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
       {/* 3. Bottom Controls Panel Bar (Responsive touch targets) */}
       <footer className="bg-zinc-900 border-t border-zinc-800 px-4 py-4 sm:py-5 flex flex-col sm:flex-row gap-4 justify-between items-center z-10">
         
-        {/* Toggle participant drawer button */}
-        <div className="flex items-center gap-2 self-start sm:self-center order-2 sm:order-1">
+        {/* Toggle drawers */}
+        <div className="flex items-center gap-2 self-start sm:self-center order-2 sm:order-1 flex-wrap">
           <button 
-            onClick={() => setShowDrawer(!showDrawer)}
+            onClick={() => setDrawerType(drawerType === "participants" ? null : "participants")}
             className={`p-3 rounded-2xl border cursor-pointer transition-all flex items-center justify-center gap-1.5 text-xs font-bold ${
-              showDrawer 
+              drawerType === "participants" 
                 ? "bg-zinc-800 text-white border-zinc-700" 
                 : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-white"
             }`}
@@ -562,6 +683,20 @@ function CustomInterviewUI({ interview, sessionUser, onLeave, onEndInterview }: 
               {participants.length + 1}
             </span>
           </button>
+
+          {isRecruiter && (
+            <button 
+              onClick={() => setDrawerType(drawerType === "notes" ? null : "notes")}
+              className={`p-3 rounded-2xl border cursor-pointer transition-all flex items-center justify-center gap-1.5 text-xs font-bold ${
+                drawerType === "notes" 
+                  ? "bg-[#B63106]/20 text-[#B63106] border-[#B63106]/30" 
+                  : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-white"
+              }`}
+            >
+              <Notebook size={16} />
+              <span>Private Notes</span>
+            </button>
+          )}
         </div>
 
         {/* Core Audio/Video/Screen buttons (48px Touch Targets for Mobile) */}

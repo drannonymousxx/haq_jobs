@@ -27,8 +27,8 @@ export default function Navbar() {
     return null;
   }
 
-  // Exclude Navbar on login, signup, dashboards, and candidates detail page
-  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard') || pathname.startsWith('/candidate')) {
+  // Exclude Navbar on login, signup, dashboards, candidate detail page, and interview page
+  if (pathname === '/login' || pathname.startsWith('/signup') || pathname.startsWith('/dashboard') || pathname.startsWith('/candidate') || pathname.startsWith('/interview')) {
     return null;
   }
 

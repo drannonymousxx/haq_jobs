@@ -42,6 +42,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { calculateRecruiterStrength } from "@/lib/profileUtils";
 import { mapSupabaseError } from "@/lib/errorUtils";
 import { triggerWorkflowEvent } from "@/lib/systemAccount";
+import { generateICSDataURI } from "@/lib/ics";
 
 // Date formatting helper
 const formatRelativeDate = (dateStr: string): string => {
@@ -124,6 +125,19 @@ export default function RecruiterDashboard() {
   // Calendar State
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [selectedCalendarDay, setSelectedCalendarDay] = useState<string | null>(null);
+
+  // Inline Reschedule Modal States
+  const [isResModalOpen, setIsResModalOpen] = useState(false);
+  const [selectedResInt, setSelectedResInt] = useState<any | null>(null);
+  const [resDate, setResDate] = useState("");
+  const [resTime, setResTime] = useState("");
+  const [resDuration, setResDuration] = useState("30 minutes");
+  const [resType, setResType] = useState<"online" | "offline" | "phone">("online");
+  const [resMeetingLink, setResMeetingLink] = useState("");
+  const [resOfficeLocation, setResOfficeLocation] = useState("");
+  const [resNotes, setResNotes] = useState("");
+  const [resRound, setResRound] = useState("");
+  const [resTitle, setResTitle] = useState("");
 
   // Load Dashboard Data from Supabase
   const loadDashboardData = async () => {
@@ -299,6 +313,7 @@ export default function RecruiterDashboard() {
                   ...i,
                   candidateName: app?.candidateName || "Anonymous Candidate",
                   candidateId: app?.candidateId,
+                  candidateEmail: app?.candidateEmail || "",
                   jobTitle: app?.jobTitle || "Legal Position",
                   jobId: app?.jobId
                 };
@@ -557,6 +572,102 @@ export default function RecruiterDashboard() {
       await loadDashboardData();
     } catch (err: any) {
       alert("Failed to update interview status: " + err.message);
+    }
+  };
+
+  const handleRescheduleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedResInt || actionLoading) return;
+
+    setActionLoading(`res-${selectedResInt.id}`);
+    try {
+      // Format combined ISO date-time
+      let scheduledAtStr = "";
+      try {
+        if (/^\d{2}:\d{2}$/.test(resTime)) {
+          scheduledAtStr = new Date(`${resDate}T${resTime}:00`).toISOString();
+        } else {
+          scheduledAtStr = new Date(`${resDate} ${resTime}`).toISOString();
+        }
+      } catch (err) {
+        scheduledAtStr = new Date(resDate).toISOString();
+      }
+
+      // 1. Update the database
+      const { error: intErr } = await supabase
+        .from("interviews")
+        .update({
+          title: resTitle,
+          round: resRound,
+          scheduled_at: scheduledAtStr,
+          duration: resDuration,
+          type: resType,
+          meeting_link: resType === "online" ? `/interview/${selectedResInt.id}` : null,
+          location: resType === "offline" ? resOfficeLocation : null,
+          notes: resNotes,
+          status: "pending", // Reset status to pending waiting for candidate to accept
+          reminder_24h_sent: false,
+          reminder_1h_sent: false,
+          reminder_15m_sent: false
+        })
+        .eq("id", selectedResInt.id);
+
+      if (intErr) throw intErr;
+
+      // 2. Generate the ICS Data URI
+      const meetingLinkToUse = resType === "online"
+        ? `${window.location.origin}/interview/${selectedResInt.id}`
+        : undefined;
+
+      const recruiterName = profile?.full_name || "Recruiter";
+      const recruiterEmail = profile?.email || "";
+
+      const icsUrl = generateICSDataURI({
+        id: selectedResInt.id,
+        title: `${resRound} - ${resTitle}`,
+        scheduledAt: scheduledAtStr,
+        duration: resDuration,
+        type: resType,
+        meetingLink: meetingLinkToUse,
+        location: resType === "offline" ? resOfficeLocation : undefined,
+        notes: resNotes,
+        recruiterName,
+        recruiterEmail,
+        candidateName: selectedResInt.candidateName,
+        candidateEmail: selectedResInt.candidateEmail
+      });
+
+      // 3. Notify Candidate
+      await triggerWorkflowEvent({
+        userId: selectedResInt.candidateId,
+        title: "Interview Rescheduled",
+        content: `Your interview for "${selectedResInt.jobTitle}" has been rescheduled to ${new Date(resDate).toLocaleDateString()} at ${resTime} (${resType}).\n\nNotes: ${resNotes || "None"}\n\nPlease accept the new time on your dashboard. Calendar invite attached.`,
+        type: "interview",
+        referenceId: selectedResInt.application_id,
+        referenceType: "job_applications",
+        attachmentUrl: icsUrl
+      });
+
+      // 4. Notify Recruiter
+      if (user) {
+        await triggerWorkflowEvent({
+          userId: user.id,
+          title: "Interview Rescheduled (Confirmed)",
+          content: `You rescheduled the interview for "${selectedResInt.candidateName}" (Round: ${resRound}) to ${new Date(resDate).toLocaleDateString()} at ${resTime}.\n\nCalendar invite attached.`,
+          type: "interview",
+          referenceId: selectedResInt.application_id,
+          referenceType: "job_applications",
+          attachmentUrl: icsUrl
+        });
+      }
+
+      setIsResModalOpen(false);
+      setSelectedResInt(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      alert("Failed to reschedule interview: " + err.message);
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -1075,14 +1186,44 @@ export default function RecruiterDashboard() {
                             </Link>
                           )}
                           <button
+                            onClick={() => {
+                              setSelectedResInt(i);
+                              setResTitle(i.title);
+                              setResRound(i.round || "HR Screening");
+                              try {
+                                const d = new Date(i.scheduled_at);
+                                const dateStr = d.toISOString().split('T')[0];
+                                const hours = d.getHours();
+                                const mins = d.getMinutes();
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                const formattedHours = hours % 12 || 12;
+                                const formattedMins = mins < 10 ? `0${mins}` : mins;
+                                setResDate(dateStr);
+                                setResTime(`${formattedHours}:${formattedMins} ${ampm}`);
+                              } catch (e) {
+                                setResDate("");
+                                setResTime("");
+                              }
+                              setResDuration(i.duration);
+                              setResType(i.type);
+                              setResMeetingLink(i.meeting_link || "");
+                              setResOfficeLocation(i.location || "");
+                              setResNotes(i.notes || "");
+                              setIsResModalOpen(true);
+                            }}
+                            className="flex-grow sm:flex-grow-0 px-3.5 py-2.5 bg-brand-card hover:bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs rounded-xl transition-all cursor-pointer text-center"
+                          >
+                            Reschedule
+                          </button>
+                          <button
                             onClick={() => handleUpdateRecruiterInterview(i.id, "no_show", i.candidateId, i.jobTitle)}
-                            className="flex-grow sm:flex-grow-0 px-3.5 py-2.5 bg-brand-card hover:bg-red-50 border border-red-200 text-red-700 font-bold text-xs rounded-xl transition-all cursor-pointer text-center"
+                            className="flex-grow sm:flex-grow-0 px-3.5 py-2.5 bg-brand-card hover:bg-red-50 border border-red-200 text-red-700 font-bold text-xs rounded-xl transition-all cursor-pointer text-center select-none"
                           >
                             No Show
                           </button>
                           <button
                             onClick={() => handleUpdateRecruiterInterview(i.id, "cancelled", i.candidateId, i.jobTitle)}
-                            className="p-2 bg-brand-card hover:bg-slate-100 border border-brand-border text-brand-text-muted rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                            className="p-2 bg-brand-card hover:bg-slate-100 border border-brand-border text-brand-text-muted rounded-xl transition-all cursor-pointer flex items-center justify-center select-none"
                             title="Cancel Interview"
                           >
                             <X size={14} />
@@ -1098,7 +1239,7 @@ export default function RecruiterDashboard() {
               </div>
             )}
           </div>
-
+ 
           {/* 2. Reschedule Requested Alerts */}
           {recruiterInterviews.filter(i => i.status === "reschedule_requested").length > 0 && (
             <div className="space-y-3 p-4 bg-amber-50/50 border border-amber-100 rounded-2xl mt-4">
@@ -1114,12 +1255,36 @@ export default function RecruiterDashboard() {
                       <p className="text-brand-text-secondary leading-relaxed">
                         <span className="font-black text-[#B63106]">{i.candidateName}</span> has requested a reschedule for <span className="font-bold">"{i.title}"</span> ({i.round}).
                       </p>
-                      <Link 
-                        href={`/dashboard/recruiter/jobs/${i.jobId}`}
-                        className="px-2.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] rounded-lg transition-all"
+                      <button 
+                        onClick={() => {
+                          setSelectedResInt(i);
+                          setResTitle(i.title);
+                          setResRound(i.round || "HR Screening");
+                          try {
+                            const d = new Date(i.scheduled_at);
+                            const dateStr = d.toISOString().split('T')[0];
+                            const hours = d.getHours();
+                            const mins = d.getMinutes();
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            const formattedHours = hours % 12 || 12;
+                            const formattedMins = mins < 10 ? `0${mins}` : mins;
+                            setResDate(dateStr);
+                            setResTime(`${formattedHours}:${formattedMins} ${ampm}`);
+                          } catch (e) {
+                            setResDate("");
+                            setResTime("");
+                          }
+                          setResDuration(i.duration);
+                          setResType(i.type);
+                          setResMeetingLink(i.meeting_link || "");
+                          setResOfficeLocation(i.location || "");
+                          setResNotes(i.notes || "");
+                          setIsResModalOpen(true);
+                        }}
+                        className="px-2.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] rounded-lg transition-all cursor-pointer"
                       >
                         Reschedule Round
-                      </Link>
+                      </button>
                     </div>
                   ))}
               </div>
@@ -1631,6 +1796,174 @@ export default function RecruiterDashboard() {
         </section>
 
       </section>
+
+      {/* INLINE RESCHEDULE MODAL */}
+      {isResModalOpen && selectedResInt && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-brand-card rounded-3xl border border-brand-border shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative">
+            <button 
+              onClick={() => {
+                setIsResModalOpen(false);
+                setSelectedResInt(null);
+              }}
+              className="absolute right-4 top-4 p-1.5 rounded-lg text-brand-text-muted hover:bg-brand-bg cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <div>
+              <h3 className="text-base font-black text-brand-text font-poppins flex items-center gap-1.5">
+                <CalendarIcon size={18} className="text-amber-500" />
+                Reschedule Interview Round
+              </h3>
+              <p className="text-[11px] text-brand-text-muted font-bold mt-0.5">
+                Rescheduling interview for candidate:{" "}
+                <span className="text-brand-text-secondary font-black">{selectedResInt.candidateName}</span>
+              </p>
+            </div>
+
+            <form onSubmit={handleRescheduleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Interview Title</label>
+                <input
+                  type="text"
+                  required
+                  value={resTitle}
+                  onChange={(e) => setResTitle(e.target.value)}
+                  className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Interview Round</label>
+                <select
+                  value={resRound}
+                  onChange={(e) => setResRound(e.target.value)}
+                  className="w-full px-3 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                >
+                  <option value="HR Screening">HR Screening</option>
+                  <option value="Technical Round">Technical Round</option>
+                  <option value="Case Study">Case Study</option>
+                  <option value="Partner Round">Partner Round</option>
+                  <option value="Final HR">Final HR</option>
+                  <option value="Custom">Custom</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Date</label>
+                  <input
+                    type="date"
+                    required
+                    value={resDate}
+                    onChange={(e) => setResDate(e.target.value)}
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Time</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 11:30 AM"
+                    value={resTime}
+                    onChange={(e) => setResTime(e.target.value)}
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Duration</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 45 minutes"
+                    value={resDuration}
+                    onChange={(e) => setResDuration(e.target.value)}
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Interview Type</label>
+                  <select
+                    value={resType}
+                    onChange={(e: any) => setResType(e.target.value)}
+                    className="w-full px-3 py-2.5 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                  >
+                    <option value="online">Online / Video Call</option>
+                    <option value="offline">In-person Office Visit</option>
+                    <option value="phone">Telephonic Call</option>
+                  </select>
+                </div>
+              </div>
+
+              {resType === "online" ? (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Meeting Link</label>
+                  <input
+                    type="url"
+                    disabled
+                    value={resMeetingLink ? `${window.location.origin}${resMeetingLink}` : `${window.location.origin}/interview/${selectedResInt.id}`}
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl text-xs bg-brand-bg text-brand-text-muted cursor-not-allowed"
+                  />
+                </div>
+              ) : resType === "offline" ? (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Office Location Address</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Corporate Office, Barakhamba Road, Delhi"
+                    value={resOfficeLocation}
+                    onChange={(e) => setResOfficeLocation(e.target.value)}
+                    className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                    required
+                  />
+                </div>
+              ) : null}
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Recruiter Notes / Instructions</label>
+                <textarea
+                  rows={3}
+                  placeholder="Include any specific details or agenda for the interview round..."
+                  value={resNotes}
+                  onChange={(e) => setResNotes(e.target.value)}
+                  className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text resize-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-50">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsResModalOpen(false);
+                    setSelectedResInt(null);
+                  }}
+                  className="px-4 py-2.5 bg-brand-bg hover:bg-slate-200 text-brand-text-secondary font-bold text-xs rounded-xl cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionLoading === `res-${selectedResInt.id}`}
+                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  {actionLoading === `res-${selectedResInt.id}` ? (
+                    <span className="text-xs font-bold text-white">Saving...</span>
+                  ) : (
+                    <span>Update & Reschedule</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

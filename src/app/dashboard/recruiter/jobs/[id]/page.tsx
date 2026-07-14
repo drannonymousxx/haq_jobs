@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { triggerWorkflowEvent } from "@/lib/systemAccount";
+import { generateICSDataURI } from "@/lib/ics";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -143,7 +144,23 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
 
       const edus = edusRes.data;
       const exps = expsRes.data;
-      const interviewsData = interviewsRes.data;
+      const interviewsData = interviewsRes.data || [];
+
+      // Fetch scorecards for all retrieved interviews
+      const interviewIds = interviewsData.map((i: any) => i.id);
+      let scorecardsData: any[] = [];
+      if (interviewIds.length > 0) {
+        const { data: scData } = await supabase
+          .from("interview_scorecards")
+          .select(`
+            *,
+            recruiter:recruiter_id (
+              full_name
+            )
+          `)
+          .in("interview_id", interviewIds);
+        scorecardsData = scData || [];
+      }
 
       const eduMap = new Map();
       if (edus) {
@@ -164,10 +181,23 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
       }
 
       const formatted = rawApps.map((app: any) => {
-        const interviewRecord = interviewsData?.find((i: any) => 
+        const interviewRecord = interviewsData.find((i: any) => 
           i.application_id === app.id && 
           ["pending", "accepted", "reschedule_requested"].includes(i.status)
         );
+        
+        // Enrich all interviews for this application with scorecards
+        const myInterviews = interviewsData
+          .filter((i: any) => i.application_id === app.id)
+          .map((i: any) => {
+            const scorecard = scorecardsData.find((sc: any) => sc.interview_id === i.id);
+            return {
+              ...i,
+              scorecard
+            };
+          })
+          .sort((a: any, b: any) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime());
+
         return {
           id: app.id,
           candidateId: app.profiles?.id,
@@ -181,7 +211,8 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
           latestJob: expMap.get(app.profiles?.id) || "Fresh Graduate",
           appliedAt: app.created_at,
           status: app.status || "applied",
-          interview: interviewRecord || null
+          interview: interviewRecord || null,
+          allInterviews: myInterviews
         };
       });
 
@@ -333,13 +364,34 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
     if (!selectedApp || !job || actionLoading) return;
     
     // Validate state transition for new interview
-    if (!editingInterviewId && selectedApp.status !== "shortlisted") {
-      alert("Interviews can only be scheduled for shortlisted candidates.");
+    if (!editingInterviewId && !["shortlisted", "interview", "interview_completed"].includes(selectedApp.status)) {
+      alert("Interviews can only be scheduled for shortlisted or active pipeline candidates.");
       return;
     }
 
     setActionLoading("interview-save");
     try {
+      // 1. Get current recruiter info for the ICS invitation
+      const { data: { session } } = await supabase.auth.getSession();
+      const recruiterUser = session?.user;
+      let recruiterName = "Recruiter";
+      let recruiterEmail = "";
+
+      if (recruiterUser) {
+        const { data: recProfile } = await supabase
+          .from("profiles")
+          .select("full_name, email")
+          .eq("id", recruiterUser.id)
+          .single();
+        if (recProfile) {
+          recruiterName = recProfile.full_name;
+          recruiterEmail = recProfile.email;
+        } else {
+          recruiterName = recruiterUser.user_metadata?.full_name || "Recruiter";
+          recruiterEmail = recruiterUser.email || "";
+        }
+      }
+
       // Format combined ISO date-time
       let scheduledAtStr = "";
       try {
@@ -352,7 +404,10 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         scheduledAtStr = new Date(interviewDate).toISOString();
       }
 
-      if (editingInterviewId) {
+      let interviewIdToUse = editingInterviewId;
+      const isEdit = !!editingInterviewId;
+
+      if (isEdit) {
         // Edit existing interview
         const { error: intErr } = await supabase
           .from("interviews")
@@ -364,22 +419,15 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
             type: interviewType,
             meeting_link: interviewType === "online" ? `/interview/${editingInterviewId}` : null,
             location: interviewType === "offline" ? officeLocation : null,
-            notes: interviewNotes
+            notes: interviewNotes,
+            // Reset reminder flags when rescheduled so new notifications get triggered
+            reminder_24h_sent: false,
+            reminder_1h_sent: false,
+            reminder_15m_sent: false
           })
           .eq("id", editingInterviewId);
 
         if (intErr) throw intErr;
-
-        // Trigger rescheduled workflow event (notifying candidate)
-        const contentStr = `Your interview for "${job.title}" has been rescheduled to ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime} (${interviewType}).\n\nNotes: ${interviewNotes || "None"}`;
-        await triggerWorkflowEvent({
-          userId: selectedApp.candidateId,
-          title: "Interview Rescheduled",
-          content: contentStr,
-          type: "interview",
-          referenceId: selectedApp.id,
-          referenceType: "job_applications"
-        });
       } else {
         // Create new interview
         const { data: newInt, error: intErr } = await supabase
@@ -403,6 +451,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
           .single();
 
         if (intErr) throw intErr;
+        interviewIdToUse = newInt.id;
 
         if (newInt && interviewType === "online") {
           await supabase
@@ -411,7 +460,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
             .eq("id", newInt.id);
         }
 
-        // Update job_applications status
+        // Update job_applications status to 'interview'
         const { error: appErr } = await supabase
           .from("job_applications")
           .update({ status: "interview" })
@@ -423,16 +472,57 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         setApplicants(prev => 
           prev.map(app => app.id === selectedApp.id ? { ...app, status: "interview" } : app)
         );
+      }
 
-        // Trigger workflow event (notifying candidate)
-        const contentStr = `Congratulations! You have been invited for an interview for "${job.title}".\n\nInterview Details:\nDate: ${new Date(interviewDate).toLocaleDateString()}\nTime: ${interviewTime}\nMeeting Link / Location: ${interviewType === "online" ? meetingLink : officeLocation}\n\nPlease join the meeting at the scheduled time.`;
+      // 2. Generate the ICS Data URI
+      const meetingLinkToUse = interviewType === "online" && interviewIdToUse 
+        ? `${window.location.origin}/interview/${interviewIdToUse}` 
+        : undefined;
+
+      const icsUrl = generateICSDataURI({
+        id: interviewIdToUse!,
+        title: `${interviewRound} - ${interviewTitle}`,
+        scheduledAt: scheduledAtStr,
+        duration: interviewDuration,
+        type: interviewType,
+        meetingLink: meetingLinkToUse,
+        location: interviewType === "offline" ? officeLocation : undefined,
+        notes: interviewNotes,
+        recruiterName,
+        recruiterEmail,
+        candidateName: selectedApp.candidateName,
+        candidateEmail: selectedApp.candidateEmail
+      });
+
+      // 3. Notify Candidate
+      const candidateContent = isEdit 
+        ? `Your interview for "${job.title}" has been rescheduled to ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime} (${interviewType}).\n\nNotes: ${interviewNotes || "None"}\n\nPlease import the attached calendar invite.`
+        : `Congratulations! You have been invited for an interview for "${job.title}".\n\nInterview Details:\nDate: ${new Date(interviewDate).toLocaleDateString()}\nTime: ${interviewTime}\nMeeting Link / Location: ${interviewType === "online" ? meetingLinkToUse : officeLocation}\n\nPlease accept the round on your dashboard. Calendar invite attached.`;
+      
+      await triggerWorkflowEvent({
+        userId: selectedApp.candidateId,
+        title: isEdit ? "Interview Rescheduled" : "Interview Scheduled",
+        content: candidateContent,
+        type: "interview",
+        referenceId: selectedApp.id,
+        referenceType: "job_applications",
+        attachmentUrl: icsUrl
+      });
+
+      // 4. Notify Recruiter (Send reminder/alert to daily dashboard context)
+      if (recruiterUser) {
+        const recruiterContent = isEdit
+          ? `You rescheduled the interview for "${selectedApp.candidateName}" (Round: ${interviewRound}) to ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime}.\n\nCalendar invite attached.`
+          : `You scheduled an interview round for "${selectedApp.candidateName}" (Round: ${interviewRound}) on ${new Date(interviewDate).toLocaleDateString()} at ${interviewTime}.\n\nCalendar invite attached.`;
+
         await triggerWorkflowEvent({
-          userId: selectedApp.candidateId,
-          title: "Interview Scheduled",
-          content: contentStr,
+          userId: recruiterUser.id,
+          title: isEdit ? "Interview Rescheduled (Confirmed)" : "Interview Scheduled (Confirmed)",
+          content: recruiterContent,
           type: "interview",
           referenceId: selectedApp.id,
-          referenceType: "job_applications"
+          referenceType: "job_applications",
+          attachmentUrl: icsUrl
         });
       }
 
@@ -633,6 +723,87 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                         <span>•</span>
                         <span>{app.candidateLocation}</span>
                       </div>
+
+                      {/* Chronological Interview Timeline */}
+                      {app.allInterviews && app.allInterviews.length > 0 && (
+                        <div className="mt-4 pt-3 border-t border-brand-border/40 space-y-2.5 max-w-xl">
+                          <h5 className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider">Interview History & Rounds</h5>
+                          <div className="space-y-3 relative pl-2 pt-1">
+                            {/* Vertical timeline line */}
+                            <div className="absolute left-1.5 top-2.5 bottom-2.5 w-0.5 bg-brand-border/60" />
+                            {app.allInterviews.map((i: any) => {
+                              const scheduledDate = new Date(i.scheduled_at);
+                              const formattedTime = scheduledDate.toLocaleString([], {
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                              });
+                              const statusColorMap: Record<string, string> = {
+                                pending: "bg-amber-55 text-amber-700 border-amber-100",
+                                accepted: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                                declined: "bg-red-50 text-red-700 border-red-150",
+                                reschedule_requested: "bg-amber-50 text-amber-700 border-amber-150",
+                                cancelled: "bg-slate-50 text-slate-600 border-slate-200",
+                                completed: "bg-emerald-50 text-emerald-700 border-emerald-150",
+                                no_show: "bg-rose-50 text-rose-700 border-rose-150"
+                              };
+                              const dotColorMap: Record<string, string> = {
+                                pending: "bg-amber-400",
+                                accepted: "bg-emerald-400",
+                                declined: "bg-red-400",
+                                reschedule_requested: "bg-amber-400",
+                                cancelled: "bg-slate-300",
+                                completed: "bg-emerald-600",
+                                no_show: "bg-rose-600"
+                              };
+                              return (
+                                <div key={i.id} className="relative pl-5 text-[11px] leading-normal font-semibold">
+                                  {/* Timeline marker */}
+                                  <div className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 border-white ring-1 ring-slate-200 ${dotColorMap[i.status] || "bg-slate-300"}`} />
+                                  <div className="flex items-center gap-2 flex-wrap text-[11px]">
+                                    <span className="text-brand-text font-black">{i.round || "Round"}</span>
+                                    <span className="text-brand-text-muted font-bold">({formattedTime})</span>
+                                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${statusColorMap[i.status] || "bg-brand-bg text-brand-text-secondary"}`}>
+                                      {i.status === "no_show" ? "No Show" : i.status === "reschedule_requested" ? "Reschedule Req" : i.status}
+                                    </span>
+                                    {i.type === "online" && i.status === "accepted" && (
+                                      <Link 
+                                        href={`/interview/${i.id}`}
+                                        className="text-[9px] font-bold bg-[#B63106]/10 text-[#B63106] px-1.5 py-0.5 rounded border border-[#B63106]/20 hover:bg-[#B63106]/20 transition-all cursor-pointer"
+                                      >
+                                        Join call
+                                      </Link>
+                                    )}
+                                  </div>
+                                  {/* Render scorecard feedback if completed */}
+                                  {i.scorecard && (
+                                    <div className="mt-1.5 p-2.5 bg-slate-50 border border-slate-100 rounded-xl max-w-md">
+                                      <div className="flex items-center gap-1.5 text-[9px] font-bold">
+                                        <Award size={10} className="text-[#B63106]" />
+                                        <span className="text-brand-text-secondary">Grade:</span>
+                                        <span className={`uppercase font-black ${
+                                          i.scorecard.recommendation.includes("strong_hire") || i.scorecard.recommendation === "hire"
+                                            ? "text-emerald-700"
+                                            : "text-red-700"
+                                        }`}>
+                                          {i.scorecard.recommendation.replace("_", " ")}
+                                        </span>
+                                        <span className="text-brand-text-muted text-[8px] font-medium">by {i.scorecard.recruiter?.full_name || "Interviewer"}</span>
+                                      </div>
+                                      {i.scorecard.feedback_notes && (
+                                        <p className="text-[10px] text-brand-text-muted font-medium italic mt-1 pl-1 border-l-2 border-slate-200 line-clamp-2">
+                                          "{i.scorecard.feedback_notes}"
+                                        </p>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -674,7 +845,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                     )}
 
                     {/* Schedule Interview */}
-                    {app.status === "shortlisted" && (
+                    {["shortlisted", "interview", "interview_completed"].includes(app.status) && !app.interview && (
                       <button
                         onClick={() => {
                           setSelectedApp(app);
@@ -828,10 +999,11 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                   className="w-full px-3 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                 >
                   <option value="HR Screening">HR Screening</option>
-                  <option value="Technical">Technical</option>
-                  <option value="Legal Interview">Legal Interview</option>
+                  <option value="Technical Round">Technical Round</option>
+                  <option value="Case Study">Case Study</option>
                   <option value="Partner Round">Partner Round</option>
-                  <option value="Final Round">Final Round</option>
+                  <option value="Final HR">Final HR</option>
+                  <option value="Custom">Custom</option>
                 </select>
               </div>
 
