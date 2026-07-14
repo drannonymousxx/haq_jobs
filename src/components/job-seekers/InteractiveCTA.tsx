@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import { Shield, Settings } from "lucide-react";
 
 export default function InteractiveCTA() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,9 +91,7 @@ export default function InteractiveCTA() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-1group-hover:bg-[#DDE7FF]2 rounded-full bg-[#EEF2FF] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md  mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#1D4DFF]">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
+                <Shield className="w-6 h-6 text-[#1D4DFF]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Connect with founders</h3>
@@ -111,10 +110,7 @@ export default function InteractiveCTA() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#EEF2FF] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[#DDE7FF] mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#1D4DFF]">
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
+                <Settings className="w-6 h-6 text-[#1D4DFF]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Get featured</h3>

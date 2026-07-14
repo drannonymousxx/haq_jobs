@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { Loader2, LogOut, Briefcase, MessageSquare } from "lucide-react";
+import { Loader2, LogOut, Briefcase, MessageSquare, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,9 +13,11 @@ export default function RecruiterDashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     async function checkAuthAndRole() {
@@ -106,8 +108,8 @@ export default function RecruiterDashboardLayout({
             />
           </Link>
 
-          {/* Controls */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          {/* Desktop Controls (hidden on mobile) */}
+          <div className="hidden md:flex items-center gap-4 sm:gap-6">
             
             {/* Recruiter Panel Badge */}
             <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full uppercase tracking-wider select-none">
@@ -143,8 +145,102 @@ export default function RecruiterDashboardLayout({
 
           </div>
 
+          {/* Mobile Menu Trigger Button (visible only on mobile) */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="md:hidden p-2 text-brand-text-muted hover:text-amber-600 hover:bg-brand-bg rounded-lg transition-colors cursor-pointer w-10 h-10 flex items-center justify-center"
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+
         </div>
       </header>
+
+      {/* Mobile Drawer (visible only on mobile when open) */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-[#0B0B0B]/85 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Drawer container */}
+          <div className="relative ml-auto w-full max-w-xs h-full bg-brand-card border-l border-brand-border p-6 flex flex-col justify-between shadow-2xl z-10">
+            <div className="space-y-6">
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between">
+                <Image 
+                  src="/logofull.png" 
+                  alt="HAQJobs Logo" 
+                  width={110} 
+                  height={28} 
+                  style={{ width: "110px", height: "auto" }}
+                  className="brightness-0 invert"
+                />
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 text-brand-text-muted hover:text-amber-600 hover:bg-brand-bg rounded-lg transition-colors cursor-pointer w-10 h-10 flex items-center justify-center"
+                  aria-label="Close menu"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Recruiter Panel Badge */}
+              <div className="pt-2">
+                <span className="inline-block text-[10px] font-extrabold text-amber-600 bg-amber-50 px-3.5 py-1.5 rounded-full uppercase tracking-wider select-none">
+                  Recruiter Panel
+                </span>
+              </div>
+
+              {/* Navigation links */}
+              <nav className="flex flex-col gap-2 pt-4">
+                <Link 
+                  href="/dashboard/recruiter/jobs" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-colors ${
+                    pathname === "/dashboard/recruiter/jobs"
+                      ? "bg-amber-500/10 text-amber-600 border border-amber-500/20"
+                      : "text-brand-text-muted hover:text-amber-600 hover:bg-brand-bg"
+                  }`}
+                >
+                  <Briefcase size={16} />
+                  <span>Manage Jobs</span>
+                </Link>
+
+                <Link 
+                  href="/dashboard/messages" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-colors ${
+                    pathname === "/dashboard/messages"
+                      ? "bg-amber-500/10 text-amber-600 border border-amber-500/20"
+                      : "text-brand-text-muted hover:text-amber-600 hover:bg-brand-bg"
+                  }`}
+                >
+                  <MessageSquare size={16} />
+                  <span>Messages</span>
+                </Link>
+              </nav>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-6 border-t border-brand-border">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleSignOut();
+                }}
+                className="w-full flex items-center justify-center gap-2.5 px-4 py-3.5 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-xl text-sm font-bold transition-colors cursor-pointer"
+              >
+                <LogOut size={16} />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Nested Route Pages */}
       <div className="flex-grow w-full flex flex-col">

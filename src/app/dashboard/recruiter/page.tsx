@@ -961,11 +961,11 @@ export default function RecruiterDashboard() {
             </div>
 
             {/* Filter buttons */}
-            <div className="flex flex-wrap gap-2 items-center">
+            <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
               <select
                 value={jobsStatusFilter}
                 onChange={(e) => { setJobsStatusFilter(e.target.value); setJobsPage(1); }}
-                className="px-2.5 py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none"
+                className="w-full sm:w-auto px-2.5 py-2.5 sm:py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none cursor-pointer"
               >
                 <option value="">All Statuses</option>
                 <option value="Published">Published</option>
@@ -977,7 +977,7 @@ export default function RecruiterDashboard() {
               <select
                 value={jobsTypeFilter}
                 onChange={(e) => { setJobsTypeFilter(e.target.value); setJobsPage(1); }}
-                className="px-2.5 py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none"
+                className="w-full sm:w-auto px-2.5 py-2.5 sm:py-1.5 bg-brand-bg border border-brand-border rounded-xl text-[10px] font-bold text-brand-text-secondary outline-none cursor-pointer"
               >
                 <option value="">All Types</option>
                 <option value="Full Time">Full Time</option>
@@ -995,121 +995,208 @@ export default function RecruiterDashboard() {
                     setJobsModeFilter("");
                     setJobsPage(1);
                   }}
-                  className="p-1.5 bg-brand-bg hover:bg-slate-200 text-brand-text-secondary rounded-lg"
+                  className="w-full sm:w-auto p-2 bg-brand-bg hover:bg-slate-200 text-brand-text-secondary rounded-lg flex items-center justify-center gap-1 text-[10px] font-bold cursor-pointer"
                   title="Clear Active Filters"
                 >
                   <X size={12} />
+                  <span className="sm:hidden">Clear Filters</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Quick search inside jobs list */}
-          <div className="relative max-w-xs">
+          {/* Quick search inside jobs list - full-width on mobile */}
+          <div className="relative w-full sm:max-w-xs">
             <input
               type="text"
               placeholder="Filter listed jobs..."
               value={jobsSearchQuery}
               onChange={(e) => { setJobsSearchQuery(e.target.value); setJobsPage(1); }}
-              className="w-full pl-8 pr-4 py-2 border border-brand-border rounded-xl outline-none focus:border-[#B63106] text-xs bg-brand-bg/50"
+              className="w-full pl-8 pr-4 py-2.5 sm:py-2 border border-brand-border rounded-xl outline-none focus:border-[#B63106] text-xs bg-brand-bg/50"
             />
-            <Search size={12} className="text-brand-text-muted absolute left-2.5 top-2.5 select-none" />
+            <Search size={12} className="text-brand-text-muted absolute left-2.5 top-3.5 sm:top-2.5 select-none" />
           </div>
 
           {paginatedJobs.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="border-b border-brand-border text-brand-text-muted font-bold uppercase tracking-wider">
-                    <th className="py-2.5 px-2">Job Details</th>
-                    <th className="py-2.5 px-2">Type / Mode</th>
-                    <th className="py-2.5 px-2">Applications</th>
-                    <th className="py-2.5 px-2">Status</th>
-                    <th className="py-2.5 px-2 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedJobs.map((job) => {
-                    // Count candidate applications for this specific job
-                    const jobAppsCount = applications.filter(a => String(a.jobId) === String(job.id)).length;
-                    const statusColors: Record<string, string> = {
-                      Published: "bg-emerald-50 text-emerald-700 border-emerald-100",
-                      Draft: "bg-brand-bg text-brand-text-secondary border-brand-border",
-                      Closed: "bg-red-50 text-red-700 border-red-100",
-                      Archived: "bg-amber-50 text-amber-700 border-amber-100"
-                    };
-                    const badgeClass = statusColors[job.job_status] || "bg-brand-bg text-brand-text-secondary";
+            <>
+              {/* Desktop Table View */}
+              <div className="hidden sm:block overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-brand-border text-brand-text-muted font-bold uppercase tracking-wider">
+                      <th className="py-2.5 px-2">Job Details</th>
+                      <th className="py-2.5 px-2">Type / Mode</th>
+                      <th className="py-2.5 px-2">Applications</th>
+                      <th className="py-2.5 px-2">Status</th>
+                      <th className="py-2.5 px-2 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedJobs.map((job) => {
+                      // Count candidate applications for this specific job
+                      const jobAppsCount = applications.filter(a => String(a.jobId) === String(job.id)).length;
+                      const statusColors: Record<string, string> = {
+                        Published: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                        Draft: "bg-brand-bg text-brand-text-secondary border-brand-border",
+                        Closed: "bg-red-50 text-red-700 border-red-100",
+                        Archived: "bg-amber-50 text-amber-700 border-amber-100"
+                      };
+                      const badgeClass = statusColors[job.job_status] || "bg-brand-bg text-brand-text-secondary";
 
-                    return (
-                      <tr key={job.id} className="border-b border-slate-50 hover:bg-brand-bg/30 transition-all">
-                        <td className="py-3.5 px-2">
-                          <span className="font-bold text-brand-text block text-xs hover:text-[#B63106] cursor-pointer">
-                            {job.title}
-                          </span>
-                          <span className="text-[10px] text-brand-text-muted font-medium block mt-0.5">{job.location || "Remote"}</span>
-                        </td>
-                        <td className="py-3.5 px-2">
-                          <span className="font-semibold text-brand-text-secondary block">{job.employment_type}</span>
-                          <span className="text-[10px] text-brand-text-muted font-semibold block">{job.work_mode}</span>
-                        </td>
-                        <td className="py-3.5 px-2">
-                          <span className="font-black text-brand-text bg-brand-bg border border-slate-150 px-2 py-0.5 rounded-lg">
-                            {jobAppsCount}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-2">
-                          <span className={`text-[10px] font-bold px-2 py-0.5 border rounded-full ${badgeClass}`}>
-                            {job.job_status}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-2 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            {/* Duplicate */}
-                            <button
-                              onClick={() => handleDuplicateJob(job)}
-                              disabled={actionLoading === `dup-${job.id}`}
-                              className="p-1.5 text-brand-text-muted hover:text-brand hover:bg-brand/10 rounded-lg cursor-pointer transition-colors"
-                              title="Duplicate job listing"
-                            >
-                              {actionLoading === `dup-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Copy size={12} />}
-                            </button>
-
-                            {/* Archive */}
-                            {job.job_status !== "Archived" && (
+                      return (
+                        <tr key={job.id} className="border-b border-slate-50 hover:bg-brand-bg/30 transition-all">
+                          <td className="py-3.5 px-2">
+                            <span className="font-bold text-brand-text block text-xs hover:text-[#B63106] cursor-pointer">
+                              {job.title}
+                            </span>
+                            <span className="text-[10px] text-brand-text-muted font-medium block mt-0.5">{job.location || "Remote"}</span>
+                          </td>
+                          <td className="py-3.5 px-2">
+                            <span className="font-semibold text-brand-text-secondary block">{job.employment_type}</span>
+                            <span className="text-[10px] text-brand-text-muted font-semibold block">{job.work_mode}</span>
+                          </td>
+                          <td className="py-3.5 px-2">
+                            <span className="font-black text-brand-text bg-brand-bg border border-slate-150 px-2 py-0.5 rounded-lg">
+                              {jobAppsCount}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-2">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 border rounded-full ${badgeClass}`}>
+                              {job.job_status}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-2 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              {/* Duplicate */}
                               <button
-                                onClick={() => handleArchiveJob(job.id)}
-                                disabled={actionLoading === `arch-${job.id}`}
-                                className="p-1.5 text-brand-text-muted hover:text-amber-600 hover:bg-amber-50 rounded-lg cursor-pointer transition-colors"
-                                title="Archive job"
+                                onClick={() => handleDuplicateJob(job)}
+                                disabled={actionLoading === `dup-${job.id}`}
+                                className="p-1.5 text-brand-text-muted hover:text-brand hover:bg-brand/10 rounded-lg cursor-pointer transition-colors"
+                                title="Duplicate job listing"
                               >
-                                {actionLoading === `arch-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Archive size={12} />}
+                                {actionLoading === `dup-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Copy size={12} />}
                               </button>
-                            )}
 
-                            {/* Delete */}
-                            <button
-                              onClick={() => handleDeleteJob(job.id)}
-                              disabled={actionLoading === `del-${job.id}`}
-                              className="p-1.5 text-brand-text-muted hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
-                              title="Delete listing"
-                            >
-                              {actionLoading === `del-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
-                            </button>
+                              {/* Archive */}
+                              {job.job_status !== "Archived" && (
+                                <button
+                                  onClick={() => handleArchiveJob(job.id)}
+                                  disabled={actionLoading === `arch-${job.id}`}
+                                  className="p-1.5 text-brand-text-muted hover:text-amber-600 hover:bg-amber-50 rounded-lg cursor-pointer transition-colors"
+                                  title="Archive job"
+                                >
+                                  {actionLoading === `arch-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Archive size={12} />}
+                                </button>
+                              )}
 
-                            <Link
-                              href="/dashboard/recruiter/jobs"
-                              className="text-[10px] font-bold text-brand-text-secondary hover:text-[#B63106] px-2.5 py-1 border border-brand-border rounded-lg hover:border-[#B63106] transition-all ml-1 bg-brand-card whitespace-nowrap"
-                            >
-                              Manage
-                            </Link>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                              {/* Delete */}
+                              <button
+                                onClick={() => handleDeleteJob(job.id)}
+                                disabled={actionLoading === `del-${job.id}`}
+                                className="p-1.5 text-brand-text-muted hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
+                                title="Delete listing"
+                              >
+                                {actionLoading === `del-${job.id}` ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
+                              </button>
+
+                              <Link
+                                href="/dashboard/recruiter/jobs"
+                                className="text-[10px] font-bold text-brand-text-secondary hover:text-[#B63106] px-2.5 py-1 border border-brand-border rounded-lg hover:border-[#B63106] transition-all ml-1 bg-brand-card whitespace-nowrap"
+                              >
+                                Manage
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="sm:hidden flex flex-col gap-4">
+                {paginatedJobs.map((job) => {
+                  const jobAppsCount = applications.filter(a => String(a.jobId) === String(job.id)).length;
+                  const statusColors: Record<string, string> = {
+                    Published: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                    Draft: "bg-brand-bg text-brand-text-secondary border-brand-border",
+                    Closed: "bg-red-50 text-red-700 border-red-100",
+                    Archived: "bg-amber-50 text-amber-700 border-amber-100"
+                  };
+                  const badgeClass = statusColors[job.job_status] || "bg-brand-bg text-brand-text-secondary";
+
+                  return (
+                    <div key={job.id} className="bg-brand-card rounded-2xl border border-brand-border p-4 space-y-4 shadow-sm">
+                      <div className="space-y-1">
+                        <h4 className="font-extrabold text-brand-text text-sm hover:text-[#B63106] transition-colors leading-snug">
+                          {job.title}
+                        </h4>
+                        <p className="text-[11px] text-brand-text-muted font-bold flex items-center gap-1">
+                          <span>📍 {job.location || "Remote"}</span>
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 text-[10px] font-bold">
+                        <span className="bg-brand-bg text-brand-text-secondary px-2 py-1 rounded-md border border-brand-border/30">
+                          💼 {job.employment_type}
+                        </span>
+                        <span className="bg-brand-bg text-brand-text-secondary px-2 py-1 rounded-md border border-brand-border/30">
+                          🏢 {job.work_mode}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs border-t border-slate-50 pt-3">
+                        <div className="font-bold text-brand-text-muted">
+                          Applications: <span className="font-black text-brand-text bg-brand-bg border border-slate-150 px-2 py-0.5 rounded-lg ml-1">{jobAppsCount}</span>
+                        </div>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 border rounded-full uppercase tracking-wider ${badgeClass}`}>
+                          {job.job_status}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-50">
+                        <Link
+                          href="/dashboard/recruiter/jobs"
+                          className="flex-grow text-center text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 py-2.5 px-3 rounded-xl transition-all cursor-pointer"
+                        >
+                          Manage
+                        </Link>
+
+                        <button
+                          onClick={() => handleDuplicateJob(job)}
+                          disabled={actionLoading === `dup-${job.id}`}
+                          className="p-2.5 border border-brand-border hover:border-slate-350 hover:bg-brand-bg text-brand-text-muted rounded-xl flex items-center justify-center cursor-pointer transition-colors w-10 h-10"
+                          title="Duplicate job listing"
+                        >
+                          {actionLoading === `dup-${job.id}` ? <Loader2 size={14} className="animate-spin" /> : <Copy size={14} />}
+                        </button>
+
+                        {job.job_status !== "Archived" && (
+                          <button
+                            onClick={() => handleArchiveJob(job.id)}
+                            disabled={actionLoading === `arch-${job.id}`}
+                            className="p-2.5 border border-brand-border hover:border-amber-500 hover:bg-amber-50 text-brand-text-muted hover:text-amber-600 rounded-xl flex items-center justify-center cursor-pointer transition-colors w-10 h-10"
+                            title="Archive job"
+                          >
+                            {actionLoading === `arch-${job.id}` ? <Loader2 size={14} className="animate-spin" /> : <Archive size={14} />}
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => handleDeleteJob(job.id)}
+                          disabled={actionLoading === `del-${job.id}`}
+                          className="p-2.5 border border-red-200 hover:border-red-400 hover:bg-red-50 text-red-500 rounded-xl flex items-center justify-center cursor-pointer transition-colors w-10 h-10"
+                          title="Delete listing"
+                        >
+                          {actionLoading === `del-${job.id}` ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           ) : (
             <div className="text-center py-8 bg-brand-bg border border-dashed border-brand-border rounded-2xl flex flex-col items-center justify-center space-y-2">
               <Inbox className="text-slate-300 w-10 h-10" />

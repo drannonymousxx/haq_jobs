@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function TestimonialsSection() {
@@ -144,10 +144,7 @@ export default function TestimonialsSection() {
                 >
                   {/* Quote Icon Container */}
                   <div className="w-16 h-16 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center flex-shrink-0">
-                    {/* Quote SVG */}
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#B63106]">
-                      <path d="M10 11L8 15H11V18H5V15L7 11H5V6H11V11H10ZM20 11L18 15H21V18H15V15L17 11H15V6H21V11H20Z" fill="currentColor" />
-                    </svg>
+                    <Quote className="w-7 h-7 text-[#B63106]" />
                   </div>
  
                   {/* Content */}

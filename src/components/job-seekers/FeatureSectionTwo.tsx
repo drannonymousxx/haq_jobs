@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Star, MapPin, Lock } from "lucide-react";
 
 export default function FeatureSectionTwo() {
   return (
@@ -20,9 +21,7 @@ export default function FeatureSectionTwo() {
           >
             {/* Mockup document lines */}
             <div className="w-16 h-16 bg-[#A7E9C3] rounded-full mx-auto mb-6 flex items-center justify-center -mt-12 shadow-md">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-[#3B82F6]">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
+              <Star className="w-8 h-8 text-[#3B82F6] fill-current" />
             </div>
             
             <div className="space-y-4">
@@ -84,9 +83,7 @@ export default function FeatureSectionTwo() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)] mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
-                  <path d="M12 20v-6M12 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
-                </svg>
+                <MapPin className="w-6 h-6 text-[#B63106]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">One click apply</h3>
@@ -105,9 +102,7 @@ export default function FeatureSectionTwo() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)] mt-1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
+                <Lock className="w-6 h-6 text-[#B63106]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-1">Set your preferences</h3>

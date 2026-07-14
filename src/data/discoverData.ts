@@ -162,7 +162,7 @@ export const discoverCompanies = [
   {
     id: 1,
     name: "Apex Legal Partners",
-    logo: "/logos/placeholder1.png",
+    logo: "/company%20logos/c1.png",
     description: "A leading international firm specializing in corporate governance and M&A.",
     domain: "Corporate Law",
     size: "50-200 Employees",
@@ -172,7 +172,7 @@ export const discoverCompanies = [
   {
     id: 2,
     name: "Global IP Advocates",
-    logo: "/logos/placeholder2.png",
+    logo: "/company%20logos/c2.png",
     description: "Premier boutique firm dedicated exclusively to patent, trademark, and copyright litigation.",
     domain: "Intellectual Property",
     size: "10-50 Employees",
@@ -182,7 +182,7 @@ export const discoverCompanies = [
   {
     id: 3,
     name: "Justice Chambers",
-    logo: "/logos/placeholder3.png",
+    logo: "/company%20logos/c3.png",
     description: "Nationally recognized litigators with a track record of high-profile class action success.",
     domain: "Litigation",
     size: "200+ Employees",
@@ -192,7 +192,7 @@ export const discoverCompanies = [
   {
     id: 4,
     name: "Regulatory Shield LLC",
-    logo: "/logos/placeholder4.png",
+    logo: "/company%20logos/c4.png",
     description: "Expert consultants guiding fintech startups through complex global compliance frameworks.",
     domain: "Compliance",
     size: "10-50 Employees",
@@ -202,7 +202,7 @@ export const discoverCompanies = [
   {
     id: 5,
     name: "Tax Haven Associates",
-    logo: "/logos/placeholder5.png",
+    logo: "/company%20logos/c5.png",
     description: "Specialized financial law firm focusing on corporate tax structuring and international tax dispute resolution.",
     domain: "Tax Law",
     size: "50-200 Employees",

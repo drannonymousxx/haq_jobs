@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Maximize2, PlusCircle, Send, Check } from "lucide-react";
 
 export default function FeatureSectionOne() {
   return (
@@ -39,9 +40,7 @@ export default function FeatureSectionOne() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
-                  <path d="M15 3h6v6" /><path d="M9 21H3v-6" /><path d="M21 3l-7 7" /><path d="M3 21l7-7" />
-                </svg>
+                <Maximize2 className="w-6 h-6 text-[#B63106]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Stay in the know</h3>
@@ -60,9 +59,7 @@ export default function FeatureSectionOne() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="16" /><line x1="8" y1="12" x2="16" y2="12" />
-                </svg>
+                <PlusCircle className="w-6 h-6 text-[#B63106]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Personalized search</h3>
@@ -81,9 +78,7 @@ export default function FeatureSectionOne() {
               className="flex gap-5 group cursor-default"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[rgba(182, 49, 6,0.08)] flex items-center justify-center mt-1 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md group-hover:bg-[rgba(182, 49, 6,0.12)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#B63106]">
-                  <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
-                </svg>
+                <Send className="w-6 h-6 text-[#B63106]" strokeWidth={2} />
               </div>
               <div>
                 <h3 className="text-[1.1rem] font-bold text-brand-text mb-2">Unique roles, exciting teams</h3>
@@ -119,9 +114,7 @@ export default function FeatureSectionOne() {
             className="absolute top-52 left-20 w-4/5 flex items-center gap-4 group cursor-default hover:translate-x-2 transition-transform duration-300"
           >
             <div className="w-12 h-12 bg-[#2563EB] rounded-lg shadow flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <Check className="w-6 h-6 text-white" strokeWidth={3} />
             </div>
             <div className="w-48 h-3 bg-[#60A5FA] rounded-full opacity-80" />
           </motion.div>
@@ -134,9 +127,7 @@ export default function FeatureSectionOne() {
             className="absolute top-72 left-20 w-4/5 flex items-center gap-4 group cursor-default hover:translate-x-2 transition-transform duration-300"
           >
             <div className="w-12 h-12 bg-[#60A5FA] rounded-lg shadow flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <Check className="w-6 h-6 text-white" strokeWidth={3} />
             </div>
             <div className="w-48 h-3 bg-[#93C5FD] rounded-full opacity-80" />
           </motion.div>
