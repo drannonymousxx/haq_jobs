@@ -134,7 +134,6 @@ export default function CandidateDashboardPage() {
               .from("interviews")
               .select("*")
               .in("application_id", appIds)
-              .eq("status", "pending")
               .order("scheduled_at", { ascending: true });
 
             if (dbInterviews) {
@@ -206,9 +205,16 @@ export default function CandidateDashboardPage() {
   // Accept/Decline/Reschedule interview actions
   const handleUpdateInterview = async (interviewId: string, newStatus: string, recruiterId: string, jobTitle: string) => {
     try {
+      const updateFields: any = { status: newStatus };
+      if (newStatus === "reschedule_requested") {
+        const rescheduleNotes = prompt("Please enter your preferred date, time, or details for rescheduling:");
+        if (rescheduleNotes === null) return; // user cancelled prompt
+        updateFields.notes = `Reschedule Requested: ${rescheduleNotes}\n\nOriginal Notes: ${interviews.find(i => i.id === interviewId)?.notes || ""}`;
+      }
+
       const { error } = await supabase
         .from("interviews")
-        .update({ status: newStatus })
+        .update(updateFields)
         .eq("id", interviewId);
 
       if (error) throw error;
@@ -545,19 +551,22 @@ export default function CandidateDashboardPage() {
       )}
 
       {/* 4. PENDING INTERVIEW INVITATIONS */}
-      {interviews.length > 0 && (
+      {interviews.filter(i => i.status === "pending").length > 0 && (
         <section className="space-y-4">
-          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest">Interview Rounds Invitations</h3>
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest font-poppins">Interview Rounds Invitations</h3>
           <div className="grid grid-cols-1 gap-4">
-            {interviews.map((i) => (
+            {interviews.filter(i => i.status === "pending").map((i) => (
               <div 
                 key={i.id}
                 className="bg-brand-card border border-amber-100 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6"
               >
-                <div className="space-y-2 flex-grow">
+                <div className="space-y-2 flex-grow text-xs">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[9px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-150 px-2.5 py-0.5 rounded-full">
-                      Interview Scheduled
+                      Interview Invitation
+                    </span>
+                    <span className="text-[9px] font-black uppercase tracking-wider bg-blue-50 text-blue-700 border-blue-100 px-2.5 py-0.5 rounded-full">
+                      {i.round || "Legal Interview"}
                     </span>
                     <h4 className="text-base font-extrabold text-brand-text">{i.title}</h4>
                   </div>
@@ -581,15 +590,6 @@ export default function CandidateDashboardPage() {
                     </div>
                   </div>
 
-                  {i.meeting_link && (
-                    <div className="text-xs pt-1">
-                      <span className="text-brand-text-muted font-bold block">Meeting Link:</span>
-                      <a href={i.meeting_link} target="_blank" rel="noreferrer" className="text-brand font-bold hover:underline">
-                        {i.meeting_link}
-                      </a>
-                    </div>
-                  )}
-
                   {i.location && (
                     <div className="text-xs pt-1 text-brand-text-muted font-medium">
                       <span className="text-brand-text-muted font-bold block">Office Location:</span>
@@ -599,7 +599,7 @@ export default function CandidateDashboardPage() {
 
                   {i.notes && (
                     <div className="bg-brand-bg border border-brand-border p-3 rounded-2xl mt-2 text-xs text-brand-text-muted font-medium leading-relaxed">
-                      <strong className="text-brand-text-secondary font-bold block mb-0.5">Recruiter Notes:</strong>
+                      <strong className="text-brand-text-secondary font-bold block mb-0.5 font-poppins">Recruiter Notes:</strong>
                       {i.notes}
                     </div>
                   )}
@@ -627,6 +627,125 @@ export default function CandidateDashboardPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* 4.1. CONFIRMED INTERVIEWS & ACTIVE CALLS */}
+      {interviews.filter(i => i.status === "accepted" || i.status === "reschedule_requested").length > 0 && (
+        <section className="space-y-4">
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest font-poppins">Confirmed Interviews</h3>
+          <div className="grid grid-cols-1 gap-4">
+            {interviews.filter(i => i.status === "accepted" || i.status === "reschedule_requested").map((i) => {
+              const isReschedulePending = i.status === "reschedule_requested";
+              return (
+                <div 
+                  key={i.id}
+                  className="bg-brand-card border border-emerald-100 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 animate-fade-in"
+                >
+                  <div className="space-y-2 flex-grow text-xs">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                        isReschedulePending 
+                          ? "bg-amber-50 text-amber-700 border-amber-100" 
+                          : "bg-emerald-50 text-emerald-700 border-emerald-100"
+                      }`}>
+                        {isReschedulePending ? "Reschedule Requested" : "Confirmed"}
+                      </span>
+                      <span className="text-[9px] font-black uppercase tracking-wider bg-blue-50 text-blue-700 border-blue-100 px-2.5 py-0.5 rounded-full">
+                        {i.round || "Legal Interview"}
+                      </span>
+                      <h4 className="text-base font-extrabold text-brand-text">{i.title}</h4>
+                    </div>
+                    
+                    <p className="text-xs text-brand-text-muted font-bold">
+                      With Recruiter/Firm: <span className="text-brand-text font-black">{i.company}</span>
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-brand-text-muted font-semibold pt-1">
+                      <div className="flex items-center gap-1">
+                        <Calendar size={13} />
+                        <span>{new Date(i.scheduled_at).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock size={13} />
+                        <span>{new Date(i.scheduled_at).toLocaleTimeString("default", { hour: "2-digit", minute: "2-digit" })} ({i.duration})</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Briefcase size={13} />
+                        <span className="capitalize">{i.type} Call</span>
+                      </div>
+                    </div>
+
+                    {i.location && (
+                      <div className="text-xs pt-1 text-brand-text-muted font-medium">
+                        <span className="text-brand-text-muted font-bold block">Office Location:</span>
+                        <span>{i.location}</span>
+                      </div>
+                    )}
+
+                    {i.notes && (
+                      <div className="bg-brand-bg border border-brand-border p-3 rounded-2xl mt-2 text-xs text-brand-text-muted font-medium leading-relaxed">
+                        <strong className="text-brand-text-secondary font-bold block mb-0.5">Interview Notes:</strong>
+                        {i.notes}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto self-stretch sm:self-center">
+                    {!isReschedulePending && i.type === "online" && (
+                      <Link
+                        href={`/interview/${i.id}`}
+                        className="w-full sm:w-auto text-center px-4 py-2.5 bg-[#B63106] hover:bg-[#932604] text-white font-bold text-xs rounded-xl shadow-md transition-all whitespace-nowrap"
+                      >
+                        Join Interview
+                      </Link>
+                    )}
+                    {isReschedulePending && (
+                      <span className="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-2 rounded-xl border border-amber-100 w-full sm:w-auto text-center">
+                        Reschedule requested
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* 4.2. PAST INTERVIEWS HISTORY LOG */}
+      {interviews.filter(i => ["completed", "declined", "cancelled", "no_show"].includes(i.status)).length > 0 && (
+        <section className="space-y-4">
+          <h3 className="text-sm font-bold text-brand-text uppercase tracking-widest font-poppins">Interview History Log</h3>
+          <div className="grid grid-cols-1 gap-3">
+            {interviews.filter(i => ["completed", "declined", "cancelled", "no_show"].includes(i.status)).map((i) => {
+              const statusColors: Record<string, string> = {
+                completed: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                declined: "bg-red-50 text-red-700 border-red-100",
+                cancelled: "bg-slate-50 text-slate-700 border-slate-200",
+                no_show: "bg-rose-50 text-rose-700 border-rose-100"
+              };
+              return (
+                <div 
+                  key={i.id}
+                  className="bg-brand-card border border-brand-border rounded-2xl p-4 shadow-sm flex justify-between items-center gap-6"
+                >
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-2 flex-wrap font-poppins">
+                      <span className="font-extrabold text-brand-text">{i.title}</span>
+                      <span className="text-[9px] font-bold text-brand-text-muted">({i.round})</span>
+                    </div>
+                    <p className="text-[11px] text-brand-text-muted font-semibold">
+                      Recruiter: <span className="font-bold text-brand-text-secondary">{i.company}</span> &middot; Date: {new Date(i.scheduled_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${statusColors[i.status] || "bg-brand-bg text-brand-text-secondary"}`}>
+                    {i.status === "no_show" ? "No Show" : i.status}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}

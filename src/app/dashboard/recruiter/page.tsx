@@ -293,7 +293,17 @@ export default function RecruiterDashboard() {
               .select("*")
               .in("application_id", appIds);
             if (dbInts) {
-              setRecruiterInterviews(dbInts);
+              const enriched = dbInts.map((i: any) => {
+                const app = formattedApps.find(a => String(a.id) === String(i.application_id));
+                return {
+                  ...i,
+                  candidateName: app?.candidateName || "Anonymous Candidate",
+                  candidateId: app?.candidateId,
+                  jobTitle: app?.jobTitle || "Legal Position",
+                  jobId: app?.jobId
+                };
+              });
+              setRecruiterInterviews(enriched);
             }
           }
 
@@ -512,6 +522,42 @@ export default function RecruiterDashboard() {
   const handleNextMonth = () => {
     setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1));
     setSelectedCalendarDay(null);
+  };
+
+  const handleUpdateRecruiterInterview = async (interviewId: string, newStatus: string, candidateId: string, jobTitle: string) => {
+    try {
+      const { error } = await supabase
+        .from("interviews")
+        .update({ status: newStatus })
+        .eq("id", interviewId);
+
+      if (error) throw error;
+
+      // Trigger in-app notification to candidate
+      if (candidateId) {
+        let title = "Interview Status Update";
+        let content = `Your interview for "${jobTitle}" has been marked as ${newStatus}.`;
+        if (newStatus === "no_show") {
+          title = "Interview Marked as No-Show";
+          content = `Your scheduled interview for "${jobTitle}" was marked as no-show by the recruiter. Please contact them if this was a mistake.`;
+        } else if (newStatus === "cancelled") {
+          title = "Interview Cancelled";
+          content = `Your scheduled interview for "${jobTitle}" has been cancelled by the recruiter.`;
+        }
+        await triggerWorkflowEvent({
+          userId: candidateId,
+          title,
+          content,
+          type: "interview",
+          referenceId: interviewId,
+          referenceType: "interviews"
+        });
+      }
+
+      await loadDashboardData();
+    } catch (err: any) {
+      alert("Failed to update interview status: " + err.message);
+    }
   };
 
   // Calculate selected day events
@@ -951,6 +997,178 @@ export default function RecruiterDashboard() {
             </div>
           </section>
         )}
+
+        {/* Interview Center Section */}
+        <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 space-y-6">
+          <div className="flex justify-between items-center border-b border-brand-border pb-4">
+            <div>
+              <h3 className="text-base font-bold text-brand-text font-poppins">Interview Center</h3>
+              <p className="text-[10px] text-brand-text-muted font-bold mt-0.5 font-poppins">Manage live rounds, reschedule notifications, and view logs.</p>
+            </div>
+            <span className="text-[9px] font-black bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-100 uppercase tracking-wider font-poppins">Livekit Video</span>
+          </div>
+
+          {/* 1. Upcoming Interviews */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold text-brand-text-secondary uppercase tracking-wider block font-poppins">Upcoming Scheduled Rounds</h4>
+            
+            {recruiterInterviews.filter(i => i.status === "accepted" || i.status === "pending").length > 0 ? (
+              <div className="grid grid-cols-1 gap-4">
+                {recruiterInterviews
+                  .filter(i => i.status === "accepted" || i.status === "pending")
+                  .map((i) => {
+                    const isConfirmed = i.status === "accepted";
+                    return (
+                      <div 
+                        key={i.id}
+                        className="p-4 bg-brand-bg/50 border border-brand-border rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-brand/40 transition-all text-xs"
+                      >
+                        <div className="space-y-1.5 flex-grow">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                              isConfirmed 
+                                ? "bg-emerald-50 text-emerald-700 border-emerald-100" 
+                                : "bg-amber-50 text-amber-700 border-amber-100"
+                            }`}>
+                              {isConfirmed ? "Confirmed" : "Awaiting Candidate"}
+                            </span>
+                            <span className="text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border bg-blue-50 text-blue-700 border-blue-100">
+                              {i.round || "Legal Interview"}
+                            </span>
+                            <h5 className="text-xs font-black text-brand-text">{i.title}</h5>
+                          </div>
+                          
+                          <p className="text-xs text-brand-text-muted font-semibold">
+                            Candidate: <span className="text-brand-text font-black">{i.candidateName}</span>
+                          </p>
+
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-brand-text-muted font-semibold">
+                            <div className="flex items-center gap-1">
+                              <CalendarIcon size={12} />
+                              <span>{new Date(i.scheduled_at).toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock size={12} />
+                              <span>{new Date(i.scheduled_at).toLocaleTimeString("default", { hour: "2-digit", minute: "2-digit" })} ({i.duration})</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Briefcase size={12} />
+                              <span className="capitalize">{i.type} Call</span>
+                            </div>
+                          </div>
+                          {i.notes && (
+                            <p className="text-[10px] text-brand-text-muted bg-brand-card border border-brand-border/40 p-2 rounded-xl mt-1">
+                              <strong className="text-brand-text-secondary font-bold block mb-0.5">Notes:</strong>
+                              {i.notes}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 w-full sm:w-auto self-stretch sm:self-center">
+                          {isConfirmed && i.type === "online" && (
+                            <Link
+                              href={`/interview/${i.id}`}
+                              className="flex-grow sm:flex-grow-0 text-center px-4 py-2.5 bg-[#B63106] hover:bg-[#932604] text-white font-bold text-xs rounded-xl shadow-md transition-all whitespace-nowrap"
+                            >
+                              Start Interview
+                            </Link>
+                          )}
+                          <button
+                            onClick={() => handleUpdateRecruiterInterview(i.id, "no_show", i.candidateId, i.jobTitle)}
+                            className="flex-grow sm:flex-grow-0 px-3.5 py-2.5 bg-brand-card hover:bg-red-50 border border-red-200 text-red-700 font-bold text-xs rounded-xl transition-all cursor-pointer text-center"
+                          >
+                            No Show
+                          </button>
+                          <button
+                            onClick={() => handleUpdateRecruiterInterview(i.id, "cancelled", i.candidateId, i.jobTitle)}
+                            className="p-2 bg-brand-card hover:bg-slate-100 border border-brand-border text-brand-text-muted rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                            title="Cancel Interview"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            ) : (
+              <div className="p-6 bg-brand-bg/30 border border-dashed border-brand-border rounded-2xl text-center text-xs text-brand-text-muted font-medium">
+                No upcoming confirmed or pending interviews.
+              </div>
+            )}
+          </div>
+
+          {/* 2. Reschedule Requested Alerts */}
+          {recruiterInterviews.filter(i => i.status === "reschedule_requested").length > 0 && (
+            <div className="space-y-3 p-4 bg-amber-50/50 border border-amber-100 rounded-2xl mt-4">
+              <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1">
+                <AlertCircle size={14} />
+                <span>Reschedule Requests</span>
+              </h4>
+              <div className="space-y-2">
+                {recruiterInterviews
+                  .filter(i => i.status === "reschedule_requested")
+                  .map((i) => (
+                    <div key={i.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs font-semibold">
+                      <p className="text-brand-text-secondary leading-relaxed">
+                        <span className="font-black text-[#B63106]">{i.candidateName}</span> has requested a reschedule for <span className="font-bold">"{i.title}"</span> ({i.round}).
+                      </p>
+                      <Link 
+                        href={`/dashboard/recruiter/jobs/${i.jobId}`}
+                        className="px-2.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] rounded-lg transition-all"
+                      >
+                        Reschedule Round
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* 3. Past Interview History Logs */}
+          <div className="space-y-4 pt-4 border-t border-brand-border">
+            <h4 className="text-xs font-bold text-brand-text-secondary uppercase tracking-wider block font-poppins">Interview History Log</h4>
+            
+            {recruiterInterviews.filter(i => ["completed", "declined", "cancelled", "no_show"].includes(i.status)).length > 0 ? (
+              <div className="max-h-60 overflow-y-auto pr-1 space-y-2.5">
+                {recruiterInterviews
+                  .filter(i => ["completed", "declined", "cancelled", "no_show"].includes(i.status))
+                  .map((i) => {
+                    const statusColors: Record<string, string> = {
+                      completed: "bg-emerald-50 text-emerald-700 border-emerald-100",
+                      declined: "bg-red-50 text-red-700 border-red-100",
+                      cancelled: "bg-slate-50 text-slate-700 border-slate-200",
+                      no_show: "bg-rose-50 text-rose-700 border-rose-100"
+                    };
+                    return (
+                      <div 
+                        key={i.id}
+                        className="p-3 bg-brand-card border border-brand-border rounded-xl flex justify-between items-center gap-4 text-xs"
+                      >
+                        <div className="space-y-0.5 font-poppins">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-black text-brand-text">{i.title}</span>
+                            <span className="text-[9px] font-bold text-brand-text-muted">({i.round})</span>
+                          </div>
+                          <p className="text-[11px] text-brand-text-muted font-medium">
+                            Candidate: <span className="font-bold text-brand-text-secondary">{i.candidateName}</span> &middot; Date: {new Date(i.scheduled_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${statusColors[i.status] || "bg-brand-bg text-brand-text-secondary"}`}>
+                          {i.status === "no_show" ? "No Show" : i.status}
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
+            ) : (
+              <div className="text-center text-[11px] text-brand-text-muted font-medium py-2">
+                No past interview records found.
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Active Jobs Control Center Table */}
         <section className="bg-brand-card rounded-3xl border border-brand-border shadow-sm p-6 space-y-6">

@@ -63,6 +63,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
   const [meetingLink, setMeetingLink] = useState("");
   const [officeLocation, setOfficeLocation] = useState("");
   const [interviewNotes, setInterviewNotes] = useState("");
+  const [interviewRound, setInterviewRound] = useState("HR Screening");
 
   // Offer Form States
   const [offerPosition, setOfferPosition] = useState("");
@@ -357,10 +358,11 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
           .from("interviews")
           .update({
             title: interviewTitle,
+            round: interviewRound,
             scheduled_at: scheduledAtStr,
             duration: interviewDuration,
             type: interviewType,
-            meeting_link: interviewType === "online" ? meetingLink : null,
+            meeting_link: interviewType === "online" ? `/interview/${editingInterviewId}` : null,
             location: interviewType === "offline" ? officeLocation : null,
             notes: interviewNotes
           })
@@ -380,21 +382,34 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
         });
       } else {
         // Create new interview
-        const { error: intErr } = await supabase
+        const { data: newInt, error: intErr } = await supabase
           .from("interviews")
           .insert({
             application_id: selectedApp.id,
+            job_id: job.id,
+            recruiter_id: job.recruiter_id,
+            candidate_id: selectedApp.candidateId,
+            round: interviewRound,
             title: interviewTitle,
             scheduled_at: scheduledAtStr,
             duration: interviewDuration,
             type: interviewType,
-            meeting_link: interviewType === "online" ? meetingLink : null,
+            meeting_link: interviewType === "online" ? "HAQJobs Video Calling" : null,
             location: interviewType === "offline" ? officeLocation : null,
             notes: interviewNotes,
             status: "pending"
-          });
+          })
+          .select()
+          .single();
 
         if (intErr) throw intErr;
+
+        if (newInt && interviewType === "online") {
+          await supabase
+            .from("interviews")
+            .update({ meeting_link: `/interview/${newInt.id}` })
+            .eq("id", newInt.id);
+        }
 
         // Update job_applications status
         const { error: appErr } = await supabase
@@ -665,6 +680,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                           setSelectedApp(app);
                           setEditingInterviewId(null);
                           setInterviewTitle(`Interview: ${job?.title || "Legal Position"}`);
+                          setInterviewRound("HR Screening");
                           setInterviewDate("");
                           setInterviewTime("");
                           setInterviewDuration("30 minutes");
@@ -704,6 +720,7 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                             }
                             setInterviewDuration(app.interview.duration);
                             setInterviewType(app.interview.type);
+                            setInterviewRound(app.interview.round || "HR Screening");
                             setMeetingLink(app.interview.meeting_link || "");
                             setOfficeLocation(app.interview.location || "");
                             setInterviewNotes(app.interview.notes || "");
@@ -801,6 +818,21 @@ export default function JobApplicantManagementPage({ params }: PageProps) {
                   onChange={(e) => setInterviewTitle(e.target.value)}
                   className="w-full px-4 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
                 />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-brand-text-muted uppercase tracking-wider block">Interview Round</label>
+                <select
+                  value={interviewRound}
+                  onChange={(e) => setInterviewRound(e.target.value)}
+                  className="w-full px-3 py-3 border border-brand-border rounded-xl outline-none text-xs bg-brand-card text-brand-text"
+                >
+                  <option value="HR Screening">HR Screening</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Legal Interview">Legal Interview</option>
+                  <option value="Partner Round">Partner Round</option>
+                  <option value="Final Round">Final Round</option>
+                </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
