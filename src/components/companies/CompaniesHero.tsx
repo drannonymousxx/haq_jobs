@@ -52,13 +52,13 @@ export default function CompaniesHero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto z-10"
         >
           <Link
-            href="/signup"
+            href="/signup/recruiter"
             className="w-full sm:w-auto px-8 py-4 bg-brand text-white rounded-xl font-bold text-[15px] hover:bg-brand-hover hover:shadow-[0_0_20px_rgba(182,49,6,0.35)] hover:-translate-y-[1px] transition-all duration-300 flex items-center justify-center cursor-pointer"
           >
             Post a job
           </Link>
           <Link
-            href="/signup"
+            href="/signup/recruiter"
             className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white rounded-xl font-bold text-[15px] border border-white/20 hover:bg-white/10 hover:border-white/40 hover:-translate-y-[1px] transition-all duration-300 flex items-center justify-center cursor-pointer"
           >
             Book a demo

@@ -39,7 +39,7 @@ export default function JobSeekerHero() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         className="flex flex-row items-center justify-center gap-4 md:gap-5 w-full"
       >
-        <Link href="/signup">
+        <Link href="/signup/candidate">
           <button className="px-6 md:px-7 py-3 min-w-[180px] bg-[#B63106] text-white rounded-xl font-medium text-[15px] md:text-[16px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center cursor-pointer">
             Create Your Profile
           </button>

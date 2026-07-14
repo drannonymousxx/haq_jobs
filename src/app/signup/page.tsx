@@ -1,12 +1,51 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { motion } from "framer-motion";
-import { User, Briefcase, ChevronRight, ArrowLeft } from "lucide-react";
+import { User, Briefcase, ChevronRight, ArrowLeft, Loader2 } from "lucide-react";
 
 export default function SignupSelectionPage() {
+  const router = useRouter();
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && session.user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", session.user.id)
+            .maybeSingle();
+
+          if (profile?.role === "recruiter") {
+            router.push("/dashboard/recruiter");
+          } else {
+            router.push("/dashboard");
+          }
+        } else {
+          setCheckingAuth(false);
+        }
+      } catch (err) {
+        setCheckingAuth(false);
+      }
+    }
+    checkAuth();
+  }, [router]);
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Checking authentication status...</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-brand-bg/50 flex flex-col justify-between p-6">
       

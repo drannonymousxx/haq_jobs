@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import AuthCookieSync from "@/components/common/AuthCookieSync";
 import "./globals.css";
 
 const manrope = localFont({
@@ -10,7 +11,7 @@ const manrope = localFont({
   variable: "--font-manrope",
   weight: "100 900",
   display: "swap",
-});
+  });
 
 const poppins = Poppins({ 
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${manrope.className} ${manrope.variable} ${poppins.variable}`}>
+        <AuthCookieSync />
         <Navbar />
         <main>{children}</main>
         <Footer />

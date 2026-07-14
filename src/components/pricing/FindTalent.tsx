@@ -45,7 +45,7 @@ export default function FindTalent() {
               "Basic outreach tools"
             ]}
             actions={[
-              { label: "Sign Up", href: "/signup", variant: "primary" },
+              { label: "Sign Up", href: "/signup/recruiter", variant: "primary" },
               { label: "Learn More", href: "/pricing/details", variant: "outline" }
             ]}
           />
@@ -65,7 +65,7 @@ export default function FindTalent() {
               "Legal-specific discovery tools"
             ]}
             actions={[
-              { label: "Sign Up", href: "/signup", variant: "primary" },
+              { label: "Sign Up", href: "/signup/recruiter", variant: "primary" },
               { label: "Learn More", href: "/pricing/details", variant: "outline" }
             ]}
             badge="Popular"

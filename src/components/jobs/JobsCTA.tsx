@@ -108,7 +108,7 @@ export default function JobsCTA() {
 
             <div>
               <Link
-                href="/signup"
+                href="/signup/candidate"
                 className="inline-flex items-center justify-center gap-2 bg-brand text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-brand-hover hover:shadow-[0_10px_30px_rgba(182,49,6,0.4)] hover:-translate-y-[1px] transition-all duration-300 group cursor-pointer"
               >
                 Create your profile

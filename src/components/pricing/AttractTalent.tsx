@@ -44,7 +44,7 @@ export default function AttractTalent() {
               "Built-in hiring dashboard"
             ]}
             actions={[
-              { label: "Sign Up", href: "/signup", variant: "outline" }
+              { label: "Sign Up", href: "/signup/recruiter", variant: "outline" }
             ]}
           />
 
@@ -59,7 +59,7 @@ export default function AttractTalent() {
               "Increased application visibility"
             ]}
             actions={[
-              { label: "Get Started", href: "/signup", variant: "primary" }
+              { label: "Get Started", href: "/signup/recruiter", variant: "primary" }
             ]}
             badge="Add-on"
             badgeStyle="coral"

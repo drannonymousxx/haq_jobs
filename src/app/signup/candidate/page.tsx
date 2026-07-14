@@ -35,11 +35,46 @@ export default function CandidateSignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // Clear states on mount
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Clear states and check session on mount
   useEffect(() => {
     setError(null);
     setSuccess(null);
-  }, []);
+
+    async function checkAuth() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && session.user) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", session.user.id)
+            .maybeSingle();
+
+          if (profile?.role === "recruiter") {
+            router.push("/dashboard/recruiter");
+          } else {
+            router.push("/dashboard");
+          }
+        } else {
+          setCheckingAuth(false);
+        }
+      } catch (err) {
+        setCheckingAuth(false);
+      }
+    }
+    checkAuth();
+  }, [router]);
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted">Checking authentication status...</p>
+      </div>
+    );
+  }
 
   // Handle email/password sign up
   const handleSignup = async (e: React.FormEvent) => {

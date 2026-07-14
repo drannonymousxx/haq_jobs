@@ -83,7 +83,7 @@ export function GlobalHiringSection() {
             Our specialized community of legal professionals is at your fingertips. Specify the regions and time zones where you&apos;ll accept candidates to build a distributed team, or one a bit closer to home.
           </p>
           <div className="mt-4">
-            <Button href="/for-companies#consultation" variant="primary">
+            <Button href="/signup/recruiter" variant="primary">
               Hire Talent Now
             </Button>
           </div>

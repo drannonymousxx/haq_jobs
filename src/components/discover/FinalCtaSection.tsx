@@ -15,7 +15,7 @@ export default function FinalCtaSection() {
           <Link href="/login">
             <button className={styles.btnSecondary}>Login</button>
           </Link>
-          <Link href="/signup">
+          <Link href="/signup/candidate">
             <button className={styles.joinBtn}>Sign Up</button>
           </Link>
         </div>
