@@ -44,7 +44,7 @@ export default function ManageTalent() {
               "Legal hiring workflow management"
             ]}
             actions={[
-              { label: "Sign Up", href: "/signup/recruiter", variant: "primary" }
+              { label: "Start Sourcing Now", href: "/signup/recruiter?mode=signup", variant: "primary" }
             ]}
             className="max-w-[500px]"
           />

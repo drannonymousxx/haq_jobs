@@ -25,10 +25,10 @@ export function HeroSection() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 justify-center lg:justify-start">
-            <Button href="/signup/recruiter" variant="primary" className="w-full sm:w-auto">
+            <Button href="/signup/recruiter?mode=signup" variant="primary" className="w-full sm:w-auto">
               Post a Job for Free
             </Button>
-            <Button href="/signup/recruiter" variant="outline" className="w-full sm:w-auto">
+            <Button href="/signup/recruiter?mode=signup" variant="outline" className="w-full sm:w-auto">
               Request a Demo
             </Button>
           </div>

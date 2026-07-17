@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { signOut } from "@/lib/auth";
 import Sidebar, { SidebarLink } from "@/components/dashboard/Sidebar";
 import TopNav from "@/components/dashboard/TopNav";
 import { 
@@ -68,12 +69,31 @@ export default function CandidateDashboardLayout({
             return;
           }
           
-          setProfile({
-            full_name: session.user.user_metadata?.full_name || "Candidate User",
-            email: session.user.email,
+          // Auto-heal database: recreate the missing profile
+          const fullName = session.user.user_metadata?.full_name || session.user.user_metadata?.name || "Candidate User";
+          const newProfile = {
+            id: session.user.id,
+            full_name: fullName,
+            email: session.user.email || "",
             role: "candidate",
-            job_search_status: "Open to Opportunities"
-          });
+            company_name: null,
+            designation: null,
+            created_at: new Date().toISOString()
+          };
+          
+          try {
+            await supabase.from("profiles").insert(newProfile);
+            setProfile({
+              ...newProfile,
+              job_search_status: "Open to Opportunities"
+            });
+          } catch (insertErr) {
+            console.error("Auto-profile creation failed:", insertErr);
+            setProfile({
+              ...newProfile,
+              job_search_status: "Open to Opportunities"
+            });
+          }
         }
         
         setLoading(false);
@@ -88,9 +108,7 @@ export default function CandidateDashboardLayout({
 
   // Handle Sign Out
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    await signOut(router);
   };
 
   // Persist Search Status Change in Supabase

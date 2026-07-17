@@ -12,10 +12,10 @@ export default function FinalCtaSection() {
         </h3>
         <p>We analyze your expertise and ambitions to match you with opportunities where you'll thrive.</p>
         <div className={styles.ctaButtons}>
-          <Link href="/login">
+          <Link href="/signup?intent=login">
             <button className={styles.btnSecondary}>Login</button>
           </Link>
-          <Link href="/signup/candidate">
+          <Link href="/signup">
             <button className={styles.joinBtn}>Sign Up</button>
           </Link>
         </div>

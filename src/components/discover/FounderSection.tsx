@@ -11,7 +11,7 @@ export default function FounderSection() {
           <EditorialText text="Not all opportunities are *visible*. The right ones are." />
         </h3>
         <p>Gain access to exclusive roles and build a premium network designed for top-tier legal professionals.</p>
-        <Link href="/signup/candidate">
+        <Link href="/signup">
           <button className={styles.joinBtn}>Get Started</button>
         </Link>
       </div>

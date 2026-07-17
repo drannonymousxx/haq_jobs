@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import { signOut } from "@/lib/auth";
 import Sidebar from "@/components/dashboard/Sidebar";
 import TopNav from "@/components/dashboard/TopNav";
 import { 
@@ -185,9 +186,7 @@ export default function CandidatePublicProfilePage() {
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    await signOut(router);
   };
 
   if (loading || !mounted) {

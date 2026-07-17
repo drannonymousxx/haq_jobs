@@ -156,33 +156,19 @@ export default function Navbar() {
               ))}
               <div className="border-t border-zinc-800 my-2 pt-4 flex flex-col gap-3">
                 <Link
-                  href="/login"
+                  href="/signup?intent=login"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-sm font-bold text-white hover:text-[#B63106] transition-colors py-1.5 text-center bg-zinc-800/40 rounded-xl"
                 >
                   Log In
                 </Link>
-                <div className="space-y-2.5">
-                  <span className="text-[10px] font-black text-brand-text-muted uppercase tracking-widest block">
-                    Register HAQJobs Account
-                  </span>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Link
-                      href="/signup/candidate"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[11px] font-black uppercase text-center bg-[#B63106]/10 text-[#B63106] py-3.5 rounded-xl block border border-[#B63106]/20 hover:bg-[#B63106]/20"
-                    >
-                      Candidate
-                    </Link>
-                    <Link
-                      href="/signup/recruiter"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[11px] font-black uppercase text-center bg-zinc-800 text-white py-3.5 rounded-xl block border border-zinc-700 hover:bg-zinc-700"
-                    >
-                      Recruiter
-                    </Link>
-                  </div>
-                </div>
+                <Link
+                  href="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-sm font-bold text-white hover:bg-[#B63106] bg-[#D9480F] transition-all py-3 text-center rounded-xl block"
+                >
+                  Sign Up
+                </Link>
               </div>
             </motion.div>
           </>

@@ -1,3 +1,5 @@
+import { supabase } from "./supabase";
+
 /**
  * auth.ts — Centralised authentication utilities for HAQJobs
  *
@@ -54,4 +56,129 @@ export function getAuthCallbackUrl(role?: "candidate" | "recruiter"): string {
   const origin = getSiteOrigin();
   const base = `${origin}/auth/callback`;
   return role ? `${base}?role=${role}` : base;
+}
+
+/**
+ * Sets auth cookies in the browser.
+ * This is used to synchronously sync Supabase session tokens with the server-side middleware
+ * to prevent race conditions during redirect.
+ */
+export function setAuthCookies(session: any) {
+  if (typeof document === "undefined") return;
+
+  const maxAge = session?.expires_in || 3600;
+  
+  if (session?.access_token) {
+    document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+  }
+  
+  if (session?.refresh_token) {
+    document.cookie = `sb-refresh-token=${session.refresh_token}; path=/; max-age=604800; SameSite=Lax; Secure`;
+  }
+}
+
+/**
+ * Clears auth cookies in the browser.
+ */
+export function clearAuthCookies() {
+  if (typeof document === "undefined") return;
+  
+  document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure";
+  document.cookie = "sb-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure";
+  // Wiping legacy role cookie too, just in case
+  document.cookie = "sb-user-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure";
+}
+
+/**
+ * Shared redirection logic after a successful login or signup.
+ * Resolves role from database, updates metadata if out of sync, sets cookies, and navigates.
+ */
+export async function redirectAfterLogin(user: any, session: any, router: any, forceRole?: "candidate" | "recruiter") {
+  try {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const role = forceRole || profile?.role || user.user_metadata?.role || "candidate";
+
+    // If role is forced and differs from database profile role, update it
+    if (profile && forceRole && profile.role !== forceRole) {
+      try {
+        await supabase
+          .from("profiles")
+          .update({ role: forceRole })
+          .eq("id", user.id);
+      } catch (err) {
+        console.error("Failed to update profile role in DB:", err);
+      }
+    }
+
+    // Sync auth metadata if missing/mismatched
+    let currentSession = session;
+    if (!user.user_metadata?.role || user.user_metadata.role !== role) {
+      try {
+        await supabase.auth.updateUser({
+          data: { role }
+        });
+        // Retrieve the refreshed/updated session with the new JWT
+        const { data: { session: newSession } } = await supabase.auth.getSession();
+        if (newSession) {
+          currentSession = newSession;
+        }
+      } catch (err) {
+        console.error("Failed to sync user role metadata:", err);
+      }
+    }
+
+    // Write cookies synchronously before routing
+    setAuthCookies(currentSession);
+
+    // Redirect to correct dashboard path
+    const targetPath = role === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
+    router.push(targetPath);
+    router.refresh();
+  } catch (err) {
+    console.error("Redirection after login failed:", err);
+    // Fallback redirect
+    router.push("/dashboard");
+    router.refresh();
+  }
+}
+
+/**
+ * Handles the client-side session check during page mounting.
+ * If user is authenticated, directs to their dashboard, otherwise resets loading states.
+ */
+export async function handleSessionMountCheck(
+  router: any,
+  setCheckingAuth: (val: boolean) => void,
+  forceRole?: "candidate" | "recruiter"
+) {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session && session.user) {
+      await redirectAfterLogin(session.user, session, router, forceRole);
+    } else {
+      setCheckingAuth(false);
+    }
+  } catch (err) {
+    setCheckingAuth(false);
+  }
+}
+
+/**
+ * Shared logout helper. Clears local Supabase auth and response cookies synchronously, then redirects.
+ */
+export async function signOut(router: any) {
+  try {
+    clearAuthCookies();
+    await supabase.auth.signOut();
+  } catch (err) {
+    console.error("Error signing out from Supabase:", err);
+  } finally {
+    router.push("/login");
+    router.refresh();
+  }
 }

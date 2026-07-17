@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { getAuthCallbackUrl } from "@/lib/auth";
+import { getAuthCallbackUrl, redirectAfterLogin, handleSessionMountCheck } from "@/lib/auth";
 import GoogleAuthButton from "@/components/common/GoogleAuthButton";
 import { convertRecruiterLead } from "@/lib/leadService";
 import { 
@@ -20,8 +20,13 @@ import {
   ArrowUpRight 
 } from "lucide-react";
 
-export default function RecruiterSignupPage() {
+function RecruiterAuthComponent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const queryMode = searchParams.get("mode");
+
+  // Auth mode state: "signup" or "login"
+  const [authMode, setAuthMode] = useState<"signup" | "login">("signup");
   
   // Form fields
   const [fullName, setFullName] = useState("");
@@ -40,34 +45,20 @@ export default function RecruiterSignupPage() {
 
   const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Sync mode parameter with authMode state
+  useEffect(() => {
+    if (queryMode === "login") {
+      setAuthMode("login");
+    } else if (queryMode === "signup") {
+      setAuthMode("signup");
+    }
+  }, [queryMode]);
+
   // Clear states on mount
   useEffect(() => {
     setError(null);
     setSuccess(null);
-
-    async function checkAuth() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session && session.user) {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", session.user.id)
-            .maybeSingle();
-
-          if (profile?.role === "recruiter") {
-            router.push("/dashboard/recruiter");
-          } else {
-            router.push("/dashboard");
-          }
-        } else {
-          setCheckingAuth(false);
-        }
-      } catch (err) {
-        setCheckingAuth(false);
-      }
-    }
-    checkAuth();
+    handleSessionMountCheck(router, setCheckingAuth, "recruiter");
   }, [router]);
 
   if (checkingAuth) {
@@ -139,7 +130,6 @@ export default function RecruiterSignupPage() {
           });
 
         if (profileError) {
-          // If insert fails, log it and redirect to recruiter dashboard.
           console.error("Profile db insert failed:", profileError.message);
         }
 
@@ -152,8 +142,11 @@ export default function RecruiterSignupPage() {
 
         setSuccess("Recruiter account created successfully! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard/recruiter");
-          router.refresh();
+          if (data.user && data.session) {
+            redirectAfterLogin(data.user, data.session, router, "recruiter");
+          } else {
+            router.push("/dashboard/recruiter");
+          }
         }, 1500);
       } else {
         setSuccess("Success! Please check your email to verify your recruiter account.");
@@ -166,8 +159,46 @@ export default function RecruiterSignupPage() {
     }
   };
 
-  // Handle Google Sign Up
-  const handleGoogleSignup = async () => {
+  // Handle email/password log in
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { data, error: loginError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (loginError) {
+        setError(loginError.message);
+        setLoading(false);
+      } else {
+         setSuccess("Success! Welcome back to HAQJobs.");
+        setTimeout(() => {
+          if (data.user && data.session) {
+            redirectAfterLogin(data.user, data.session, router, "recruiter");
+          } else {
+            router.push("/dashboard/recruiter");
+          }
+        }, 1500);
+      }
+    } catch (err: any) {
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  // Handle Google Sign In / Sign Up
+  const handleGoogleAuth = async () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -185,10 +216,12 @@ export default function RecruiterSignupPage() {
         setLoading(false);
       }
     } catch (err: any) {
-      setError("Failed to initiate Google Sign Up.");
+      setError("Failed to initiate Google Authentication.");
       setLoading(false);
     }
   };
+
+  const isSignup = authMode === "signup";
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:grid lg:grid-cols-12 bg-brand-card">
@@ -331,22 +364,49 @@ export default function RecruiterSignupPage() {
 
         {/* Center Signup Form */}
         <div className="flex-1 flex flex-col justify-center max-w-sm w-full mx-auto py-10 lg:py-0">
+          
           <div className="mb-6">
             <span className="text-xs font-extrabold text-amber-600 uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full">
               For Recruiters & Firms
             </span>
             <h1 className="text-3xl font-extrabold text-brand-text tracking-tight font-poppins mt-3 mb-2">
-              Create Recruiter Account
+              {isSignup ? "Create Recruiter Account" : "Welcome Back"}
             </h1>
             <p className="text-sm text-brand-text-muted font-medium">
-              Start posting jobs and building your legal dream team.
+              {isSignup ? "Start posting jobs and building your legal dream team." : "Log in to access your recruiter dashboard."}
             </p>
+          </div>
+
+          {/* Tab Selector Toggle */}
+          <div className="flex bg-brand-bg/60 p-1 rounded-xl border border-brand-border mb-6">
+            <button
+              type="button"
+              onClick={() => setAuthMode("signup")}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-200 cursor-pointer ${
+                isSignup
+                  ? "bg-black text-white shadow-sm"
+                  : "text-brand-text-muted hover:text-brand-text"
+              }`}
+            >
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthMode("login")}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-200 cursor-pointer ${
+                !isSignup
+                  ? "bg-black text-white shadow-sm"
+                  : "text-brand-text-muted hover:text-brand-text"
+              }`}
+            >
+              Log In
+            </button>
           </div>
 
           {/* Alert Banners */}
           {error && (
             <div className="mb-5 p-4 bg-red-50 border-l-4 border-red-500 rounded text-sm text-red-700 animate-fadeIn">
-              <p className="font-semibold">Sign Up Failed</p>
+              <p className="font-semibold">{isSignup ? "Sign Up Failed" : "Login Failed"}</p>
               <p>{error}</p>
             </div>
           )}
@@ -359,8 +419,8 @@ export default function RecruiterSignupPage() {
 
           {/* Google Button */}
           <GoogleAuthButton
-            label="Sign up with Google"
-            onClick={handleGoogleSignup}
+            label={isSignup ? "Sign up with Google" : "Log in with Google"}
+            onClick={handleGoogleAuth}
             disabled={loading}
           />
 
@@ -370,154 +430,232 @@ export default function RecruiterSignupPage() {
               <div className="w-full border-t border-brand-border"></div>
             </div>
             <span className="relative px-3 bg-brand-card text-xs font-semibold text-brand-text-muted uppercase tracking-wider">
-              or Sign up with Email
+              {isSignup ? "or Sign up with Email" : "or Log in with Email"}
             </span>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSignup} className="space-y-3">
-            <div>
-              <label htmlFor="fullName" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                Full Name
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                placeholder="Partner / HR Manager Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                disabled={loading}
-                required
-                className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                Work Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="name@firm.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={loading}
-                required
-                className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Forms */}
+          {isSignup ? (
+            <form onSubmit={handleSignup} className="space-y-3">
               <div>
-                <label htmlFor="companyName" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                  Company / Firm
+                <label htmlFor="fullName" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                  Full Name
                 </label>
                 <input
-                  id="companyName"
+                  id="fullName"
                   type="text"
-                  placeholder="e.g. Khaitan & Co"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Partner / HR Manager Name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
                   disabled={loading}
                   required
                   className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
                 />
               </div>
+
               <div>
-                <label htmlFor="designation" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                  Designation
+                <label htmlFor="email" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                  Work Email Address
                 </label>
                 <input
-                  id="designation"
-                  type="text"
-                  placeholder="e.g. HR Partner"
-                  value={designation}
-                  onChange={(e) => setDesignation(e.target.value)}
+                  id="email"
+                  type="email"
+                  placeholder="name@firm.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
                   required
                   className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
                 />
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="password" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                Password
-              </label>
-              <div className="relative">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="companyName" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                    Company / Firm
+                  </label>
+                  <input
+                    id="companyName"
+                    type="text"
+                    placeholder="e.g. Khaitan & Co"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="designation" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                    Designation
+                  </label>
+                  <input
+                    id="designation"
+                    type="text"
+                    placeholder="e.g. HR Partner"
+                    value={designation}
+                    onChange={(e) => setDesignation(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="At least 6 characters"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Repeat your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1 cursor-pointer"
+                  >
+                    {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center px-4 py-3 bg-black hover:bg-slate-900 text-white text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-4 min-h-[46px]"
+              >
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Create Recruiter Account"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label htmlFor="loginEmail" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1.5">
+                  Email Address
+                </label>
                 <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="At least 6 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  id="loginEmail"
+                  type="email"
+                  placeholder="name@firm.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
                   required
-                  className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="confirmPassword" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider mb-1">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Repeat your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1"
-                >
-                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label htmlFor="loginPassword" className="block text-xs font-bold text-brand-text-muted uppercase tracking-wider">
+                    Password
+                  </label>
+                  <Link href="/forgot-password" className="text-xs text-[#B63106] hover:underline font-semibold transition-colors">
+                    Forgot?
+                  </Link>
+                </div>
+                <div className="relative">
+                  <input
+                    id="loginPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    required
+                    className="w-full px-4 py-2.5 text-sm border border-brand-border rounded-xl outline-none pr-12 transition-all duration-200 focus:ring-2 focus:ring-[#B63106]/20 focus:border-[#B63106] placeholder:text-brand-text-muted bg-brand-card"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-text-muted hover:text-brand-text-secondary transition-colors p-1 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center px-4 py-3 bg-black hover:bg-slate-900 text-white text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-4 min-h-[46px]"
-            >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                "Create Recruiter Account"
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center px-4 py-3 bg-black hover:bg-slate-900 text-white text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed mt-5 min-h-[46px]"
+              >
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Log In"}
+              </button>
+            </form>
+          )}
 
-          {/* Links */}
+          {/* Alternative Role Switcher */}
           <div className="mt-5 text-center text-sm font-medium text-brand-text-muted">
             Are you looking for legal jobs instead?{" "}
-            <Link href="/signup/candidate" className="text-[#B63106] hover:underline font-semibold transition-all">
-              Sign up as Candidate
+            <Link 
+              href={authMode === "login" ? "/signup/candidate?mode=login" : "/signup/candidate"} 
+              className="text-[#B63106] hover:underline font-semibold transition-all"
+            >
+              {authMode === "login" ? "Log in as Candidate" : "Join as Candidate"}
             </Link>
           </div>
           
+          {/* Internal mode switcher links */}
           <div className="mt-3 text-center text-sm font-medium text-brand-text-muted">
-            Already registered?{" "}
-            <Link href="/login" className="text-brand-text hover:underline font-semibold transition-all">
-              Log in
-            </Link>
+            {isSignup ? (
+              <>
+                Already registered?{" "}
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("login")}
+                  className="text-brand-text hover:underline font-semibold transition-all cursor-pointer bg-transparent border-none p-0"
+                >
+                  Log in
+                </button>
+              </>
+            ) : (
+              <>
+                New to HAQJobs?{" "}
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("signup")}
+                  className="text-brand-text hover:underline font-semibold transition-all cursor-pointer bg-transparent border-none p-0"
+                >
+                  Sign up
+                </button>
+              </>
+            )}
           </div>
+
         </div>
 
         {/* Bottom footer text (Desktop only) */}
@@ -527,5 +665,18 @@ export default function RecruiterSignupPage() {
       </div>
 
     </div>
+  );
+}
+
+export default function RecruiterSignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-amber-500" />
+        <p className="text-sm font-semibold text-brand-text-muted">Loading recruiter authentication...</p>
+      </div>
+    }>
+      <RecruiterAuthComponent />
+    </Suspense>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { signOut } from "@/lib/auth";
 import { Loader2, LogOut, Briefcase, MessageSquare, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -56,12 +57,25 @@ export default function RecruiterDashboardLayout({
             return;
           }
           
-          setProfile({
+          // Auto-heal database: recreate the missing profile
+          const fullName = session.user.user_metadata?.full_name || session.user.user_metadata?.name || "Recruiter User";
+          const newProfile = {
             id: session.user.id,
-            full_name: session.user.user_metadata?.full_name || "Recruiter User",
-            email: session.user.email,
-            role: "recruiter"
-          });
+            full_name: fullName,
+            email: session.user.email || "",
+            role: "recruiter",
+            company_name: session.user.user_metadata?.company_name || null,
+            designation: session.user.user_metadata?.designation || null,
+            created_at: new Date().toISOString()
+          };
+
+          try {
+            await supabase.from("profiles").insert(newProfile);
+            setProfile(newProfile);
+          } catch (insertErr) {
+            console.error("Auto-profile creation failed for recruiter:", insertErr);
+            setProfile(newProfile);
+          }
         }
         
         setLoading(false);
@@ -75,9 +89,7 @@ export default function RecruiterDashboardLayout({
   }, [router]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    await signOut(router);
   };
 
   if (loading) {

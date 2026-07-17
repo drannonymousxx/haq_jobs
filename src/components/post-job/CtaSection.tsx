@@ -21,7 +21,7 @@ export function CtaSection() {
             Join the thousands of top law firms and fast-growing startups finding their best talent on HAQJobs.
           </p>
           
-          <Button href="/signup/recruiter" variant="primary" className="!px-10 !py-4 text-lg">
+          <Button href="/signup/recruiter?mode=signup" variant="primary" className="!px-10 !py-4 text-lg">
             Post a Job for Free
           </Button>
         </motion.div>

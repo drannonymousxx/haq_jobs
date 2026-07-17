@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { motion } from "framer-motion";
 import { User, Briefcase, ChevronRight, ArrowLeft, Loader2 } from "lucide-react";
 
-export default function SignupSelectionPage() {
+function SignupSelectionContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [checkingAuth, setCheckingAuth] = useState(true);
+
+  const intent = searchParams.get("intent");
+  const isLogin = intent === "login";
 
   useEffect(() => {
     async function checkAuth() {
@@ -46,6 +50,10 @@ export default function SignupSelectionPage() {
       </div>
     );
   }
+
+  const candidateTarget = isLogin ? "/signup/candidate?mode=login" : "/signup/candidate?mode=signup";
+  const recruiterTarget = isLogin ? "/signup/recruiter?mode=login" : "/signup/recruiter?mode=signup";
+
   return (
     <div className="min-h-screen bg-brand-bg/50 flex flex-col justify-between p-6">
       
@@ -61,12 +69,21 @@ export default function SignupSelectionPage() {
             priority 
           />
         </Link>
-        <Link 
-          href="/login" 
-          className="text-sm font-semibold text-brand-text-secondary hover:text-[#B63106] transition-colors flex items-center gap-1"
-        >
-          Already have an account? <span className="text-[#B63106] hover:underline">Log in</span>
-        </Link>
+        {isLogin ? (
+          <Link 
+            href="/signup" 
+            className="text-sm font-semibold text-brand-text-secondary hover:text-[#B63106] transition-colors flex items-center gap-1"
+          >
+            Don't have an account? <span className="text-[#B63106] hover:underline font-semibold">Sign up</span>
+          </Link>
+        ) : (
+          <Link 
+            href="/signup?intent=login" 
+            className="text-sm font-semibold text-brand-text-secondary hover:text-[#B63106] transition-colors flex items-center gap-1"
+          >
+            Already have an account? <span className="text-[#B63106] hover:underline font-semibold">Log in</span>
+          </Link>
+        )}
       </div>
 
       {/* Main Selection Area */}
@@ -78,10 +95,12 @@ export default function SignupSelectionPage() {
           className="text-center mb-10 max-w-md"
         >
           <h1 className="text-3xl sm:text-4xl font-black text-brand-text tracking-tight leading-tight font-poppins mb-3">
-            Join HAQJobs
+            {isLogin ? "Log in to HAQJobs" : "Join HAQJobs"}
           </h1>
           <p className="text-sm sm:text-base font-medium text-brand-text-muted leading-relaxed">
-            Create an account to start applying to roles or begin hiring premier legal talent.
+            {isLogin 
+              ? "Choose your account type to access your dashboard."
+              : "Create an account to start applying to roles or begin hiring premier legal talent."}
           </p>
         </motion.div>
 
@@ -111,10 +130,10 @@ export default function SignupSelectionPage() {
             </div>
 
             <Link 
-              href="/signup/candidate" 
+              href={candidateTarget} 
               className="inline-flex items-center justify-center gap-1 text-sm font-semibold bg-black text-white hover:bg-slate-900 py-3.5 px-6 rounded-xl transition-all duration-300 w-full"
             >
-              Join as Candidate
+              {isLogin ? "Log in as Candidate" : "Join as Candidate"}
               <ChevronRight size={16} />
             </Link>
           </motion.div>
@@ -142,10 +161,10 @@ export default function SignupSelectionPage() {
             </div>
 
             <Link 
-              href="/signup/recruiter" 
+              href={recruiterTarget} 
               className="inline-flex items-center justify-center gap-1 text-sm font-semibold bg-black text-white hover:bg-slate-900 py-3.5 px-6 rounded-xl transition-all duration-300 w-full"
             >
-              Join as Recruiter
+              {isLogin ? "Log in as Recruiter" : "Join as Recruiter"}
               <ChevronRight size={16} />
             </Link>
           </motion.div>
@@ -169,5 +188,18 @@ export default function SignupSelectionPage() {
       </div>
 
     </div>
+  );
+}
+
+export default function SignupSelectionPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-brand-bg gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-[#B63106]" />
+        <p className="text-sm font-semibold text-brand-text-muted font-poppins">Loading authentication portal...</p>
+      </div>
+    }>
+      <SignupSelectionContent />
+    </Suspense>
   );
 }

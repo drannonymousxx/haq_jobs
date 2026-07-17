@@ -85,7 +85,7 @@ export function HeroSection() {
               transition={{ delay: 0.7, duration: 0.7, ease: EASE_OUT_EXPO }}
             >
               {/* Primary CTA pill */}
-              <Link href="/signup/candidate" className="group">
+              <Link href="/signup/candidate?mode=login" className="group">
                 <div className="flex items-center gap-2 bg-[#D9480F] rounded-full pl-5 pr-2 py-2 group-hover:gap-3 transition-all duration-300">
                   <span className="text-white font-bold text-sm sm:text-base whitespace-nowrap">
                     Explore Jobs
@@ -97,7 +97,7 @@ export function HeroSection() {
               </Link>
 
               {/* Secondary CTA pill */}
-              <Link href="/signup/recruiter" className="group">
+              <Link href="/signup/recruiter?mode=login" className="group">
                 <div className="flex items-center gap-2 border border-[#2A2A2A] rounded-full pl-5 pr-2 py-2 hover:border-[#D9480F]/40 group-hover:gap-3 transition-all duration-300 bg-[#121212]/50 backdrop-blur-sm">
                   <span className="text-white/80 font-bold text-sm sm:text-base whitespace-nowrap">
                     Hire Talent

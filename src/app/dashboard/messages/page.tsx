@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { signOut } from "@/lib/auth";
 import { mapSupabaseError } from "@/lib/errorUtils";
 import { SYSTEM_USER_ID } from "@/lib/systemAccount";
 import { 
@@ -375,9 +376,7 @@ function MessagingContent() {
 
   // Sign out (Recruiter Header bar fallback)
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    await signOut(router);
   };
 
   // Switch conversation

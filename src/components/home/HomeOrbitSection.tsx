@@ -96,7 +96,7 @@ export default function HomeOrbitSection() {
           >
             {/* Primary Button */}
             <Link 
-              href="/signup/candidate"
+              href="/signup/candidate?mode=login"
               className="relative px-8 py-3.5 rounded-xl font-bold bg-[#D9480F] text-white hover:bg-[#B63106] transition-all duration-300 hover:shadow-[0_0_20px_rgba(217,72,15,0.4)] flex items-center justify-center gap-2 group whitespace-nowrap text-sm cursor-pointer"
             >
               Explore Opportunities
@@ -105,7 +105,7 @@ export default function HomeOrbitSection() {
 
             {/* Secondary Button */}
             <Link 
-              href="/signup/recruiter"
+              href="/signup/recruiter?mode=login"
               className="relative px-8 py-3.5 rounded-xl font-bold bg-transparent text-white border border-[#2A2A2A] hover:border-[#D9480F]/60 transition-all duration-300 hover:bg-zinc-900/40 flex items-center justify-center gap-2 group whitespace-nowrap text-sm cursor-pointer"
             >
               Hire Legal Talent

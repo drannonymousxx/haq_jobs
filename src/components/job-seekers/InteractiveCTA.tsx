@@ -121,7 +121,7 @@ export default function InteractiveCTA() {
               </div>
             </motion.div>
 
-            <Link href="/signup/candidate" className="inline-block">
+            <Link href="/signup" className="inline-block">
               <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

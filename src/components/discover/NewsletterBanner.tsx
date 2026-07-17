@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '@/styles/discover/Discover.module.css';
 import EditorialText from '@/components/ui/EditorialText';
 
@@ -23,7 +24,9 @@ export default function NewsletterBanner() {
       </div>
 
       {/* Right Side */}
-      <button className={styles.joinBtn}>Join Now</button>
+      <Link href="/signup">
+        <button className={styles.joinBtn}>Join Now</button>
+      </Link>
     </div>
   );
 }

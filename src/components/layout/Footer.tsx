@@ -151,7 +151,7 @@ export default function Footer() {
             {/* Pill buttons aligned with the Hero Section */}
             <div className="flex flex-wrap gap-3 pt-2">
               {/* Explore Jobs */}
-              <Link href="/signup/candidate" className="group">
+              <Link href="/signup/candidate?mode=login" className="group">
                 <div className="flex items-center gap-2 bg-[#D9480F] rounded-full pl-5 pr-2 py-2 group-hover:gap-3 transition-all duration-300">
                   <span className="text-white font-bold text-xs sm:text-sm whitespace-nowrap">
                     Explore Jobs
@@ -163,7 +163,7 @@ export default function Footer() {
               </Link>
 
               {/* Hire Talent */}
-              <Link href="/signup/recruiter" className="group">
+              <Link href="/signup/recruiter?mode=login" className="group">
                 <div className="flex items-center gap-2 border border-white/10 rounded-full pl-5 pr-2 py-2 hover:border-[#D9480F]/40 group-hover:gap-3 transition-all duration-300 bg-white/5 backdrop-blur-sm">
                   <span className="text-white/80 font-bold text-xs sm:text-sm whitespace-nowrap">
                     Hire Talent
