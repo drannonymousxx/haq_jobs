@@ -1,7 +1,43 @@
+const fs = require('fs');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
-const supabaseUrl = 'https://jhbmzltmwkjqmxipoayr.supabase.co';
-const anonKey = 'sb_publishable_BCmns_AJ4AI-yigw6CsRkg_opMsFiiQ';
+// Automatically load environment variables from local .env files if not already set in process.env
+function loadEnv() {
+  const envFiles = ['.env.local', '.env'];
+  for (const file of envFiles) {
+    const envPath = path.join(__dirname, file);
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      content.split('\n').forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+          const [key, ...valParts] = trimmed.split('=');
+          const val = valParts.join('=').trim().replace(/^["']|["']$/g, '');
+          if (key && !process.env[key.trim()]) {
+            process.env[key.trim()] = val;
+          }
+        }
+      });
+    }
+  }
+}
+
+loadEnv();
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const testPassword = process.env.TEST_PASSWORD;
+
+if (!supabaseUrl || !anonKey) {
+  console.error('❌ Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.');
+  process.exit(1);
+}
+
+if (!testPassword) {
+  console.error('❌ Missing TEST_PASSWORD environment variable.');
+  process.exit(1);
+}
 
 // Initialize Supabase Client
 const supabase = createClient(supabaseUrl, anonKey);
@@ -12,7 +48,6 @@ async function testWorkflow() {
   const uniqueId = Date.now();
   const recruiterEmail = `recruiter_${uniqueId}@gmail.com`;
   const candidateEmail = `candidate_${uniqueId}@gmail.com`;
-  const testPassword = 'Password123!';
 
   console.log(`Generating test accounts:\n  Recruiter: ${recruiterEmail}\n  Candidate: ${candidateEmail}`);
 
