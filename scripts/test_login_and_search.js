@@ -6,9 +6,11 @@ const { createClient } = require('@supabase/supabase-js');
 function loadEnv() {
   const envFiles = ['.env.local', '.env'];
   for (const file of envFiles) {
-    const envPath = path.join(__dirname, file);
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, 'utf8');
+    const envPath = path.join(__dirname, '..', file);
+    const altEnvPath = path.join(__dirname, file);
+    const targetPath = fs.existsSync(envPath) ? envPath : (fs.existsSync(altEnvPath) ? altEnvPath : null);
+    if (targetPath) {
+      const content = fs.readFileSync(targetPath, 'utf8');
       content.split('\n').forEach(line => {
         const trimmed = line.trim();
         if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {

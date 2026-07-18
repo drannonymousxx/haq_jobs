@@ -94,14 +94,6 @@ HAQJobs solves these challenges by providing a unified, role-based workspace wit
       <img src="assets/readme/recruiter-dashboard.png" alt="HAQJobs Recruiter Workspace & Applicant Pipeline" width="100%" style="border-radius: 8px; border: 1px solid #30363d;" />
     </td>
   </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <br />
-      <strong>LiveKit Virtual Video Interview Room</strong>
-      <br /><br />
-      <img src="assets/readme/interview.png" alt="HAQJobs LiveKit Virtual Video Interview Room Interface" width="100%" style="border-radius: 8px; border: 1px solid #30363d;" />
-    </td>
-  </tr>
 </table>
 
 <br />
@@ -212,10 +204,11 @@ haq_jobs/
 │   ├── proxy.ts                # Server-side cookie & role authentication proxy middleware
 │   ├── styles/                 # Global styling rules and CSS modules
 │   └── types/                  # Shared TypeScript interfaces & database definitions
-├── *.sql                       # Supabase database schemas & migration scripts
+├── database/
+│   └── migrations/             # PostgreSQL schemas & SQL migration scripts
+├── scripts/                    # Automated testing and E2E workflow scripts
+├── LICENSE                     # MIT Open Source License
 ├── .env.example                # Template for environment configuration
-├── test_login_and_search.js    # Refactored automated test verification script
-├── verify_workflow.js          # E2E workflow database & authentication test script
 └── package.json                # Project dependencies and script declarations
 ```
 
@@ -252,11 +245,11 @@ haq_jobs/
    *Edit `.env.local` and fill in your Supabase and LiveKit credentials.*
 
 4. **Run SQL Database Migrations**:
-   Execute the migration SQL scripts in your Supabase SQL Editor in the following order:
-   - `candidate_profile_schema.sql`
-   - `migration_candidate_search.sql`
-   - `migration_interview_livekit.sql`
-   - `migration_missing_tables.sql`
+   Execute the migration SQL scripts located in `database/migrations/` in your Supabase SQL Editor in the following order:
+   - `database/migrations/candidate_profile_schema.sql`
+   - `database/migrations/migration_candidate_search.sql`
+   - `database/migrations/migration_interview_livekit.sql`
+   - `database/migrations/migration_missing_tables.sql`
 
 5. **Launch Development Server**:
    ```bash
@@ -357,6 +350,14 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
 
 <div align="center">
 
-Made with ❤️ for the LegalTech ecosystem.
+────────────────────────
+
+Made with ❤️ by **Priyangshu Ghosh**
+
+Founder & Developer of HAQJobs
+
+Building modern LegalTech products that simplify legal hiring through thoughtful design, scalable engineering, and AI-powered workflows.
+
+────────────────────────
 
 </div>
