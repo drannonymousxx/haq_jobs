@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { signOut } from "@/lib/auth";
+import { signOut, setAuthCookies } from "@/lib/auth";
 import { Loader2, LogOut, Briefcase, MessageSquare, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,16 +21,20 @@ export default function RecruiterDashboardLayout({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function checkAuthAndRole() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session || !session.user) {
-          router.push("/login");
+          if (isMounted) router.push("/login");
           return;
         }
 
-        setUser(session.user);
+        // Keep cookies in sync
+        setAuthCookies(session);
+        if (isMounted) setUser(session.user);
 
         // Fetch profiles table row
         const { data: userProfile, error: profileError } = await supabase
@@ -45,47 +49,54 @@ export default function RecruiterDashboardLayout({
 
         if (userProfile) {
           if (userProfile.role !== "recruiter") {
-            router.push("/dashboard");
+            if (isMounted) router.push("/dashboard");
             return;
           }
-          setProfile(userProfile);
+          if (isMounted) setProfile(userProfile);
         } else {
           // Fallback to auth metadata role check
           const metaRole = session.user.user_metadata?.role;
           if (metaRole && metaRole !== "recruiter") {
-            router.push("/dashboard");
+            if (isMounted) router.push("/dashboard");
             return;
           }
           
-          // Auto-heal database: recreate the missing profile
+          // Read-only state fallback for missing profile (no DB mutation)
           const fullName = session.user.user_metadata?.full_name || session.user.user_metadata?.name || "Recruiter User";
-          const newProfile = {
-            id: session.user.id,
-            full_name: fullName,
-            email: session.user.email || "",
-            role: "recruiter",
-            company_name: session.user.user_metadata?.company_name || null,
-            designation: session.user.user_metadata?.designation || null,
-            created_at: new Date().toISOString()
-          };
-
-          try {
-            await supabase.from("profiles").insert(newProfile);
-            setProfile(newProfile);
-          } catch (insertErr) {
-            console.error("Auto-profile creation failed for recruiter:", insertErr);
-            setProfile(newProfile);
+          if (isMounted) {
+            setProfile({
+              id: session.user.id,
+              full_name: fullName,
+              email: session.user.email || "",
+              role: "recruiter",
+              company_name: session.user.user_metadata?.company_name || null,
+              designation: session.user.user_metadata?.designation || null,
+            });
           }
         }
         
-        setLoading(false);
+        if (isMounted) setLoading(false);
       } catch (err) {
         console.error("Recruiter layout initialization failed:", err);
-        router.push("/login");
+        if (isMounted) router.push("/login");
       }
     }
 
     checkAuthAndRole();
+
+    // Subscribe to auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        router.push("/login");
+      } else if (session) {
+        setAuthCookies(session);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [router]);
 
   const handleSignOut = async () => {

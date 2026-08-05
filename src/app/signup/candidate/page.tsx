@@ -41,6 +41,7 @@ function CandidateAuthComponent() {
   const [success, setSuccess] = useState<string | null>(null);
 
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [mismatchRole, setMismatchRole] = useState<"recruiter" | null>(null);
 
   // Sync mode parameter with authMode state
   useEffect(() => {
@@ -55,7 +56,12 @@ function CandidateAuthComponent() {
   useEffect(() => {
     setError(null);
     setSuccess(null);
-    handleSessionMountCheck(router, setCheckingAuth, "candidate");
+    handleSessionMountCheck(router, setCheckingAuth, "candidate").then((status) => {
+      if (status === "mismatch") {
+        // Active session is a recruiter — stay on this page, show banner
+        setMismatchRole("recruiter");
+      }
+    });
   }, [router]);
 
   if (checkingAuth) {
@@ -390,6 +396,20 @@ function CandidateAuthComponent() {
               Log In
             </button>
           </div>
+
+          {/* Mismatch Banner — shown when a recruiter lands on the candidate portal */}
+          {mismatchRole === "recruiter" && (
+            <div className="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+              <p className="font-bold mb-1">You're signed in as a Recruiter</p>
+              <p className="text-amber-700 leading-snug">
+                Your active session belongs to a recruiter account. You can log in with a different
+                candidate account below, or{" "}
+                <Link href="/dashboard/recruiter" className="underline font-semibold hover:text-amber-900">
+                  go to your Recruiter Dashboard
+                </Link>.
+              </p>
+            </div>
+          )}
 
           {/* Alert Banners */}
           {error && (

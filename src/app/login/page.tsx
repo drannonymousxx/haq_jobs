@@ -2,18 +2,39 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { handleSessionMountCheck } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
+import { setAuthCookies } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    handleSessionMountCheck(router, (isAuthenticated) => {
-      if (!isAuthenticated) {
-        router.push("/signup?intent=login");
+    async function checkAndRedirect() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && session.user) {
+          setAuthCookies(session);
+          // Query profile to determine role
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", session.user.id)
+            .maybeSingle();
+
+          const role = profile?.role || session.user.user_metadata?.role || "candidate";
+          const target = role === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
+          router.replace(target);
+        } else {
+          // Unauthenticated: send to candidate login portal (default entry point)
+          router.replace("/signup/candidate?mode=login");
+        }
+      } catch (err) {
+        router.replace("/signup/candidate?mode=login");
       }
-    });
+    }
+
+    checkAndRedirect();
   }, [router]);
 
   return (
@@ -23,4 +44,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
