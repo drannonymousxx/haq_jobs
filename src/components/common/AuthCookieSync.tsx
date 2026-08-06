@@ -16,6 +16,15 @@ import { setAuthCookies, clearAuthCookies } from "@/lib/auth";
  */
 export default function AuthCookieSync() {
   useEffect(() => {
+    // Synchronously strip OAuth hash fragment from URL immediately on mount (<1s)
+    if (typeof window !== "undefined" && window.location.hash.includes("access_token")) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && session.user) {
         setAuthCookies(session);
@@ -23,8 +32,7 @@ export default function AuthCookieSync() {
         clearAuthCookies();
       }
 
-      // Strip the OAuth hash fragment from the URL after Supabase has processed it.
-      // This prevents #access_token=... from appearing permanently in the address bar.
+      // Re-check hash removal if session state updates
       if (
         (event === "INITIAL_SESSION" || event === "SIGNED_IN") &&
         typeof window !== "undefined" &&

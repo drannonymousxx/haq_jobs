@@ -34,7 +34,11 @@ function isTokenExpired(token: string): boolean {
 
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isAuthPage = path === "/login" || path.startsWith("/signup");
+  // Only /login is a pure auth gate that should redirect authenticated users away.
+  // /signup/* are intentional portal pages — an authenticated user navigating there
+  // has explicitly chosen to go to that portal (e.g., "Explore Jobs" / "Hire Talent").
+  // The portal's own mount-check (handleSessionMountCheck) handles the crossover decision.
+  const isLoginPage = path === "/login";
   const isDashboardPage =
     path.startsWith("/dashboard") ||
     path.startsWith("/candidate") ||
@@ -144,13 +148,18 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Resolve user role from verified JWT user_metadata without DB lookup
-  const resolvedRole = sessionUser?.user_metadata?.role || "candidate";
+  // Resolve user role from JWT user_metadata.
+  // No default: if role is absent, treat as unknown rather than assuming "candidate".
+  const resolvedRole: string | null = sessionUser?.user_metadata?.role || null;
 
-  // 1. Authenticated user trying to access login/signup pages
-  if (isSessionValid && isAuthPage) {
+  // 1. Authenticated user on /login — redirect to their dashboard.
+  // NOTE: /signup/* routes are intentionally NOT intercepted here.
+  // Portal pages must always render so handleSessionMountCheck can run.
+  // The crossover guard (matching role → auto-restore, mismatching role → banner)
+  // lives in the portal component, not at the edge.
+  if (isSessionValid && path === "/login") {
     const redirectUrl = resolvedRole === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
-    logProxy("Authenticated user on auth page (", path, "). Redirecting to:", redirectUrl);
+    logProxy("Authenticated user on /login. Redirecting to:", redirectUrl);
     response = NextResponse.redirect(new URL(redirectUrl, request.url));
   }
   // 2. Unauthenticated user trying to access dashboard/candidate/interview pages
@@ -164,7 +173,7 @@ export async function proxy(request: NextRequest) {
     }
   }
   // 3. Authenticated user on wrong dashboard layout
-  else if (isSessionValid) {
+  else if (isSessionValid && resolvedRole) {
     if (resolvedRole === "recruiter") {
       const isCandidateOnly =
         path === "/dashboard" ||

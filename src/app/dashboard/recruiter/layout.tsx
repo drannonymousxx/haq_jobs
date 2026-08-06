@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { signOut, setAuthCookies } from "@/lib/auth";
-import { Loader2, LogOut, Briefcase, MessageSquare, Menu, X } from "lucide-react";
+import { Loader2, LogOut, Briefcase, MessageSquare, Menu, X, Info } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,41 +15,66 @@ export default function RecruiterDashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showNoticeBanner, setShowNoticeBanner] = useState(false);
+
+  // Check for notice query parameter on mount
+  useEffect(() => {
+    if (searchParams.get("notice") === "role_redirect") {
+      setShowNoticeBanner(true);
+      // Clean query parameter from URL bar immediately without reload
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let isMounted = true;
 
     async function checkAuthAndRole() {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session || !session.user) {
-          if (isMounted) router.push("/login");
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Recruiter dashboard session check timed out after 8000ms")), 8000)
+        );
+
+        const authTask = (async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session || !session.user) return { status: "no_session" as const };
+
+          setAuthCookies(session);
+
+          const { data: userProfile, error: profileError } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", session.user.id)
+            .maybeSingle();
+
+          if (profileError) {
+            console.error("Profile check query error:", profileError.message);
+          }
+
+          return { status: "ok" as const, session, userProfile };
+        })();
+
+        const res = await Promise.race([authTask, timeoutPromise]);
+
+        if (res.status === "no_session") {
+          if (isMounted) { setLoading(false); router.replace("/login"); }
           return;
         }
 
-        // Keep cookies in sync
-        setAuthCookies(session);
+        const { session, userProfile } = res;
         if (isMounted) setUser(session.user);
 
-        // Fetch profiles table row
-        const { data: userProfile, error: profileError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.error("Profile check query error:", profileError.message);
-        }
-
         if (userProfile) {
+          // Candidate intercept: wrong role for this dashboard
           if (userProfile.role !== "recruiter") {
-            if (isMounted) router.push("/dashboard");
+            if (isMounted) { setLoading(false); router.replace("/dashboard"); }
             return;
           }
           if (isMounted) setProfile(userProfile);
@@ -57,7 +82,7 @@ export default function RecruiterDashboardLayout({
           // Fallback to auth metadata role check
           const metaRole = session.user.user_metadata?.role;
           if (metaRole && metaRole !== "recruiter") {
-            if (isMounted) router.push("/dashboard");
+            if (isMounted) { setLoading(false); router.replace("/dashboard"); }
             return;
           }
           
@@ -78,7 +103,7 @@ export default function RecruiterDashboardLayout({
         if (isMounted) setLoading(false);
       } catch (err) {
         console.error("Recruiter layout initialization failed:", err);
-        if (isMounted) router.push("/login");
+        if (isMounted) { setLoading(false); router.replace("/login?error=timeout"); }
       }
     }
 
@@ -266,7 +291,24 @@ export default function RecruiterDashboardLayout({
       )}
 
       {/* Nested Route Pages */}
-      <div className="flex-grow w-full flex flex-col">
+      <div className="flex-grow w-full flex flex-col p-6 sm:p-8 max-w-7xl mx-auto space-y-4">
+        {showNoticeBanner && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 flex items-center justify-between text-amber-400 text-sm animate-fadeIn">
+            <div className="flex items-center gap-3">
+              <Info className="w-5 h-5 shrink-0 text-amber-400" />
+              <p className="font-medium">
+                You're registered as a Recruiter — redirected directly to your Recruiter Dashboard.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowNoticeBanner(false)}
+              className="p-1 hover:bg-amber-500/20 rounded-lg transition-colors cursor-pointer text-amber-400"
+              aria-label="Dismiss notice"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
         {children}
       </div>
 

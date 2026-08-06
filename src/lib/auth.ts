@@ -124,9 +124,18 @@ export async function redirectAfterLogin(
     // 4. Synchronize cookies before routing
     setAuthCookies(currentSession);
 
-    // 5. Navigate directly to saved role dashboard (replace so auth page is not in history)
-    const targetPath = resolvedRole === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
-    logAuth("Navigating user to:", targetPath);
+    // 5. Detect if user logged in on a portal that mismatches their authoritative DB role
+    const isPortalMismatch = profile && fallbackRole && profile.role !== fallbackRole;
+    if (isPortalMismatch) {
+      logAuth(
+        `[HAQAuth] Role Mismatch: User logged in on ${fallbackRole} portal, ` +
+        `but DB profile is ${resolvedRole}. Redirecting directly to ${resolvedRole} dashboard once.`
+      );
+    }
+
+    const basePath = resolvedRole === "recruiter" ? "/dashboard/recruiter" : "/dashboard";
+    const targetPath = isPortalMismatch ? `${basePath}?notice=role_redirect` : basePath;
+    logAuth("Navigating user directly to:", targetPath);
     router.replace(targetPath);
   } catch (err) {
     console.error("[HAQAuth] Redirection after login failed:", err);

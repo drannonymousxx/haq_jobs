@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -35,8 +35,8 @@ function assertValidConfig(url: string | undefined, key: string | undefined) {
 
 assertValidConfig(supabaseUrl, supabaseAnonKey);
 
-// Safe to cast after validation above — we never fall back to a placeholder.
-export const supabase = createClient(
+// Safe to cast after validation above — createBrowserClient handles cookie-backed PKCE storage
+export const supabase = createBrowserClient(
   supabaseUrl as string,
   supabaseAnonKey as string
 );

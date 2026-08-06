@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { signOut, setAuthCookies } from "@/lib/auth";
 import Sidebar, { SidebarLink } from "@/components/dashboard/Sidebar";
@@ -14,7 +14,9 @@ import {
   MessageSquare, 
   Compass, 
   Gift, 
-  Loader2 
+  Loader2,
+  Info,
+  X
 } from "lucide-react";
 
 export default function CandidateDashboardLayout({
@@ -23,12 +25,25 @@ export default function CandidateDashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   
   // Layout States
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
+  const [showNoticeBanner, setShowNoticeBanner] = useState(false);
+
+  // Check for notice query parameter on mount
+  useEffect(() => {
+    if (searchParams.get("notice") === "role_redirect") {
+      setShowNoticeBanner(true);
+      // Clean query parameter from URL bar immediately without reload
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, [searchParams]);
 
   // Authenticate & Verify Role
   useEffect(() => {
@@ -36,32 +51,43 @@ export default function CandidateDashboardLayout({
 
     async function checkAuthAndRole() {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session || !session.user) {
-          if (isMounted) router.push("/login");
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Dashboard session check timed out after 8000ms")), 8000)
+        );
+
+        const authTask = (async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session || !session.user) return { status: "no_session" as const };
+
+          setAuthCookies(session);
+
+          const { data: userProfile, error: profileError } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", session.user.id)
+            .maybeSingle();
+
+          if (profileError) {
+            console.error("Profile query error:", profileError.message);
+          }
+
+          return { status: "ok" as const, session, userProfile };
+        })();
+
+        const res = await Promise.race([authTask, timeoutPromise]);
+
+        if (res.status === "no_session") {
+          if (isMounted) { setLoading(false); router.replace("/login"); }
           return;
         }
 
-        // Ensure browser cookies stay in sync with session
-        setAuthCookies(session);
+        const { session, userProfile } = res;
         if (isMounted) setUser(session.user);
 
-        // Fetch profile
-        const { data: userProfile, error: profileError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.error("Profile query error:", profileError.message);
-        }
-
         if (userProfile) {
-          // Recruiter intercept
+          // Recruiter intercept: wrong role for this dashboard
           if (userProfile.role !== "candidate") {
-            if (isMounted) router.push("/dashboard/recruiter");
+            if (isMounted) { setLoading(false); router.replace("/dashboard/recruiter"); }
             return;
           }
           if (isMounted) setProfile(userProfile);
@@ -69,7 +95,7 @@ export default function CandidateDashboardLayout({
           // Fallback to auth metadata role check
           const metaRole = session.user.user_metadata?.role;
           if (metaRole && metaRole !== "candidate") {
-            if (isMounted) router.push("/dashboard/recruiter");
+            if (isMounted) { setLoading(false); router.replace("/dashboard/recruiter"); }
             return;
           }
           
@@ -89,7 +115,7 @@ export default function CandidateDashboardLayout({
         if (isMounted) setLoading(false);
       } catch (err) {
         console.error("Layout authorization check failed:", err);
-        if (isMounted) router.push("/login");
+        if (isMounted) { setLoading(false); router.replace("/login?error=timeout"); }
       }
     }
 
@@ -184,7 +210,24 @@ export default function CandidateDashboardLayout({
 
         {/* Scrollable content wrapper */}
         <main className="flex-grow overflow-y-auto p-6 sm:p-8 w-full">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto space-y-4">
+            {showNoticeBanner && (
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between text-blue-400 text-sm animate-fadeIn">
+                <div className="flex items-center gap-3">
+                  <Info className="w-5 h-5 shrink-0 text-blue-400" />
+                  <p className="font-medium">
+                    You're registered as a Candidate — redirected directly to your Candidate Dashboard.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowNoticeBanner(false)}
+                  className="p-1 hover:bg-blue-500/20 rounded-lg transition-colors cursor-pointer text-blue-400"
+                  aria-label="Dismiss notice"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
             {children}
           </div>
         </main>
